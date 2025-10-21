@@ -15,6 +15,8 @@ import {
   FiPlay,
   FiChevronRight,
   FiArrowLeft,
+  FiGlobe,
+  FiActivity,
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { FaBrain } from "react-icons/fa";
@@ -35,7 +37,7 @@ interface Feature {
   category: string;
   highlights: string[];
   status: string;
-  color: "cyan" | "purple" | "green" | "blue";
+  color: "cyan" | "purple" | "green" | "blue" | "red" | "yellow" | "pink";
 }
 
 const RAVXOSFeatures: React.FC = () => {
@@ -194,6 +196,41 @@ const RAVXOSFeatures: React.FC = () => {
       status: "active",
       color: "green",
     },
+    {
+      id: 9,
+      title: "Agent Marketplace",
+      description:
+        "Discover, clone, and publish AI agents created by the community",
+      longDescription:
+        "A global marketplace where users can publish their AI avatars, explore others, and instantly clone or customize them for personal or business use.",
+      icon: <FiGlobe className="text-2xl" />,
+      category: "ecosystem",
+      highlights: [
+        "Instant cloning",
+        "Community-driven evolution",
+        "Remixable AI architectures",
+        "Creator monetization (future)",
+      ],
+      status: "upcoming",
+      color: "pink",
+    },
+    {
+      id: 10,
+      title: "Autonomous Task Planning",
+      description: "AI agents that think, plan, and execute multi-step goals",
+      longDescription:
+        "Beyond simple conversations — your AI can independently plan workflows, make decisions, and execute multi-step tasks without recurring prompts.",
+      icon: <FiActivity className="text-2xl" />,
+      category: "intelligence",
+      highlights: [
+        "Self-managed goals",
+        "Long-term execution",
+        "Smart failure recovery",
+        "Human override system",
+      ],
+      status: "active",
+      color: "yellow",
+    },
   ];
 
   const filteredFeatures: Feature[] =
@@ -207,6 +244,9 @@ const RAVXOSFeatures: React.FC = () => {
       purple: "from-purple-500 to-purple-600",
       green: "from-green-500 to-green-600",
       blue: "from-blue-500 to-blue-600",
+      red: "from-red-500 to-red-600",
+      yellow: "from-yellow-500 to-yellow-600",
+      pink: "from-pink-500 to-pink-600",
     };
     return colors[color] || colors.cyan;
   };
@@ -504,7 +544,7 @@ const RAVXOSFeatures: React.FC = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25"
+                className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25 cursor-pointer"
               >
                 <FiPlay className="text-lg" />
                 <span>Start Free Trial</span>
@@ -512,7 +552,7 @@ const RAVXOSFeatures: React.FC = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 font-semibold px-8 py-4 rounded-lg transition-all duration-300"
+                className="border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 font-semibold px-8 py-4 rounded-lg transition-all duration-300 cursor-pointer"
               >
                 Schedule Demo
               </motion.button>
