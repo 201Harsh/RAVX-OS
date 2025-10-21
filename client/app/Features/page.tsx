@@ -243,8 +243,6 @@ const RAVXOSFeatures: React.FC = () => {
 
         <div className="relative z-10 container mx-auto px-4 py-8">
           <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
             onClick={() => setSelectedFeature(null)}
             className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 mb-8 transition-colors"
           >

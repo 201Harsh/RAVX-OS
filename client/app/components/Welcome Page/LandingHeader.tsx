@@ -4,6 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 
 const LandingHeader = ({ itemVariants }: any) => {
+  const NavLinks = [
+    {
+      name: "Features",
+      link: "/features",
+    },
+    {
+      name: "Demo",
+      link: "/demo",
+    },
+    {
+      name: "Pricing",
+      link: "/pricing",
+    },
+    {
+      name: "About",
+      link: "/about",
+    },
+  ];
   return (
     <>
       <motion.header
@@ -21,14 +39,14 @@ const LandingHeader = ({ itemVariants }: any) => {
           className="hidden md:flex space-x-8"
           variants={itemVariants}
         >
-          {["Features", "Demo", "Pricing", "About"].map((item) => (
+          {NavLinks.map(({ name: items, link }, index: number) => (
             <motion.a
-              key={item}
-              href="#"
+              key={index}
+              href={link}
               className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
               whileHover={{ y: -2 }}
             >
-              {item}
+              {items}
             </motion.a>
           ))}
         </motion.nav>
