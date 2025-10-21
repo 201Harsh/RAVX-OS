@@ -159,10 +159,10 @@ const RAVXOSLanding = () => {
               variants={itemVariants}
               className="text-2xl md:text-3xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed"
             >
-              The world's first personal AI operating system that lets anyone
-              create their own{" "}
+              A web-based AI operating system that lets anyone create their own
+              powerful AI agents{" "}
               <span className="text-cyan-400">
-                living, neon-intelligent AI avatar
+                instantly, with zero coding.
               </span>
             </motion.p>
 
@@ -173,7 +173,7 @@ const RAVXOSLanding = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25"
+                className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25 cursor-pointer"
               >
                 <FiPlay className="text-lg" />
                 <span>Create Your AI Avatar</span>
