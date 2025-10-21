@@ -390,13 +390,10 @@ const RAVXOSFeatures: React.FC = () => {
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
-        <motion.header
-          initial={{ opacity: 0, y: -20 }}
-          className="flex items-center justify-between mb-12"
-        >
+        <motion.header className="flex items-center justify-between mb-12">
           <button
             onClick={() => navigate.push("/")}
-            className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 transition-colors"
+            className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
           >
             <FiArrowLeft className="text-lg" />
             <span>Back to Home</span>
