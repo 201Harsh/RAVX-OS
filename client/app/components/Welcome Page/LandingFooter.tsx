@@ -25,7 +25,7 @@ const LandingFooter = ({ itemVariants }: any) => {
         variants={itemVariants}
         className="border-t border-gray-800 pt-12 pb-8"
       >
-        <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <motion.div whileHover={{ scale: 1.05 }}>
             <Link
               href="/"
@@ -53,8 +53,9 @@ const LandingFooter = ({ itemVariants }: any) => {
             ))}
           </div>
 
-          <p className="text-gray-500 text-sm">
-            © 2024 RAVX OS. The future of personal AI.
+          <p className="text-gray-300 text-sm">
+            © 2024 <span className="font-semibold text-cyan-400">RAVX OS</span>.
+            The future of personal AI
           </p>
         </div>
       </motion.footer>
