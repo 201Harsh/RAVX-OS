@@ -40,14 +40,13 @@ const LandingHeader = ({ itemVariants }: any) => {
           variants={itemVariants}
         >
           {NavLinks.map(({ name: items, link }, index: number) => (
-            <motion.a
+            <Link
               key={index}
               href={link}
               className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
-              whileHover={{ y: -2 }}
             >
               {items}
-            </motion.a>
+            </Link>
           ))}
         </motion.nav>
 
