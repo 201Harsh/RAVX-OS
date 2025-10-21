@@ -151,7 +151,7 @@ const RAVXOSLanding = () => {
               variants={itemVariants}
               className="text-6xl md:text-8xl font-bold mb-8 tracking-tight"
             >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400">
+              <span className="bg-clip-text text-transparent bg-linear-to-r from-cyan-400 via-purple-400 to-cyan-400">
                 RAVX OS
               </span>
             </motion.h1>
@@ -246,7 +246,7 @@ const RAVXOSLanding = () => {
                 initial={{ scale: 0.9 }}
                 transition={{ duration: 1 }}
               >
-                <div className="aspect-video rounded-2xl border border-cyan-400/30 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 backdrop-blur-sm flex items-center justify-center">
+                <div className="aspect-video rounded-2xl border border-cyan-400/30 bg-linear-to-br from-cyan-500/10 to-purple-500/10 backdrop-blur-sm flex items-center justify-center">
                   <motion.div
                     className="w-32 h-32 border-2 border-cyan-400 rounded-full flex items-center justify-center"
                     animate={{ rotate: 360 }}
@@ -282,6 +282,7 @@ const RAVXOSLanding = () => {
                 initial={{ x: 50, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ duration: 1 }}
+                viewport={{ once: true }}
               >
                 {[
                   "Clean Futuristic Sci-Fi Intelligence Core",
@@ -296,7 +297,7 @@ const RAVXOSLanding = () => {
                     whileHover={{ x: 5, color: "#22d3ee" }}
                     transition={{ duration: 0.3 }}
                   >
-                    <FiStar className="text-cyan-400 flex-shrink-0" />
+                    <FiStar className="text-cyan-400 shrink-0" />
                     <span>{point}</span>
                   </motion.div>
                 ))}
@@ -307,7 +308,7 @@ const RAVXOSLanding = () => {
           {/* CTA Section */}
           <motion.div variants={itemVariants} className="text-center mb-20">
             <motion.div
-              className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 rounded-2xl p-12 backdrop-blur-sm"
+              className="bglinear-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 rounded-2xl p-12 backdrop-blur-sm"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.5 }}
             >
