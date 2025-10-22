@@ -43,7 +43,7 @@ const LandingHeader = ({ itemVariants }: any) => {
             <Link
               key={index}
               href={link}
-              className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
+              className="text-gray-400 hover:text-cyan-400 transition-colors duration-300 cursor-pointer"
             >
               {items}
             </Link>
@@ -54,7 +54,7 @@ const LandingHeader = ({ itemVariants }: any) => {
           variants={itemVariants}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 text-cyan-400 px-6 py-2 rounded-lg transition-all duration-300 backdrop-blur-sm"
+          className="bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 text-cyan-400 px-6 py-2 rounded-lg transition-all duration-300 backdrop-blur-sm cursor-pointer"
         >
           Launch OS
         </motion.button>
