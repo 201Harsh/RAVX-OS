@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React from "react";
 import { motion } from "framer-motion";
 import {
@@ -18,6 +18,7 @@ import {
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { FaRocket } from "react-icons/fa";
+import Image from "next/image";
 
 // Type definitions
 interface TechStack {
@@ -40,17 +41,27 @@ const AboutRAVXOS: React.FC = () => {
     {
       category: "Frontend & Mobile",
       items: [
-        "React",
-        "React Native",
+        "React" + " + Tailwind CSS",
+        "Next.js" + " + Tailwind CSS",
+        "React Native" + " + Nativewind",
         "TypeScript",
-        "Tailwind CSS",
         "Framer Motion",
+        "Three.js",
+        "GSAP Animations",
       ],
       icon: <FiCode className="text-xl" />,
     },
     {
       category: "Backend & AI",
-      items: ["Node.js", "Python", "TensorFlow", "PyTorch", "FastAPI"],
+      items: [
+        "Node.js",
+        "Python",
+        "TensorFlow",
+        "PyTorch",
+        "FastAPI",
+        "OpenAI",
+        "Google AI Studio",
+      ],
       icon: <FiCpu className="text-xl" />,
     },
     {
@@ -62,28 +73,28 @@ const AboutRAVXOS: React.FC = () => {
 
   const timeline: TimelineEvent[] = [
     {
-      year: "2023",
+      year: "2025",
       title: "The Spark of Inspiration",
       description:
         "Harsh began exploring AI personalization and noticed the gap between advanced AI capabilities and accessibility for non-technical users.",
       icon: <FiBookOpen className="text-lg" />,
     },
     {
-      year: "2024 Q1",
+      year: "2025 Q1",
       title: "Concept Development",
       description:
         "The vision for RAVX OS took shape - a web-based OS where anyone could create sentient AI avatars without writing code.",
       icon: <FiTarget className="text-lg" />,
     },
     {
-      year: "2024 Q2",
+      year: "2025 Q2",
       title: "Core Development",
       description:
         "Built the foundational architecture integrating neural networks, voice synthesis, and MCP for real-world task execution.",
       icon: <FiCode className="text-lg" />,
     },
     {
-      year: "2024 Q3",
+      year: "2025 Q3",
       title: "RAVX OS Launch",
       description:
         "Launched the first version, enabling users to create their own AI beings with memory, voice, and autonomous capabilities.",
@@ -192,8 +203,17 @@ const AboutRAVXOS: React.FC = () => {
                   className="lg:col-span-1 flex justify-center"
                 >
                   <div className="relative">
-                    <div className="w-48 h-48 bg-linear-to-r from-cyan-500 to-purple-500 rounded-full flex items-center justify-center">
-                      <FiUser className="text-6xl text-white" />
+                    <div className="w-52 h-52 rounded-full flex items-center justify-center overflow-hidden">
+                      <Image
+                        src="/img/dev1.jpg"
+                        alt="Harsh Pandey"
+                        className="h-full w-full object-cover rounded-full"
+                        width={100}
+                        height={100}
+                        priority
+                        quality={100}
+                        layout="responsive"
+                      />
                     </div>
                     <motion.div
                       className="absolute -inset-4 border-2 border-cyan-400 rounded-full"
@@ -493,7 +513,8 @@ const AboutRAVXOS: React.FC = () => {
           className="border-t border-gray-800 pt-12 pb-8 mt-16 text-center"
         >
           <p className="text-gray-500">
-            Built with passion by Harsh Pandey • RAVX OS © 2024
+            Built with 🩵 passion by Harsh Pandey • RAVX OS ©{" "}
+            {new Date().getFullYear()}
           </p>
           <p className="text-gray-400 text-sm mt-2">
             The future of personal AI is here, and it's for everyone.
