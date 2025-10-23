@@ -302,7 +302,7 @@ const RegisterPage: React.FC = () => {
           </button>
 
           <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
+            <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
               Join RAVX OS
             </h1>
             <p className="text-gray-400 mt-2">
