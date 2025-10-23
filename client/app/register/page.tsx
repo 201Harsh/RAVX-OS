@@ -466,9 +466,9 @@ const RegisterPage: React.FC = () => {
                 Already have an account?{" "}
                 <button
                   onClick={() => router.push("/login")}
-                  className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors"
+                  className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors cursor-pointer"
                 >
-                  Sign In
+                  LogIn
                 </button>
               </p>
             </div>

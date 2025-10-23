@@ -284,7 +284,7 @@ const LoginPage: React.FC = () => {
                 Don't have an account?{" "}
                 <button
                   onClick={() => router.push("/register")}
-                  className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors"
+                  className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors cursor-pointer"
                 >
                   Create Account
                 </button>
