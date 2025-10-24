@@ -3,7 +3,7 @@ import UserModel from "@/models/user.model";
 import { CreateTempUser } from "@/services/user.service";
 import { useRouter } from "next/navigation";
 
-export const Registeruser = async (req: any) => {
+export const Registeruser = async (req: Request) => {
   try {
     const { name, email, password } = await req.json();
 
