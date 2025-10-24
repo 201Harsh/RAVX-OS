@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 export const Registeruser = async (req: any) => {
   try {
-    const { name, email, password } = req.json();
+    const { name, email, password } = await req.json();
 
     if (!name || !email || !password) {
       Response.json({
