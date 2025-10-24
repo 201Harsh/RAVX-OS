@@ -8,6 +8,7 @@ const TempUserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -27,6 +28,7 @@ const TempUserSchema = new mongoose.Schema({
   },
 });
 
-const TempUserModel = mongoose.model("TempUser", TempUserSchema);
+const TempUserModel =
+  mongoose.models.TempUser || mongoose.model("TempUser", TempUserSchema);
 
 export default TempUserModel;

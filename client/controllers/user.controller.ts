@@ -1,3 +1,4 @@
+import ConnectToDB from "@/config/database";
 import TempUserModel from "@/models/tempuser.model";
 import UserModel from "@/models/user.model";
 import { CreateTempUser } from "@/services/user.service";
@@ -5,10 +6,12 @@ import { useRouter } from "next/navigation";
 
 export const Registeruser = async (req: Request) => {
   try {
+    await ConnectToDB();
+
     const { name, email, password } = await req.json();
 
     if (!name || !email || !password) {
-      Response.json({
+      return Response.json({
         error: "All fields are required",
         status: 400,
       });
@@ -17,7 +20,7 @@ export const Registeruser = async (req: Request) => {
     const user = await UserModel.findOne({ email });
 
     if (user) {
-      Response.json({
+      return Response.json({
         error: "User Already Registered",
         status: 400,
       });
@@ -26,7 +29,7 @@ export const Registeruser = async (req: Request) => {
     const tempUser = await TempUserModel.findOne({ email });
 
     if (tempUser) {
-      Response.json({
+      return Response.json({
         error: "User Already Registered. Now Verify OTP",
         status: 400,
       });
@@ -43,13 +46,14 @@ export const Registeruser = async (req: Request) => {
       otpExpiry: otpExpiry,
     });
 
-    Response.json({
+    return Response.json({
       message: "Verify OTP to Complete Registration",
       TempUser,
       status: 201,
     });
   } catch (error) {
-    Response.json({
+    console.log(error);
+    return Response.json({
       error,
       status: 500,
     });

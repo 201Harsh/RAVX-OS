@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -35,6 +36,6 @@ UserSchema.statics.hashPassword = async function (password: string) {
   return await bcrypt.hash(password, 10);
 };
 
-const UserModel = mongoose.model("User", UserSchema);
+const UserModel = mongoose.models.User || mongoose.model("User", UserSchema);
 
 export default UserModel;
