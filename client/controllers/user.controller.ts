@@ -17,6 +17,17 @@ export const Registeruser = async (req: Request) => {
       });
     }
 
+    if (
+      typeof name !== "string" ||
+      typeof email !== "string" ||
+      typeof password !== "string"
+    ) {
+      return Response.json({
+        error: "Name email and password must be a string value only!",
+        status: 400,
+      });
+    }
+
     const user = await UserModel.findOne({ email });
 
     if (user) {
