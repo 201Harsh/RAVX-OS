@@ -27,6 +27,6 @@ const TempUserSchema = new mongoose.Schema({
   },
 });
 
-const TempUser = mongoose.model("TempUser", TempUserSchema);
+const TempUserModel = mongoose.model("TempUser", TempUserSchema);
 
-export default TempUser;
+export default TempUserModel;
