@@ -1,7 +1,6 @@
-import TempUser from "@/models/tempuser.model";
-import User from "@/models/user.model";
+import TempUserModel from "@/models/tempuser.model";
 
-interface TempUserModel {
+interface TempUser {
   name: string;
   email: string;
   password: string;
@@ -15,12 +14,12 @@ export const CreateTempUser = async ({
   password,
   otp,
   otpExpiry,
-}: TempUserModel) => {
+}: TempUser) => {
   if (!name || !email || !password || !otp || !otpExpiry) {
     throw new Error("All fields are required");
   }
 
-  const tempUser = TempUser.create({
+  const tempUser = TempUserModel.create({
     name,
     email,
     password,
