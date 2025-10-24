@@ -16,6 +16,7 @@ import {
 import { FaBrain } from "react-icons/fa";
 import LandingHeader from "./Welcome Page/LandingHeader";
 import LandingFooter from "./Welcome Page/LandingFooter";
+import Link from "next/link";
 
 const RAVXOSLanding = () => {
   const [activeFeature, setActiveFeature] = useState(0);
@@ -129,7 +130,7 @@ const RAVXOSLanding = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="max-w-6xl mx-auto"
+          className="max-w-7xl mx-auto"
         >
           {/* Header */}
           <LandingHeader itemVariants={itemVariants} />
@@ -171,23 +172,27 @@ const RAVXOSLanding = () => {
               variants={itemVariants}
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25 cursor-pointer"
-              >
-                <FiPlay className="text-lg" />
-                <span>Create Your AI Avatar</span>
-              </motion.button>
+              <Link href="/register">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25 cursor-pointer"
+                >
+                  <FiPlay className="text-lg" />
+                  <span>Create Your AI Avatar</span>
+                </motion.button>
+              </Link>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="border border-gray-600 hover:border-cyan-400 text-gray-300 hover:text-cyan-400 px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 backdrop-blur-sm cursor-pointer"
-              >
-                <span>Watch Demo</span>
-                <FiChevronRight className="text-lg" />
-              </motion.button>
+              <Link href="/demo">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="border border-gray-600 hover:border-cyan-400 text-gray-300 hover:text-cyan-400 px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 backdrop-blur-sm cursor-pointer"
+                >
+                  <span>Watch Demo</span>
+                  <FiChevronRight className="text-lg" />
+                </motion.button>
+              </Link>
             </motion.div>
           </div>
 
@@ -320,16 +325,18 @@ const RAVXOSLanding = () => {
                 Join the future of personal AI. No coding required. Just
                 describe your avatar and watch it come to life.
               </p>
-              <motion.button
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 0 30px rgba(34, 211, 238, 0.4)",
-                }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-12 py-4 rounded-lg text-lg transition-all duration-300"
-              >
-                Start Neural Booting
-              </motion.button>
+              <Link href="/register">
+                <motion.button
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0 0 30px rgba(34, 211, 238, 0.4)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-12 py-4 rounded-lg text-lg transition-all duration-300 cursor-pointer"
+                >
+                  Start Neural Booting
+                </motion.button>
+              </Link>
             </motion.div>
           </motion.div>
 
