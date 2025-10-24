@@ -28,6 +28,8 @@ const TempUserSchema = new mongoose.Schema({
   },
 });
 
+TempUserSchema.index({ otpExpiry: 1 }, { expireAfterSeconds: 0 });
+
 const TempUserModel =
   mongoose.models.TempUser || mongoose.model("TempUser", TempUserSchema);
 
