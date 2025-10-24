@@ -4,19 +4,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   FiCpu,
   FiZap,
-  FiCode,
   FiUser,
-  FiStar,
   FiChevronRight,
   FiPlay,
-  FiGithub,
-  FiTwitter,
-  FiMail,
+  FiMessageSquare,
 } from "react-icons/fi";
-import { FaBrain } from "react-icons/fa";
+import { FaBrain, FaBrain as FaBrainSolid } from "react-icons/fa";
 import LandingHeader from "./Welcome Page/LandingHeader";
 import LandingFooter from "./Welcome Page/LandingFooter";
 import Link from "next/link";
+
+interface Feature {
+  icon: React.ReactElement;
+  title: string;
+  description: string;
+}
 
 const RAVXOSLanding = () => {
   const [activeFeature, setActiveFeature] = useState(0);
@@ -34,9 +36,9 @@ const RAVXOSLanding = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const features: any = [
+  const features: Feature[] = [
     {
-      icon: <FaBrain className="text-2xl" />,
+      icon: <FaBrainSolid className="text-2xl" />,
       title: "Neural Booting",
       description: "Instant AI avatar creation from your description",
     },
@@ -57,7 +59,7 @@ const RAVXOSLanding = () => {
     },
   ];
 
-  const containerVariants: any = {
+  const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -199,7 +201,7 @@ const RAVXOSLanding = () => {
           {/* Features Grid */}
           <motion.div variants={itemVariants} className="mb-32">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {features.map((feature: any, index: number) => (
+              {features.map((feature, index) => (
                 <motion.div
                   key={index}
                   className={`p-6 rounded-xl border backdrop-blur-sm transition-all duration-500 ${
@@ -233,87 +235,404 @@ const RAVXOSLanding = () => {
             </div>
           </motion.div>
 
-          {/* Core Experience Section */}
-          <motion.div variants={itemVariants} className="text-center mb-32">
-            <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-12"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-            >
-              What It <span className="text-cyan-400">Feels Like</span>
-            </motion.h2>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* AI Avatar Experience Section */}
+          <motion.section className="relative py-32 overflow-hidden">
+            {/* Enhanced Background Elements */}
+            <div className="absolute inset-0">
               <motion.div
-                className="relative"
-                whileInView={{ scale: 1 }}
-                initial={{ scale: 0.9 }}
-                transition={{ duration: 1 }}
-              >
-                <div className="aspect-video rounded-2xl border border-cyan-400/30 bg-linear-to-br from-cyan-500/10 to-purple-500/10 backdrop-blur-sm flex items-center justify-center">
-                  <motion.div
-                    className="w-32 h-32 border-2 border-cyan-400 rounded-full flex items-center justify-center"
-                    animate={{ rotate: 360 }}
-                    transition={{
-                      duration: 8,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                  >
-                    <motion.div
-                      className="w-24 h-24 border border-cyan-400 rounded-full"
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                  </motion.div>
-                </div>
-
-                {/* Floating elements */}
-                <motion.div
-                  className="absolute -top-4 -left-4 w-8 h-8 bg-cyan-400 rounded-full blur-sm"
-                  animate={{ y: [0, -10, 0], opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                />
-                <motion.div
-                  className="absolute -bottom-4 -right-4 w-6 h-6 bg-purple-400 rounded-full blur-sm"
-                  animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                />
-              </motion.div>
-
+                className="absolute top-20 left-20 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl"
+                animate={{
+                  scale: [1, 1.3, 1],
+                  opacity: [0.2, 0.4, 0.2],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
               <motion.div
-                className="text-left space-y-6"
-                initial={{ x: 50, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                transition={{ duration: 1 }}
+                className="absolute bottom-20 right-20 w-60 h-60 bg-purple-500/5 rounded-full blur-3xl"
+                animate={{
+                  scale: [1.2, 1, 1.2],
+                  opacity: [0.3, 0.5, 0.3],
+                }}
+                transition={{
+                  duration: 7,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              {/* Grid Pattern Overlay */}
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(22,22,22,0.8)_1px,transparent_1px),linear-gradient(90deg,rgba(22,22,22,0.8)_1px,transparent_1px)] bg-size-[64px_64px] mask-[radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
+            </div>
+
+            <div className="relative z-10 max-w-7xl mx-auto px-4">
+              {/* Section Header */}
+              <motion.div
+                className="text-center mb-20"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
               >
-                {[
-                  "Clean Futuristic Sci-Fi Intelligence Core",
-                  "Neon glowing energy, like TRON x Neural Apple Vision OS",
-                  "Alive and sentient, minimal but god-like",
-                  "Your own personal AI being inside a digital reactor",
-                  "Calm, post-human intelligence system",
-                ].map((point, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-center space-x-3 text-gray-300"
-                    whileHover={{ x: 5, color: "#22d3ee" }}
-                    transition={{ duration: 0.3 }}
+                <motion.span
+                  className="inline-block text-cyan-400 text-sm font-medium tracking-widest mb-4 px-4 py-2 border border-cyan-400/30 rounded-full"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  AI AVATAR TECHNOLOGY
+                </motion.span>
+                <motion.h2
+                  className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  Meet Your{" "}
+                  <span className="bg-linear-to-r from-cyan-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                    Digital Self
+                  </span>
+                </motion.h2>
+                <motion.p
+                  className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  Create intelligent AI avatars with unique personalities,
+                  memories, and capabilities that evolve with you
+                </motion.p>
+              </motion.div>
+
+              {/* Avatar Technology Showcase */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-20">
+                {/* Avatar Visualization */}
+                <motion.div
+                  className="relative"
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1 }}
+                  viewport={{ once: true }}
+                >
+                  {/* Main Avatar Container */}
+                  <div className="relative bg-linear-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-sm border border-cyan-400/20 rounded-3xl p-8">
+                    {/* Avatar Core */}
+                    <div className="relative aspect-square max-w-sm mx-auto">
+                      {/* Neural Pulse Effect */}
+                      <motion.div
+                        className="absolute inset-0 bg-cyan-500/10 rounded-full"
+                        animate={{
+                          scale: [1, 1.2, 1],
+                          opacity: [0.3, 0.6, 0.3],
+                        }}
+                        transition={{
+                          duration: 4,
+                          repeat: Infinity,
+                        }}
+                      />
+
+                      {/* Avatar Profile */}
+                      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+                        <motion.div
+                          className="w-32 h-32 bg-linear-to-br from-cyan-400 to-purple-500 rounded-full mb-6 flex items-center justify-center"
+                          animate={{
+                            rotateY: [0, 180, 360],
+                          }}
+                          transition={{
+                            duration: 8,
+                            repeat: Infinity,
+                            ease: "linear",
+                          }}
+                        >
+                          <div className="w-28 h-28 bg-gray-900 rounded-full flex items-center justify-center">
+                            <FiUser className="text-3xl text-white" />
+                          </div>
+                        </motion.div>
+
+                        <motion.h3
+                          className="text-2xl font-bold text-white mb-2"
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          transition={{ delay: 0.5 }}
+                        >
+                          Nova AI
+                        </motion.h3>
+                        <motion.p
+                          className="text-cyan-400 text-sm mb-4"
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          transition={{ delay: 0.6 }}
+                        >
+                          Personal Assistant
+                        </motion.p>
+
+                        {/* Status Indicators */}
+                        <div className="flex gap-4 mb-6">
+                          {["Online", "Learning", "Active"].map(
+                            (status, index) => (
+                              <motion.span
+                                key={status}
+                                className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs border border-green-500/30"
+                                initial={{ opacity: 0, scale: 0 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.7 + index * 0.1 }}
+                              >
+                                {status}
+                              </motion.span>
+                            )
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Orbiting Capabilities */}
+                      {[
+                        { icon: "🧠", label: "Memory" },
+                        { icon: "🗣️", label: "Voice" },
+                        { icon: "⚡", label: "Speed" },
+                        { icon: "🔒", label: "Secure" },
+                      ].map((item, index) => (
+                        <motion.div
+                          key={item.label}
+                          className="absolute w-12 h-12 bg-gray-800 border border-cyan-400/30 rounded-xl flex items-center justify-center text-lg"
+                          animate={{
+                            x: [0, Math.cos(index * 90) * 120, 0],
+                            y: [0, Math.sin(index * 90) * 120, 0],
+                            rotate: [0, 360, 0],
+                          }}
+                          transition={{
+                            duration: 6,
+                            repeat: Infinity,
+                            delay: index * 0.5,
+                            ease: "easeInOut",
+                          }}
+                        >
+                          {item.icon}
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Avatar Capabilities */}
+                <motion.div
+                  className="space-y-6"
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1, delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
+                  <motion.h3
+                    className="text-3xl font-bold text-white mb-8"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
                   >
-                    <FiStar className="text-cyan-400 shrink-0" />
-                    <span>{point}</span>
-                  </motion.div>
-                ))}
+                    Advanced AI Capabilities
+                  </motion.h3>
+
+                  {[
+                    {
+                      icon: <FaBrain className="text-cyan-400 text-xl" />,
+                      title: "Neural Memory System",
+                      description:
+                        "Persistent learning that grows with every interaction, remembering your preferences and evolving personality",
+                      features: [
+                        "Lifetime Memory",
+                        "Context Awareness",
+                        "Personalized Responses",
+                      ],
+                    },
+                    {
+                      icon: (
+                        <FiMessageSquare className="text-purple-400 text-xl" />
+                      ),
+                      title: "Natural Voice Synthesis",
+                      description:
+                        "Human-like voice with emotional intelligence, tone variation, and real-time conversation flow",
+                      features: [
+                        "Emotional Tone",
+                        "Multiple Languages",
+                        "Real-time Processing",
+                      ],
+                    },
+                    {
+                      icon: <FiZap className="text-green-400 text-xl" />,
+                      title: "Task Execution Engine",
+                      description:
+                        "Execute real-world actions through MCP integration with Google, email, and automation services",
+                      features: [
+                        "API Integration",
+                        "Smart Automation",
+                        "Task Management",
+                      ],
+                    },
+                    {
+                      icon: <FiUser className="text-blue-400 text-xl" />,
+                      title: "Personality Customization",
+                      description:
+                        "Create unique AI personalities with specific traits, behaviors, and communication styles",
+                      features: [
+                        "Trait Selection",
+                        "Behavior Patterns",
+                        "Style Customization",
+                      ],
+                    },
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      className="group bg-gray-900/40 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-cyan-400/30 transition-all duration-500"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.15 + 0.4 }}
+                      viewport={{ once: true }}
+                      whileHover={{
+                        scale: 1.02,
+                        borderColor: "rgba(34, 211, 238, 0.3)",
+                      }}
+                    >
+                      <div className="flex items-start space-x-4">
+                        <motion.div
+                          className="p-3 bg-gray-800 rounded-xl group-hover:scale-110 transition-transform duration-300"
+                          whileHover={{ rotate: 360 }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          {item.icon}
+                        </motion.div>
+                        <div className="flex-1">
+                          <h4 className="text-xl font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                            {item.title}
+                          </h4>
+                          <p className="text-gray-400 mb-3 leading-relaxed">
+                            {item.description}
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {item.features.map((feature, featureIndex) => (
+                              <motion.span
+                                key={featureIndex}
+                                className="px-3 py-1 bg-gray-800 text-gray-300 rounded-lg text-sm border border-gray-600"
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{
+                                  delay:
+                                    index * 0.15 + featureIndex * 0.1 + 0.6,
+                                }}
+                              >
+                                {feature}
+                              </motion.span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+
+              {/* Avatar Creation Process */}
+              <motion.div
+                className="bg-gray-900/30 backdrop-blur-sm border border-cyan-400/20 rounded-3xl p-8 mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <div className="text-center mb-12">
+                  <h3 className="text-3xl font-bold text-white mb-4">
+                    Create Your AI Avatar in 3 Steps
+                  </h3>
+                  <p className="text-gray-400 max-w-2xl mx-auto">
+                    Simple process, infinite possibilities
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {[
+                    {
+                      step: "01",
+                      title: "Describe Personality",
+                      description:
+                        "Tell us about your desired AI companion - personality traits, communication style, and expertise areas",
+                      icon: "🎭",
+                    },
+                    {
+                      step: "02",
+                      title: "Customize Voice & Style",
+                      description:
+                        "Choose voice characteristics, tone, and interaction preferences for your unique AI avatar",
+                      icon: "🗣️",
+                    },
+                    {
+                      step: "03",
+                      title: "Activate & Interact",
+                      description:
+                        "Your AI avatar comes to life instantly, ready to learn, adapt, and grow with you",
+                      icon: "⚡",
+                    },
+                  ].map((step, index) => (
+                    <motion.div
+                      key={index}
+                      className="text-center p-6"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 + index * 0.2 }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.div
+                        className="w-20 h-20 bg-linear-to-br from-cyan-500 to-purple-500 rounded-full flex items-center justify-center text-2xl mb-4 mx-auto"
+                        whileHover={{ scale: 1.1, rotate: 360 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {step.icon}
+                      </motion.div>
+                      <div className="text-cyan-400 text-sm font-semibold mb-2">
+                        {step.step}
+                      </div>
+                      <h4 className="text-xl font-semibold text-white mb-3">
+                        {step.title}
+                      </h4>
+                      <p className="text-gray-400 text-sm leading-relaxed">
+                        {step.description}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Final CTA */}
+              <motion.div
+                className="text-center"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                viewport={{ once: true }}
+              >
+                <Link href="/register">
+                  <motion.button
+                    className="bg-linear-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-400/40 text-lg cursor-pointer"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Create Your AI Avatar
+                  </motion.button>
+                </Link>
+                <motion.p
+                  className="text-gray-400 mt-4"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 1 }}
+                >
+                  No coding required • Instant setup • Free to start
+                </motion.p>
               </motion.div>
             </div>
-          </motion.div>
+          </motion.section>
 
           {/* CTA Section */}
           <motion.div variants={itemVariants} className="text-center mb-20">
             <motion.div
-              className="bglinear-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 rounded-2xl p-12 backdrop-blur-sm"
+              className="bg-linear-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 rounded-2xl p-12 backdrop-blur-sm"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.5 }}
             >
