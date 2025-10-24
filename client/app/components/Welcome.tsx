@@ -310,10 +310,10 @@ const RAVXOSLanding = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-20">
                 {/* Avatar Visualization */}
                 <motion.div
-                  className="relative"
+                  className="relative md:block hidden"
                   initial={{ opacity: 0, x: -50 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 1 }}
+                  transition={{ duration: 0.8 }}
                   viewport={{ once: true }}
                 >
                   {/* Main Avatar Container */}
@@ -355,7 +355,6 @@ const RAVXOSLanding = () => {
                           className="text-2xl font-bold text-white mb-2"
                           initial={{ opacity: 0 }}
                           whileInView={{ opacity: 1 }}
-                          transition={{ delay: 0.5 }}
                         >
                           Nova AI
                         </motion.h3>
@@ -363,7 +362,6 @@ const RAVXOSLanding = () => {
                           className="text-cyan-400 text-sm mb-4"
                           initial={{ opacity: 0 }}
                           whileInView={{ opacity: 1 }}
-                          transition={{ delay: 0.6 }}
                         >
                           Personal Assistant
                         </motion.p>
@@ -377,7 +375,6 @@ const RAVXOSLanding = () => {
                                 className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs border border-green-500/30"
                                 initial={{ opacity: 0, scale: 0 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 0.7 + index * 0.1 }}
                               >
                                 {status}
                               </motion.span>
@@ -395,7 +392,7 @@ const RAVXOSLanding = () => {
                       ].map((item, index) => (
                         <motion.div
                           key={item.label}
-                          className="absolute w-12 h-12 bg-gray-800 border border-cyan-400/30 rounded-xl flex items-center justify-center text-lg"
+                          className="absolute w-12 h-12 bg-gray-800 border border-cyan-400/30 rounded-xl md:flex items-center justify-center text-lg hidden"
                           animate={{
                             x: [0, Math.cos(index * 90) * 120, 0],
                             y: [0, Math.sin(index * 90) * 120, 0],
@@ -404,7 +401,6 @@ const RAVXOSLanding = () => {
                           transition={{
                             duration: 6,
                             repeat: Infinity,
-                            delay: index * 0.5,
                             ease: "easeInOut",
                           }}
                         >
@@ -420,14 +416,12 @@ const RAVXOSLanding = () => {
                   className="space-y-6"
                   initial={{ opacity: 0, x: 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 1, delay: 0.2 }}
                   viewport={{ once: true }}
                 >
                   <motion.h3
                     className="text-3xl font-bold text-white mb-8"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    transition={{ delay: 0.3 }}
                   >
                     Advanced AI Capabilities
                   </motion.h3>
@@ -485,7 +479,6 @@ const RAVXOSLanding = () => {
                       className="group bg-gray-900/40 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-cyan-400/30 transition-all duration-500"
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.15 + 0.4 }}
                       viewport={{ once: true }}
                       whileHover={{
                         scale: 1.02,
@@ -514,10 +507,7 @@ const RAVXOSLanding = () => {
                                 className="px-3 py-1 bg-gray-800 text-gray-300 rounded-lg text-sm border border-gray-600"
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{
-                                  delay:
-                                    index * 0.15 + featureIndex * 0.1 + 0.6,
-                                }}
+                                viewport={{ once: true }}
                               >
                                 {feature}
                               </motion.span>
@@ -535,7 +525,7 @@ const RAVXOSLanding = () => {
                 className="bg-gray-900/30 backdrop-blur-sm border border-cyan-400/20 rounded-3xl p-8 mb-16"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
+                transition={{ duration: 0.8}}
                 viewport={{ once: true }}
               >
                 <div className="text-center mb-12">
@@ -576,7 +566,6 @@ const RAVXOSLanding = () => {
                       className="text-center p-6"
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6 + index * 0.2 }}
                       viewport={{ once: true }}
                     >
                       <motion.div
@@ -605,7 +594,6 @@ const RAVXOSLanding = () => {
                 className="text-center"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
                 viewport={{ once: true }}
               >
                 <Link href="/register">
@@ -621,7 +609,6 @@ const RAVXOSLanding = () => {
                   className="text-gray-400 mt-4"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  transition={{ delay: 1 }}
                 >
                   No coding required • Instant setup • Free to start
                 </motion.p>
