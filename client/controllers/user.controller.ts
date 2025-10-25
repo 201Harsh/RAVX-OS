@@ -48,11 +48,12 @@ export const Registeruser = async (req: Request) => {
 
     const otp = Math.floor(100000 + Math.random() * 900000);
     const otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
+    const hashedPassword = await UserModel.hashPassword(password);
 
     const TempUser = await CreateTempUser({
       name,
       email,
-      password,
+      password : hashedPassword,
       otp: otp.toString(),
       otpExpiry: otpExpiry,
     });
@@ -73,6 +74,30 @@ export const Registeruser = async (req: Request) => {
 
 export const VerifyOTP = async (req: Request) => {
   try {
+    const { email, otp } = await req.json();
+
+    if (!email || !otp) {
+      return Response.json({
+        error: "All fields are required",
+        status: 400,
+      });
+    }
+
+    if (typeof email !== "string" || typeof otp !== "string") {
+      return Response.json({
+        error: "Email and OTP must be a string value only!",
+        status: 400,
+      });
+    }
+
+    const tempUser = await TempUserModel.findOne({ email });
+
+    if (!tempUser) {
+      return Response.json({
+        error: "User Not Found",
+        status: 400,
+      });
+    }
   } catch (error) {
     Response.json({
       error,

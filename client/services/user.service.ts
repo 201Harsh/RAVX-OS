@@ -29,3 +29,32 @@ export const CreateTempUser = async ({
 
   return tempUser;
 };
+
+export const VerifyUserOtp = async ({
+  email,
+  otp,
+}: {
+  email: string;
+  otp: string;
+}) => {
+  if (!email || !otp) {
+    throw new Error("All fields are required");
+  }
+
+  const tempUser = await TempUserModel.findOne({ email });
+
+  if (!tempUser) {
+    throw new Error("User Not Found");
+  }
+
+  if (tempUser.otp !== otp) {
+    throw new Error("Invalid OTP");
+  }
+
+  if (tempUser.otpExpiry < new Date()) {
+    throw new Error("OTP Expired");
+  }
+
+  await TempUserModel.deleteOne({ email });
+  return tempUser;
+};
