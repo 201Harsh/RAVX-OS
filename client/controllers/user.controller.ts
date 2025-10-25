@@ -1,8 +1,7 @@
 import ConnectToDB from "@/config/database";
 import TempUserModel from "@/models/tempuser.model";
 import UserModel from "@/models/user.model";
-import { CreateTempUser } from "@/services/user.service";
-import { useRouter } from "next/navigation";
+import { CreateTempUser, VerifyUserOtp } from "@/services/user.service";
 
 ConnectToDB();
 
@@ -53,7 +52,7 @@ export const Registeruser = async (req: Request) => {
     const TempUser = await CreateTempUser({
       name,
       email,
-      password : hashedPassword,
+      password: hashedPassword,
       otp: otp.toString(),
       otpExpiry: otpExpiry,
     });
@@ -63,10 +62,9 @@ export const Registeruser = async (req: Request) => {
       TempUser,
       status: 201,
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
     return Response.json({
-      error,
+      error: error.message,
       status: 500,
     });
   }
@@ -90,6 +88,13 @@ export const VerifyOTP = async (req: Request) => {
       });
     }
 
+    if (otp.length !== 6) {
+      return Response.json({
+        error: "OTP must be a 6 digit value only!",
+        status: 400,
+      });
+    }
+
     const tempUser = await TempUserModel.findOne({ email });
 
     if (!tempUser) {
@@ -98,9 +103,20 @@ export const VerifyOTP = async (req: Request) => {
         status: 400,
       });
     }
-  } catch (error) {
-    Response.json({
-      error,
+
+    const User = await VerifyUserOtp({
+      email,
+      otp,
+    });
+
+    return Response.json({
+      message: "User Registered Successfully",
+      User,
+      status: 201,
+    });
+  } catch (error: any) {
+    return Response.json({
+      error: error.message,
       status: 500,
     });
   }

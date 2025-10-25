@@ -1,4 +1,5 @@
 import TempUserModel from "@/models/tempuser.model";
+import UserModel from "@/models/user.model";
 
 interface TempUser {
   name: string;
@@ -55,6 +56,14 @@ export const VerifyUserOtp = async ({
     throw new Error("OTP Expired");
   }
 
+  const user = await UserModel.create({
+    name: tempUser.name,
+    email,
+    password: tempUser.password,
+  });
+
   await TempUserModel.deleteOne({ email });
-  return tempUser;
+  await tempUser.save();
+
+  return user;
 };
