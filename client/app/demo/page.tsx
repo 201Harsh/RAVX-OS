@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -264,7 +265,6 @@ const DemoPage: React.FC = () => {
   };
 
   const itemVariants: any = {
-    hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
