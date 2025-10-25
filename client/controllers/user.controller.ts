@@ -1,11 +1,13 @@
+import ConnectToDB from "@/config/database";
 import TempUserModel from "@/models/tempuser.model";
 import UserModel from "@/models/user.model";
 import { CreateTempUser } from "@/services/user.service";
 import { useRouter } from "next/navigation";
 
+ConnectToDB();
+
 export const Registeruser = async (req: Request) => {
   try {
-
     const { name, email, password } = await req.json();
 
     if (!name || !email || !password) {
@@ -71,7 +73,6 @@ export const Registeruser = async (req: Request) => {
 
 export const VerifyOTP = async (req: Request) => {
   try {
-
   } catch (error) {
     Response.json({
       error,
