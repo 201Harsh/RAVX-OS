@@ -7,6 +7,6 @@ const UserRouter = require("./routers/user.route");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/user", UserRouter);
+app.use("/users", UserRouter);
 
 module.exports = app;
