@@ -16,6 +16,30 @@ module.exports.RegisterUser = async (req, res) => {
       });
     }
 
+    const ValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!ValidEmail.test(email)) {
+      return res.status(406).json({
+        message: "Invalid Email Address!",
+      });
+    }
+
+    const AllowedEmails = [
+      "gmail.com",
+      "yahoo.com",
+      "hotmail.com",
+      "outlook.com",
+      "live.com",
+      "icloud.com",
+      "mail.com",
+    ];
+
+    if (!AllowedEmails.includes(email.split("@")[1])) {
+      return res.status(406).json({
+        message: "Invalid Email Address!",
+      });
+    }
+
     const ifuser = await UserModel.findOne({ email });
 
     if (ifuser) {
