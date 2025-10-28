@@ -29,7 +29,7 @@ module.exports.RegisterUser = async (req, res) => {
     if (iftempUser) {
       return res.status(202).json({
         message: "user Exist Already! Just Verify Your Email!",
-        data: iftempUser
+        data: iftempUser,
       });
     }
 
@@ -48,6 +48,40 @@ module.exports.RegisterUser = async (req, res) => {
       message:
         "User Created Successfully! Check Your Email For OTP Verification",
       data: tempuser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports.VerifyUser = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    if (typeof email !== "string" || typeof otp !== "string") {
+      return res.status(406).json({
+        message: "Invalid request parameters passed Only Strings Allowed!",
+      });
+    }
+
+    const iftempUser = await TempUserModel.findOne({ email });
+
+    if (!iftempUser) {
+      return res.status(404).json({
+        message: "No User Found",
+      });
+    }
+
+    const user = await UserServices.verifyotp({
+      email,
+      otp,
+    });
+
+    res.status(200).json({
+      message: "User Verified Successfully",
+      data: user,
     });
   } catch (error) {
     res.status(500).json({

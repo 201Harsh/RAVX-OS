@@ -27,4 +27,14 @@ router.post(
   UserController.RegisterUser
 );
 
+router.post(
+  "/verify",
+  [
+    body("email").trim().isEmail().withMessage("Invalid Email"),
+    body("otp").isString().notEmpty().withMessage("OTP is required"),
+  ],
+  ValidateData.ValidateData,
+  UserController.VerifyUser
+);
+
 module.exports = router;
