@@ -21,6 +21,10 @@ const LandingHeader = ({ itemVariants }: any) => {
       name: "About",
       link: "/about",
     },
+    {
+      name: "documentation",
+      link: "/docs",
+    },
   ];
   return (
     <>
@@ -50,14 +54,16 @@ const LandingHeader = ({ itemVariants }: any) => {
           ))}
         </motion.nav>
 
-        <motion.button
-          variants={itemVariants}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 text-cyan-400 px-6 py-2 rounded-lg transition-all duration-300 backdrop-blur-sm cursor-pointer"
-        >
-          Launch OS
-        </motion.button>
+        <Link href="/register">
+          <motion.button
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 text-cyan-400 px-6 py-2 rounded-lg transition-all duration-300 backdrop-blur-sm cursor-pointer"
+          >
+            Launch OS
+          </motion.button>
+        </Link>
       </motion.header>
     </>
   );
