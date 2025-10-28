@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-UserSchema.methods.JWT = function () {
+UserSchema.methods.JWT_GEN = function () {
   return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
     expiresIn: "24h",
   });

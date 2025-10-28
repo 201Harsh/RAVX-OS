@@ -103,6 +103,15 @@ module.exports.VerifyUser = async (req, res) => {
       otp,
     });
 
+    const token = await user.JWT_GEN();
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 1 * 24 * 60 * 60 * 1000,
+    });
+
     res.status(200).json({
       message: "User Verified Successfully",
       data: user,
