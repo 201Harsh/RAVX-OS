@@ -90,6 +90,14 @@ module.exports.VerifyUser = async (req, res) => {
       });
     }
 
+    const ifUser = await UserModel.findOne({ email });
+
+    if (ifUser) {
+      return res.status(400).json({
+        message: "User already exists Just Login Instead!",
+      });
+    }
+
     const iftempUser = await TempUserModel.findOne({ email });
 
     if (!iftempUser) {
