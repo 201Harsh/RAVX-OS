@@ -122,3 +122,57 @@ module.exports.VerifyUser = async (req, res) => {
     });
   }
 };
+
+module.exports.LoginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (typeof email !== "string" || typeof password !== "string") {
+      return res.status(406).json({
+        message: "Invalid request parameters passed Only Strings Allowed!",
+      });
+    }
+
+    const ValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!ValidEmail.test(email)) {
+      return res.status(406).json({
+        message: "Invalid Email Address!",
+      });
+    }
+
+    const User = await UserModel.findOne({ email });
+
+    if (!User) {
+      return res.status(404).json({
+        message: "Invalid Email or Password!",
+      });
+    }
+
+    const MatchedPassword = await User.comparePassword(password);
+
+    if (!MatchedPassword) {
+      return res.status(401).json({
+        message: "Invalid Email or Password!",
+      });
+    }
+
+    const token = await User.JWT_GEN();
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({
+      message: "Welcome Back! Login Successful",
+      data: User,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

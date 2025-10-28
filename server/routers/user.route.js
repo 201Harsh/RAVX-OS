@@ -31,10 +31,37 @@ router.post(
   "/verify",
   [
     body("email").trim().isEmail().withMessage("Invalid Email"),
-    body("otp").isString().notEmpty().withMessage("OTP is required"),
+    body("otp")
+      .isString()
+      .notEmpty()
+      .withMessage("OTP is required")
+      .isLength({ min: 6 })
+      .withMessage("OTP must be at least 6 characters"),
+    ,
   ],
   ValidateData.ValidateData,
   UserController.VerifyUser
+);
+
+router.post(
+  "/login",
+  [
+    body("email")
+      .trim()
+      .isEmail()
+      .withMessage("Invalid Email")
+      .notEmpty()
+      .withMessage("Email is required"),
+    body("password")
+      .isString()
+      .notEmpty()
+      .withMessage("Password is required")
+      .isLength({ min: 6 })
+      .withMessage("Password must be at least 6 characters"),
+    ,
+  ],
+  ValidateData.ValidateData,
+  UserController.LoginUser
 );
 
 module.exports = router;
