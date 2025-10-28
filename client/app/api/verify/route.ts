@@ -1,4 +1,5 @@
 import AxiosInstance from "@/config/Axios";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
@@ -9,6 +10,15 @@ export async function POST(req: Request) {
       email,
       otp,
     });
+
+    const NextRes = NextResponse.json(response.data, {
+      status: response.status,
+    });
+
+    const cookies: any = response.headers["set-cookie"];
+    if (cookies) {
+      NextRes.headers.set("set-cookie", cookies);
+    }
 
     return Response.json({
       data: response.data,
