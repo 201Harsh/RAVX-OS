@@ -20,10 +20,7 @@ export async function POST(req: Request) {
       NextRes.headers.set("set-cookie", cookies);
     }
 
-    return Response.json({
-      data: response.data,
-      status: response.status,
-    });
+    return NextRes;
   } catch (error: any) {
     if (error.response) {
       return Response.json({
