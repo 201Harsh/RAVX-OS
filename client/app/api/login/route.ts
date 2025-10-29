@@ -3,7 +3,13 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const response = await AxiosInstance.post("/users/logout");
+    const body = await req.json();
+    const { email, password } = body;
+
+    const response = await AxiosInstance.post("/users/login", {
+      email,
+      password,
+    });
 
     const NextRes = NextResponse.json(response.data, {
       status: response.status,
