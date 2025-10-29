@@ -14,6 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import AxiosInstance from "@/config/Axios";
 import { Bounce, Slide, toast, Zoom } from "react-toastify";
+import AxiosProxyInstance from "@/config/AxiosProxy";
 
 interface RegisterForm {
   name: string;
@@ -328,9 +329,29 @@ const RegisterPage: React.FC = () => {
     }
   };
 
-  const handleOTPVerify = (otp: string) => {
+  const handleOTPVerify = async (otp: string) => {
     try {
+      const res = await AxiosProxyInstance.post("/api/verify", {
+        email: formData.email,
+        otp,
+      });
+
+      if (res.status === 200) {
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+        localStorage.setItem("token", res.data.token);
+      }
     } catch (error: any) {
+      console.log(error)
       const apiErrors = error.response?.data?.errors;
       const main_errors = error.response.data.message;
 
