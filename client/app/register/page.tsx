@@ -243,6 +243,13 @@ const RegisterPage: React.FC = () => {
       if (res.status === 201) {
         console.log(res.data);
         setShowOTP(true);
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+        setErrors({});
       } else if (res.status === 202) {
         toast.info(res.data.message, {
           position: "top-right",
@@ -255,6 +262,13 @@ const RegisterPage: React.FC = () => {
           theme: "dark",
           transition: Slide,
         });
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+        setErrors({});
         setTimeout(() => {
           setShowOTP(true);
         }, 4300);
@@ -337,6 +351,7 @@ const RegisterPage: React.FC = () => {
       });
 
       if (res.status === 200) {
+        console.log(res);
         toast.success(res.data.message, {
           position: "top-right",
           autoClose: 4000,
@@ -349,9 +364,13 @@ const RegisterPage: React.FC = () => {
           transition: Slide,
         });
         localStorage.setItem("token", res.data.token);
+        setShowOTP(false);
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 800);
       }
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       const apiErrors = error.response?.data?.errors;
       const main_errors = error.response.data.message;
 
