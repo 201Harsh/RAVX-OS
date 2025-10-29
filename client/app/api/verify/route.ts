@@ -20,20 +20,19 @@ export async function POST(req: Request) {
       NextRes.headers.set("set-cookie", cookies);
     }
 
-    return Response.json({
-      data: response.data,
-      status: response.status,
-    });
+    return NextRes;
   } catch (error: any) {
     if (error.response) {
-      return Response.json({
-        error: error.response.data.message,
-        status: error.response.status,
-      });
+      return Response.json(
+        { error: error.response.data.message },
+        { status: error.response.status }
+      );
     }
-    return Response.json({
-      error: error.message,
-      status: 500,
-    });
+    return Response.json(
+      {
+        error: error.message,
+      },
+      { status: 500 }
+    );
   }
 }

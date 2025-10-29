@@ -102,7 +102,7 @@ module.exports.VerifyUser = async (req, res) => {
 
     if (!iftempUser) {
       return res.status(404).json({
-        message: "No User Found",
+        message: "Timeout! Try Again!",
       });
     }
 

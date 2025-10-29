@@ -63,12 +63,21 @@ const OTPPopup: React.FC<OTPPopupProps> = ({
   const handleVerify = async () => {
     const otpString = otp.join("");
     if (otpString.length !== 6) {
-      alert("Please enter the complete 6-digit OTP");
+      toast.error("Enter a 6 digit Valid OTP", {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Zoom,
+      });
       return;
     }
 
     setIsLoading(true);
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsLoading(false);
     onVerify(otpString);
@@ -243,12 +252,6 @@ const RegisterPage: React.FC = () => {
       if (res.status === 201) {
         console.log(res.data);
         setShowOTP(true);
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
         setErrors({});
       } else if (res.status === 202) {
         toast.info(res.data.message, {
@@ -261,12 +264,6 @@ const RegisterPage: React.FC = () => {
           progress: undefined,
           theme: "dark",
           transition: Slide,
-        });
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
         });
         setErrors({});
         setTimeout(() => {
@@ -365,14 +362,28 @@ const RegisterPage: React.FC = () => {
         });
         localStorage.setItem("token", res.data.token);
         setShowOTP(false);
-        setTimeout(() => {
-          router.push("/dashboard");
-        }, 800);
+        router.push("/dashboard");
       }
     } catch (error: any) {
       console.log(error);
       const apiErrors = error.response?.data?.errors;
-      const main_errors = error.response.data.message;
+      const main_errors = error.response.data.error;
+
+      if (error.response.status === 404) {
+        toast.error(main_errors, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Zoom,
+        });
+        setShowOTP(false);
+        return;
+      }
 
       if (main_errors) {
         toast.error(main_errors, {
