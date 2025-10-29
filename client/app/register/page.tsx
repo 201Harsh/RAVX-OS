@@ -13,6 +13,7 @@ import {
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import AxiosInstance from "@/config/Axios";
+import { Bounce, Slide, toast, Zoom } from "react-toastify";
 
 interface RegisterForm {
   name: string;
@@ -242,10 +243,86 @@ const RegisterPage: React.FC = () => {
         console.log(res.data);
         setShowOTP(true);
       } else if (res.status === 202) {
-        setShowOTP(true);
+        toast.info(res.data.message, {
+          position: "top-right",
+          autoClose: 6000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+        setTimeout(() => {
+          setShowOTP(true);
+        }, 4300);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      const apiErrors = error.response?.data?.errors;
+      const main_errors = error.response.data.message;
+
+      if (error.response.status === 400) {
+        toast.error(main_errors, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Zoom,
+        });
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
+        return;
+      }
+
+      if (main_errors) {
+        toast.error(main_errors, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+
+      if (Array.isArray(apiErrors)) {
+        apiErrors.forEach((elem: { msg: string }) => {
+          toast.error(elem.msg, {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+          });
+        });
+      } else if (typeof apiErrors === "object" && apiErrors?.message) {
+        toast.error(apiErrors.message, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+
+      setErrors(apiErrors || {});
     } finally {
       setIsLoading(false);
     }
