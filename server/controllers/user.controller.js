@@ -123,6 +123,7 @@ module.exports.VerifyUser = async (req, res) => {
     res.status(200).json({
       message: "User Verified Successfully",
       data: user,
+      token,
     });
   } catch (error) {
     res.status(500).json({
@@ -177,6 +178,7 @@ module.exports.LoginUser = async (req, res) => {
     res.status(200).json({
       message: "Welcome Back! Login Successful",
       data: User,
+      token,
     });
   } catch (error) {
     res.status(500).json({
