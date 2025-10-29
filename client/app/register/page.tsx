@@ -329,13 +329,53 @@ const RegisterPage: React.FC = () => {
   };
 
   const handleOTPVerify = (otp: string) => {
-    // Simulate OTP verification
-    console.log("Verifying OTP:", otp);
+    try {
+    } catch (error: any) {
+      const apiErrors = error.response?.data?.errors;
+      const main_errors = error.response.data.message;
 
-    // On successful verification
-    alert("Email verified successfully! Redirecting to dashboard...");
-    setShowOTP(false);
-    router.push("/dashboard");
+      if (main_errors) {
+        toast.error(main_errors, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+
+      if (Array.isArray(apiErrors)) {
+        apiErrors.forEach((elem: { msg: string }) => {
+          toast.error(elem.msg, {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+          });
+        });
+      } else if (typeof apiErrors === "object" && apiErrors?.message) {
+        toast.error(apiErrors.message, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+    }
   };
 
   const handleOTPClose = () => {
