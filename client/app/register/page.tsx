@@ -12,6 +12,7 @@ import {
   FiEyeOff,
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import AxiosInstance from "@/config/Axios";
 
 interface RegisterForm {
   name: string;
@@ -232,14 +233,22 @@ const RegisterPage: React.FC = () => {
     if (!validateForm()) {
       return;
     }
-
     setIsLoading(true);
 
-    // Simulate API call for registration
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      const res = await AxiosInstance.post("/users/register", formData);
 
-    setIsLoading(false);
-    setShowOTP(true);
+      if (res.status === 201) {
+        console.log(res.data);
+        setShowOTP(true);
+      } else if (res.status === 202) {
+        setShowOTP(true);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleOTPVerify = (otp: string) => {
