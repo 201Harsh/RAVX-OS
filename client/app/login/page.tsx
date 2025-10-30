@@ -267,12 +267,12 @@ const LoginPage: React.FC = () => {
                 {isLoading ? (
                   <>
                     <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                    <span>Signing In...</span>
+                    <span>Logging In...</span>
                   </>
                 ) : (
                   <>
                     <FiLock className="text-lg" />
-                    <span>Sign In</span>
+                    <span>LogIn</span>
                   </>
                 )}
               </motion.button>
