@@ -7,12 +7,11 @@ import {
   FiArrowLeft,
   FiEye,
   FiEyeOff,
-  FiUser,
-  FiGithub,
-  FiTwitter,
   FiAlertCircle,
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import { Bounce, Slide, toast } from "react-toastify";
+import AxiosProxyInstance from "@/config/AxiosProxy";
 
 interface LoginForm {
   email: string;
@@ -76,38 +75,65 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     setLoginError("");
 
-    // Simulate API call for login
     try {
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // Simulate successful login for demo@ravx.com / password123
-          if (
-            formData.email === "demo@ravx.com" &&
-            formData.password === "password123"
-          ) {
-            resolve(true);
-          } else {
-            reject(new Error("Invalid email or password"));
-          }
-        }, 1500);
-      });
+      const res = await AxiosProxyInstance.post("/api/login", formData);
 
-      // On successful login
+      if (res.status === 200) {
+        router.push("/dashboard");
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+    } catch (error: any) {
+      const apiErrors = error.response?.data?.error;
+
+      if (Array.isArray(apiErrors)) {
+        apiErrors.forEach((elem: { msg: string }) => {
+          setLoginError((prev) => prev + "\n" + elem.msg);
+          if (loginError) {
+            return;
+          }
+          toast.error(elem.msg, {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+          });
+        });
+      } else if (typeof apiErrors === "object" && apiErrors?.message) {
+        setLoginError(apiErrors.message);
+        toast.error(apiErrors.message, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+    } finally {
       setIsLoading(false);
-      router.push("/dashboard");
-    } catch (error) {
-      setIsLoading(false);
-      setLoginError(error instanceof Error ? error.message : "Login failed");
     }
   };
 
   const handleForgotPassword = () => {
     router.push("/forgot-password");
-  };
-
-  const handleSocialLogin = (provider: string) => {
-    // Simulate social login
-    console.log(`Logging in with ${provider}`);
   };
 
   return (
@@ -262,7 +288,7 @@ const LoginPage: React.FC = () => {
                 disabled={isLoading}
                 whileHover={{ scale: isLoading ? 1 : 1.02 }}
                 whileTap={{ scale: isLoading ? 1 : 0.98 }}
-                className="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold py-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                className="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold py-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 cursor-pointer"
               >
                 {isLoading ? (
                   <>

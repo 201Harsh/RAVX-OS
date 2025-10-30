@@ -23,14 +23,11 @@ export async function POST(req: Request) {
     return NextRes;
   } catch (error: any) {
     if (error.response) {
-      return Response.json({
-        error: error.response.data.message,
-        status: error.response.status,
-      });
+      return Response.json(
+        { error: error.response.data.message },
+        { status: error.response.status }
+      );
     }
-    return Response.json({
-      error: error.message,
-      status: 500,
-    });
+    return Response.json({ error: error.message }, { status: 500 });
   }
 }
