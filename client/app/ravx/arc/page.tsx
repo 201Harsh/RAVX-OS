@@ -12,6 +12,7 @@ import {
   FiPlay,
   FiMenu,
   FiX,
+  FiLogOut,
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -205,17 +206,26 @@ const RAVXOS = () => {
 
           {/* User Section */}
           <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-750">
-              <div className="w-8 h-8 bg-linear-to-br from-cyan-500 to-purple-500 rounded-full"></div>
-              <div className="flex-1">
-                <div className="text-sm font-medium text-gray-800 dark:text-white">
-                  User
+            <button className="flex justify-center items-center p-3 rounded-full gap-2 cursor-pointer group">
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-linear-to-r from-red-500 to-pink-600 dark:from-red-600 dark:to-pink-700 shadow-2xl shadow-red-500/30 dark:shadow-red-600/20 relative overflow-hidden">
+                {/* Neon glow effect */}
+                <div className="absolute inset-0 bg-linear-to-r from-red-400/20 to-pink-500/20 blur-sm group-hover:from-red-400/30 group-hover:to-pink-500/30 transition-all duration-300"></div>
+
+                {/* Animated pulse ring */}
+                <div className="absolute inset-0 rounded-xl group-hover:animate-pulse"></div>
+
+                {/* Content */}
+                <div className="relative z-10 flex items-center gap-3">
+                  <FiLogOut className="text-2xl text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-200" />
+                  <span className="font-semibold text-white drop-shadow-lg tracking-wide">
+                    Logout
+                  </span>
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">
-                  Free Plan
-                </div>
+
+                {/* Hover shine effect */}
+                <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
