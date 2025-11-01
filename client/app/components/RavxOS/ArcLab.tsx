@@ -49,7 +49,7 @@ const ArcLab = ({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index }}
-                  className="bg-gray-900/50 backdrop-blur-sm border border-cyan-400/20 rounded-2xl p-6 hover:border-cyan-400/40 transition-all duration-300 group"
+                  className="bg-gray-900/50 backdrop-blur-sm border border-cyan-400/20 rounded-2xl p-6 hover:border-cyan-400/40 transition-all duration-300 group cursor-pointer"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <h3 className="text-xl font-semibold text-white group-hover:text-cyan-400 transition-colors">
@@ -59,7 +59,7 @@ const ArcLab = ({
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       onClick={() => handleDeleteLab(lab.id)}
-                      className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+                      className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors cursor-pointer"
                     >
                       <FiTrash2 />
                     </motion.button>
@@ -81,7 +81,7 @@ const ArcLab = ({
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/30 text-cyan-400 py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 group/btn"
+                    className="w-full bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/30 text-cyan-400 py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 group/btn cursor-pointer"
                   >
                     <span>Enter Lab</span>
                     <FiArrowRight className="group-hover/btn:translate-x-1 transition-transform" />
