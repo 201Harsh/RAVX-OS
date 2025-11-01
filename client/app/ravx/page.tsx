@@ -17,30 +17,6 @@ const RavxArc = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [newLabName, setNewLabName] = useState("");
 
-  // Sample initial data
-  useEffect(() => {
-    setArcLabs([
-      {
-        id: 1,
-        name: "Neural Core Lab",
-        created: new Date(Date.now() - 86400000), // 1 day ago
-        creator: "User",
-      },
-      {
-        id: 2,
-        name: "Quantum AI Space",
-        created: new Date(Date.now() - 172800000), // 2 days ago
-        creator: "User",
-      },
-      {
-        id: 3,
-        name: "Digital Mind Forge",
-        created: new Date(Date.now() - 259200000), // 3 days ago
-        creator: "User",
-      },
-    ]);
-  }, []);
-
   const handleCreateLab = () => {
     if (!newLabName.trim()) {
       toast.error("Please enter a lab name");
