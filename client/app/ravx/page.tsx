@@ -111,7 +111,7 @@ const RavxArc = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 mb-4">
+          <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-linear-to-bl from-pink-400 via-cyan-400 to-purple-400 mb-4">
             RAVX ARC
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
