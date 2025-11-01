@@ -275,7 +275,7 @@ const RavxArc = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 lg:hidden"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 "
               onClick={() => setIsCreating(false)}
             />
 
@@ -283,7 +283,7 @@ const RavxArc = () => {
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 100 }}
-              className="fixed bottom-0 left-0 right-0 z-50 lg:hidden"
+              className="fixed bottom-1/3 left-0 right-0 z-50 "
             >
               <div className="bg-gray-900 border-t border-cyan-400/30 rounded-t-2xl p-6 m-4">
                 <div className="mb-4">
