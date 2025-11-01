@@ -288,7 +288,11 @@ export default function CreateAIAgentModal({
     formData.personality &&
     formData.tone &&
     formData.gender &&
-    formData.voice;
+    formData.voice &&
+    formData.additionalSkills &&
+    formData.behaviors &&
+    formData.description &&
+    formData.avatar;
 
   return (
     <AnimatePresence>
