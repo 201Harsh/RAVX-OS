@@ -3,7 +3,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
-import { FaRobot, FaTachometerAlt } from "react-icons/fa";
+import {
+  FaBolt,
+  FaPlus,
+  FaRobot,
+  FaTachometerAlt,
+  FaUser,
+  FaVolumeUp,
+} from "react-icons/fa";
 import { AIAgent } from "@/app/types/Type";
 import CreateAIAgentModal from "@/app/components/RavxOS/CreateAIAgent";
 import Dashboard from "@/app/components/RavxOS/Dashboard";
@@ -89,29 +96,117 @@ export default function RavxArcLab() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
-                className="max-w-4xl mx-auto"
+                className="max-w-6xl mx-auto"
               >
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold mb-4 bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                    Create Your AI Agent
+                <div className="text-center mb-16">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="inline-block px-6 py-2 bg-cyan-500/20 border border-cyan-400/30 rounded-full text-cyan-400 text-sm mb-6"
+                  >
+                    POWERED BY RAVX OS
+                  </motion.div>
+                  <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-linear-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+                    Create Stunning AI Agents
                   </h2>
-                  <p className="text-gray-400 text-lg">
-                    Design intelligent agents with unique personalities and
-                    capabilities
+                  <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    Design intelligent agents with unique personalities, voices,
+                    and capabilities.
+                    <span className="text-cyan-400"> No coding required.</span>
                   </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-center p-6"
+                  >
+                    <div className="w-16 h-16 bg-cyan-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <FaUser className="text-2xl text-cyan-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-white mb-2">
+                      Custom Personalities
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      Create unique AI personalities with specific traits and
+                      behaviors
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="text-center p-6"
+                  >
+                    <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <FaVolumeUp className="text-2xl text-blue-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-white mb-2">
+                      Multiple Voices
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      Choose from various male and female voice options
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="text-center p-6"
+                  >
+                    <div className="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <FaBolt className="text-2xl text-purple-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-white mb-2">
+                      Advanced Skills
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      Equip your agent with specialized capabilities and
+                      behaviors
+                    </p>
+                  </motion.div>
                 </div>
 
                 <motion.button
                   onClick={() => setIsModalOpen(true)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full max-w-md mx-auto block bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-6 px-8 rounded-2xl shadow-2xl shadow-blue-500/25 transition-all duration-300 group"
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0 0 40px rgba(34, 211, 238, 0.4)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-full max-w-md mx-auto block bg-linear-to-r from-cyan-600 via-blue-600 to-purple-600 hover:from-cyan-800 hover:via-blue-800 hover:to-purple-800 text-white font-bold py-8 px-12 rounded-3xl shadow-2xl shadow-cyan-700/25 transition-all duration-300 group relative overflow-hidden cursor-pointer"
                 >
-                  <div className="flex items-center justify-center space-x-3">
-                    <FaRobot className="text-2xl group-hover:scale-110 transition-transform duration-300" />
-                    <span className="text-xl">Create New AI Agent</span>
+                  {/* Animated background effect */}
+                  <div className="absolute inset-0 bg-linear-to-r from-cyan-400/0 via-blue-400/10 to-purple-400/0 group-hover:from-cyan-400/10 group-hover:via-blue-400/20 group-hover:to-purple-400/10 transition-all duration-500" />
+
+                  <div className="relative z-10 flex items-center justify-center space-x-4">
+                    <div className="relative">
+                      <FaRobot className="text-3xl group-hover:scale-110 transition-transform duration-300" />
+                      <motion.div
+                        className="absolute -top-1 -right-1 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center"
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <FaPlus className="text-xs text-black" />
+                      </motion.div>
+                    </div>
+                    <span className="text-2xl">Create New AI Agent</span>
                   </div>
                 </motion.button>
+
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="text-center text-gray-500 mt-6 text-sm"
+                >
+                  Instant setup • Free to start • No coding required
+                </motion.p>
               </motion.div>
             )}
 
