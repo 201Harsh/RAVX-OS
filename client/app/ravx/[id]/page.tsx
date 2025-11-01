@@ -49,16 +49,6 @@ export default function RavxArcLab() {
 
   return (
     <div className="min-h-screen bg-linear-to-br bg-black from-black via-black to-cyan-300/20 text-white">
-      {/* Header */}
-      {/* <header className="backdrop-blur-lg border-b border-cyan-400/30">
-        <div className="container mx-auto px-4 py-6">
-          <h1 className="text-5xl font-bold text-center bg-linear-to-bl from-pink-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent uppercase">Ravx Arc Lab</h1>
-          <p className="text-gray-400 text-center mt-2">
-            Create and manage your AI Agents
-          </p>
-        </div>
-      </header> */}
-
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         {/* Bottom Navigation */}
