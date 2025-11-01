@@ -46,6 +46,14 @@ export default function Dashboard({
     <div className="max-w-6xl mx-auto">
       {/* Header */}
       <div className="text-center mb-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="inline-block px-6 py-2 bg-cyan-500/20 border border-cyan-400/30 rounded-full text-cyan-400 text-sm mb-6"
+        >
+          POWERED BY RAVX OS
+        </motion.div>
         <h2 className="text-4xl font-bold mb-4 bg-linear-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
           AI Agents Dashboard
         </h2>
