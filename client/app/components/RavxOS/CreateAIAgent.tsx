@@ -166,14 +166,14 @@ export default function CreateAIAgentModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={onClose}
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="bg-black rounded-2xl shadow-2xl max-w-7xl w-full max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -190,7 +190,7 @@ export default function CreateAIAgentModal({
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <form onSubmit={handleSubmit} className="p-6 space-y-6 grid grid-cols-1 lg:grid-cols-2 gap-2">
               {/* Agent Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
