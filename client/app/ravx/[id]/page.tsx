@@ -63,7 +63,7 @@ export default function RavxArcLab() {
           <div className="flex space-x-2 w-full">
             <button
               onClick={() => setActiveTab("create")}
-              className={`flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 flex-1 ${
+              className={`flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 flex-1 cursor-pointer ${
                 activeTab === "create"
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25"
                   : "text-gray-300 hover:text-white hover:bg-gray-700/50 bg-gray-800"
@@ -74,7 +74,7 @@ export default function RavxArcLab() {
             </button>
             <button
               onClick={() => setActiveTab("dashboard")}
-              className={`flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 flex-1 ${
+              className={`flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 flex-1 cursor-pointer ${
                 activeTab === "dashboard"
                   ? "bg-green-600 text-white shadow-lg shadow-green-600/25"
                   : "text-gray-300 hover:text-white hover:bg-gray-700/50 bg-gray-800"
