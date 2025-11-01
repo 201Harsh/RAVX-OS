@@ -105,7 +105,7 @@ const ArcLab = ({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsCreating(true)}
-                className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-xl flex items-center gap-2 transition-all duration-300 mx-auto"
+                className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-xl flex items-center gap-2 transition-all duration-300 mx-auto cursor-pointer"
               >
                 <FiPlus className="text-lg" />
                 <span>Create First Lab</span>
