@@ -55,11 +55,11 @@ export default function RavxArcLab() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br bg-black from-black via-black to-cyan-300/20 text-white">
+    <div className="min-h-screen bg-linear-to-br bg-black from-black via-black to-cyan-300/10 text-white">
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         {/* Bottom Navigation */}
-        <nav className="fixed bottom-0 left-1/2 transform -translate-x-1/2 backdrop-blur-lg rounded-2xl px-4 py-2 shadow-2xl z-50 w-full max-w-full">
+        <nav className="fixed bottom-2 left-1/2 transform -translate-x-1/2 backdrop-blur-lg rounded-2xl px-4 py-2 shadow-2xl z-50 w-full max-w-full">
           <div className="flex space-x-2 w-full">
             <button
               onClick={() => setActiveTab("create")}
