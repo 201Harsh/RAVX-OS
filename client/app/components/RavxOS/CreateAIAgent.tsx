@@ -2,14 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FaTimes,
-  FaCheck,
-  FaPlus,
-  FaBolt,
-  FaUser,
-  FaVolumeUp,
-} from "react-icons/fa";
+import { FaTimes, FaCheck, FaPlus, FaUser, FaVolumeUp } from "react-icons/fa";
 
 interface CreateAIAgentModalProps {
   isOpen: boolean;
@@ -191,7 +184,7 @@ export default function CreateAIAgentModal({
     name: "",
     personality: "",
     tone: "",
-    gender: "",
+    gender: "male",
     voice: "",
     avatar: "",
     description: "",
@@ -289,6 +282,13 @@ export default function CreateAIAgentModal({
     }));
     setSelectedVoices(gender === "female" ? femaleVoices : maleVoices);
   };
+
+  const isFormValid =
+    formData.name &&
+    formData.personality &&
+    formData.tone &&
+    formData.gender &&
+    formData.voice;
 
   return (
     <AnimatePresence>
@@ -738,9 +738,14 @@ export default function CreateAIAgentModal({
                 </motion.button>
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex-1 bg-linear-to-r from-cyan-600 to-blue-600 text-white py-3 px-6 rounded-xl border-2 border-cyan-400/50 hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 font-medium shadow-lg shadow-cyan-500/25"
+                  whileHover={{ scale: isFormValid ? 1.02 : 1 }}
+                  whileTap={{ scale: isFormValid ? 0.98 : 1 }}
+                  disabled={!isFormValid}
+                  className={`flex-1 py-3 px-6 rounded-xl border-2 font-medium shadow-lg transition-all duration-300 ${
+                    isFormValid
+                      ? "bg-linear-to-r from-cyan-600 to-blue-600 text-white border-cyan-400/50 hover:from-cyan-500 hover:to-blue-500 shadow-cyan-500/25 cursor-pointer"
+                      : "bg-gray-700 text-gray-400 border-gray-600/50 cursor-not-allowed"
+                  }`}
                 >
                   Create AI Agent
                 </motion.button>
