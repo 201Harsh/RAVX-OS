@@ -34,43 +34,6 @@ const ArcLab = ({
           </p>
         </motion.div>
 
-        {/* Create Lab Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="max-w-4xl mx-auto mb-12"
-        >
-          <div className="bg-gray-900/50 backdrop-blur-sm border border-cyan-400/30 rounded-2xl p-8">
-            <div className="flex flex-col sm:flex-row gap-4 items-center">
-              <div className="flex-1">
-                <input
-                  type="text"
-                  value={newLabName}
-                  onChange={(e) => setNewLabName(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleCreateLab()}
-                  placeholder="Enter your Arc Lab name..."
-                  className="w-full px-6 py-4 bg-gray-800 border border-cyan-400/20 rounded-xl text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors text-lg"
-                />
-              </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleCreateLab}
-                disabled={!newLabName.trim()}
-                className={`px-8 py-4 rounded-xl font-semibold transition-all flex items-center gap-2 ${
-                  !newLabName.trim()
-                    ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                    : "bg-cyan-500 hover:bg-cyan-400 text-black"
-                }`}
-              >
-                <FiPlus className="text-xl" />
-                <span className="text-lg">Create Arc Lab</span>
-              </motion.button>
-            </div>
-          </div>
-        </motion.div>
-
         {/* Arc Labs Grid */}
         <motion.div
           initial={{ opacity: 0 }}
