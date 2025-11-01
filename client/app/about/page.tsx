@@ -205,7 +205,7 @@ const AboutRAVXOS: React.FC = () => {
                   <div className="relative">
                     <div className="w-52 h-52 rounded-full flex items-center justify-center overflow-hidden">
                       <Image
-                        src="/img/dev1.jpg"
+                        src="/img/dev2.jpg"
                         alt="Harsh Pandey"
                         className="h-full w-full object-cover rounded-full"
                         width={100}
