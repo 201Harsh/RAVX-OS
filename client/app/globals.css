@@ -12,3 +12,21 @@ body {
 .hs-color {
   color: #0f6db0;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-small::-webkit-scrollbar {
+  width: 3px;
+  height: 1px; /* Very slim height */
+}
+
+.scrollbar-small::-webkit-scrollbar-track {
+  border-radius: 2px;
+}
+
+.scrollbar-small::-webkit-scrollbar-thumb {
+  background: #d1d1d1;
+  border-radius: 40px;
+}

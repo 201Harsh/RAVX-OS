@@ -304,7 +304,7 @@ export default function CreateAIAgentModal({
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-gray-900 border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 w-full max-w-7xl max-h-[95vh] overflow-y-auto"
+            className="bg-gray-900 border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 w-full max-w-7xl max-h-[95vh] overflow-y-auto scrollbar-small"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
