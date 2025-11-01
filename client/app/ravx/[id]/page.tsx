@@ -87,7 +87,7 @@ export default function RavxArcLab() {
         </nav>
 
         {/* Content Area */}
-        <div className="pb-24">
+        <div className="pb-12">
           <AnimatePresence mode="wait">
             {activeTab === "create" && (
               <motion.div
