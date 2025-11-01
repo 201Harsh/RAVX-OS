@@ -10,10 +10,7 @@ import {
 
 const ArcLab = ({
   arcLabs,
-  newLabName,
-  setNewLabName,
   setIsCreating,
-  handleCreateLab,
   handleDeleteLab,
   formatTimeAgo,
 }: any) => {
