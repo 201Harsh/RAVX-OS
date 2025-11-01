@@ -48,39 +48,39 @@ export default function RavxArcLab() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-tl from-gray-950 to-black text-white">
+    <div className="min-h-screen bg-linear-to-br bg-black from-black via-black to-cyan-300/20 text-white">
       {/* Header */}
-      <header className="bg-gray-800/50 backdrop-blur-lg border-b border-gray-700">
+      {/* <header className="backdrop-blur-lg border-b border-cyan-400/30">
         <div className="container mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold text-center">Ravx Arc Lab</h1>
+          <h1 className="text-5xl font-bold text-center bg-linear-to-bl from-pink-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent uppercase">Ravx Arc Lab</h1>
           <p className="text-gray-400 text-center mt-2">
             Create and manage your AI Agents
           </p>
         </div>
-      </header>
+      </header> */}
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         {/* Bottom Navigation */}
-        <nav className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-800/80 backdrop-blur-lg rounded-2xl p-2 shadow-2xl z-50">
-          <div className="flex space-x-2">
+        <nav className="fixed bottom-0 left-1/2 transform -translate-x-1/2 backdrop-blur-lg rounded-2xl px-4 py-2 shadow-2xl z-50 w-full max-w-full">
+          <div className="flex space-x-2 w-full">
             <button
               onClick={() => setActiveTab("create")}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 ${
+              className={`flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 flex-1 ${
                 activeTab === "create"
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25"
-                  : "text-gray-400 hover:text-white hover:bg-gray-700/50"
+                  : "text-gray-300 hover:text-white hover:bg-gray-700/50 bg-gray-800"
               }`}
             >
               <FaRobot className="text-lg" />
-              <span className="font-medium">Create AI Agents</span>
+              <span className="font-medium">Create AI</span>
             </button>
             <button
               onClick={() => setActiveTab("dashboard")}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 ${
+              className={`flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 flex-1 ${
                 activeTab === "dashboard"
                   ? "bg-green-600 text-white shadow-lg shadow-green-600/25"
-                  : "text-gray-400 hover:text-white hover:bg-gray-700/50"
+                  : "text-gray-300 hover:text-white hover:bg-gray-700/50 bg-gray-800"
               }`}
             >
               <FaTachometerAlt className="text-lg" />
@@ -102,7 +102,7 @@ export default function RavxArcLab() {
                 className="max-w-4xl mx-auto"
               >
                 <div className="text-center mb-12">
-                  <h2 className="text-4xl font-bold mb-4 bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                  <h2 className="text-3xl font-bold mb-4 bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                     Create Your AI Agent
                   </h2>
                   <p className="text-gray-400 text-lg">
