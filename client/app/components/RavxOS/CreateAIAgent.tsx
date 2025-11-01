@@ -184,17 +184,17 @@ export default function CreateAIAgentModal({
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-gray-900 border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 w-full max-w-7xl max-h-[95vh] overflow-y-auto neon-glow"
+            className="bg-gray-900 border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 w-full max-w-7xl max-h-[95vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-cyan-500/20 sticky top-0 bg-gray-900 rounded-t-2xl">
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                Forge New AI Agent
+              <h2 className="text-2xl font-bold bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                Create New AI Agent
               </h2>
               <button
                 onClick={onClose}
-                className="text-cyan-400 hover:text-cyan-300 transition-colors duration-200 hover:scale-110"
+                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110"
               >
                 <FaTimes className="text-xl" />
               </button>
@@ -208,8 +208,8 @@ export default function CreateAIAgentModal({
                 <div className="space-y-6">
                   {/* Agent Name */}
                   <div>
-                    <label className="block text-sm font-medium text-cyan-300 mb-2">
-                      Agent Designation *
+                    <label className="block text-sm font-medium text-white mb-2">
+                      AI Agent Name *
                     </label>
                     <input
                       type="text"
@@ -220,16 +220,16 @@ export default function CreateAIAgentModal({
                           name: e.target.value,
                         }))
                       }
-                      className="w-full bg-gray-800 border-2 border-cyan-500/30 rounded-xl px-4 py-3 text-white placeholder-cyan-800 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
-                      placeholder="Enter agent designation..."
+                      className="w-full bg-gray-800 border-2 border-cyan-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
+                      placeholder="Enter your AI agent's name"
                       required
                     />
                   </div>
 
                   {/* Personality */}
                   <div>
-                    <label className="block text-sm font-medium text-cyan-300 mb-3">
-                      Core Personality Matrix *
+                    <label className="block text-sm font-medium text-white mb-3">
+                      Personality *
                     </label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {personalityOptions.map((option) => (
@@ -250,14 +250,14 @@ export default function CreateAIAgentModal({
                           }
                         >
                           <div className="flex items-center justify-between mb-2">
-                            <span className="font-semibold text-cyan-300">
+                            <span className="font-semibold text-white">
                               {option.label}
                             </span>
                             {formData.personality === option.id && (
-                              <FaBolt className="text-cyan-400 animate-pulse" />
+                              <FaCheck className="text-cyan-400" />
                             )}
                           </div>
-                          <p className="text-sm text-cyan-600">
+                          <p className="text-sm text-gray-400">
                             {option.description}
                           </p>
                         </motion.div>
@@ -267,8 +267,8 @@ export default function CreateAIAgentModal({
 
                   {/* Tone */}
                   <div>
-                    <label className="block text-sm font-medium text-cyan-300 mb-3">
-                      Communication Protocol *
+                    <label className="block text-sm font-medium text-white mb-3">
+                      Tone *
                     </label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {toneOptions.map((option) => (
@@ -289,14 +289,14 @@ export default function CreateAIAgentModal({
                           }
                         >
                           <div className="flex items-center justify-between mb-2">
-                            <span className="font-semibold text-blue-300">
+                            <span className="font-semibold text-white">
                               {option.label}
                             </span>
                             {formData.tone === option.id && (
-                              <FaBolt className="text-blue-400 animate-pulse" />
+                              <FaCheck className="text-blue-400" />
                             )}
                           </div>
-                          <p className="text-sm text-blue-600">
+                          <p className="text-sm text-gray-400">
                             {option.description}
                           </p>
                         </motion.div>
@@ -309,8 +309,8 @@ export default function CreateAIAgentModal({
                 <div className="space-y-6">
                   {/* Behaviors */}
                   <div>
-                    <label className="block text-sm font-medium text-cyan-300 mb-3">
-                      Behavioral Algorithms
+                    <label className="block text-sm font-medium text-white mb-3">
+                      Behaviors
                     </label>
                     <div className="space-y-3">
                       <div className="flex flex-wrap gap-2">
@@ -323,7 +323,7 @@ export default function CreateAIAgentModal({
                             className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                               formData.behaviors.includes(behavior)
                                 ? "bg-cyan-600 text-white shadow-lg shadow-cyan-500/25"
-                                : "bg-gray-800 text-cyan-400 hover:bg-cyan-500/20 border border-cyan-500/30"
+                                : "bg-gray-800 text-gray-300 hover:bg-cyan-500/20 border border-cyan-500/30"
                             }`}
                             onClick={() => toggleBehavior(behavior)}
                           >
@@ -336,8 +336,8 @@ export default function CreateAIAgentModal({
                           type="text"
                           value={customBehavior}
                           onChange={(e) => setCustomBehavior(e.target.value)}
-                          placeholder="Add custom algorithm..."
-                          className="flex-1 bg-gray-800 border-2 border-cyan-500/30 rounded-xl px-4 py-2 text-white placeholder-cyan-800 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
+                          placeholder="Add custom behavior..."
+                          className="flex-1 bg-gray-800 border-2 border-cyan-500/30 rounded-xl px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
                           onKeyPress={(e) =>
                             e.key === "Enter" &&
                             (e.preventDefault(), addCustomBehavior())
@@ -358,8 +358,8 @@ export default function CreateAIAgentModal({
 
                   {/* Additional Skills */}
                   <div>
-                    <label className="block text-sm font-medium text-cyan-300 mb-3">
-                      Specialized Modules
+                    <label className="block text-sm font-medium text-white mb-3">
+                      Additional Skills
                     </label>
                     <div className="space-y-3">
                       <div className="flex flex-wrap gap-2">
@@ -372,7 +372,7 @@ export default function CreateAIAgentModal({
                             className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                               formData.additionalSkills.includes(skill)
                                 ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25"
-                                : "bg-gray-800 text-blue-400 hover:bg-blue-500/20 border border-blue-500/30"
+                                : "bg-gray-800 text-gray-300 hover:bg-blue-500/20 border border-blue-500/30"
                             }`}
                             onClick={() => toggleSkill(skill)}
                           >
@@ -385,8 +385,8 @@ export default function CreateAIAgentModal({
                           type="text"
                           value={customSkill}
                           onChange={(e) => setCustomSkill(e.target.value)}
-                          placeholder="Add custom module..."
-                          className="flex-1 bg-gray-800 border-2 border-blue-500/30 rounded-xl px-4 py-2 text-white placeholder-blue-800 focus:outline-none focus:border-blue-400 focus:shadow-lg focus:shadow-blue-500/20 transition-all duration-300"
+                          placeholder="Add custom skill..."
+                          className="flex-1 bg-gray-800 border-2 border-blue-500/30 rounded-xl px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:shadow-lg focus:shadow-blue-500/20 transition-all duration-300"
                           onKeyPress={(e) =>
                             e.key === "Enter" &&
                             (e.preventDefault(), addCustomSkill())
@@ -409,16 +409,16 @@ export default function CreateAIAgentModal({
                   {(formData.behaviors.length > 0 ||
                     formData.additionalSkills.length > 0) && (
                     <div className="bg-gray-800/50 rounded-xl p-4 border-2 border-cyan-500/20">
-                      <h3 className="font-semibold text-cyan-300 mb-2">
-                        Active Systems:
+                      <h3 className="font-semibold text-white mb-2">
+                        Selected Features:
                       </h3>
                       <div className="space-y-2">
                         {formData.behaviors.length > 0 && (
                           <div>
                             <span className="text-sm text-cyan-400">
-                              Algorithms:{" "}
+                              Behaviors:{" "}
                             </span>
-                            <span className="text-sm text-cyan-600">
+                            <span className="text-sm text-gray-300">
                               {formData.behaviors.join(", ")}
                             </span>
                           </div>
@@ -426,9 +426,9 @@ export default function CreateAIAgentModal({
                         {formData.additionalSkills.length > 0 && (
                           <div>
                             <span className="text-sm text-blue-400">
-                              Modules:{" "}
+                              Skills:{" "}
                             </span>
-                            <span className="text-sm text-blue-600">
+                            <span className="text-sm text-gray-300">
                               {formData.additionalSkills.join(", ")}
                             </span>
                           </div>
@@ -446,17 +446,17 @@ export default function CreateAIAgentModal({
                   onClick={onClose}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex-1 bg-gray-800 text-cyan-400 py-3 px-6 rounded-xl border-2 border-cyan-500/30 hover:border-cyan-400 hover:bg-cyan-500/10 transition-all duration-300 font-medium"
+                  className="flex-1 bg-gray-800 text-white py-3 px-6 rounded-xl border-2 border-cyan-500/30 hover:border-cyan-400 hover:bg-cyan-500/10 transition-all duration-300 font-medium"
                 >
-                  Abort Sequence
+                  Cancel
                 </motion.button>
                 <motion.button
                   type="submit"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex-1 bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-3 px-6 rounded-xl border-2 border-cyan-400/50 hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 font-medium shadow-lg shadow-cyan-500/25"
+                  className="flex-1 bg-linear-to-r from-cyan-600 to-blue-600 text-white py-3 px-6 rounded-xl border-2 border-cyan-400/50 hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 font-medium shadow-lg shadow-cyan-500/25"
                 >
-                  Initialize Agent
+                  Create AI Agent
                 </motion.button>
               </div>
             </form>
