@@ -62,3 +62,50 @@ module.exports.GetArcLab = async (req, res) => {
     });
   }
 };
+
+module.exports.DeleteArcLab = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const UserId = req.user._id;
+
+    if (typeof id !== "string") {
+      return res.status(406).json({
+        message: "Invalid request parameters passed Only Strings Allowed!",
+      });
+    }
+
+    if (!id) {
+      return res.status(404).json({
+        message: "ArcLab not found.",
+      });
+    }
+
+    const user = await UserModel.findById(UserId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    const ArcLab = await ArcLabModel.findByIdAndDelete(id);
+
+    if (!ArcLab) {
+      return res.status(404).json({
+        message: "ArcLab not found.",
+      });
+    }
+
+    user.LabTokens += 1;
+    await user.save();
+
+    res.status(200).json({
+      message: "ArcLab Deleted Successfully!",
+      ArcLab,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

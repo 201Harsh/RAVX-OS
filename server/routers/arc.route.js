@@ -14,4 +14,6 @@ router.post(
 
 router.post("/get", AuthMiddleware.authUser, ArcController.GetArcLab);
 
+router.post("/del/:id", AuthMiddleware.authUser, ArcController.DeleteArcLab);
+
 module.exports = router;
