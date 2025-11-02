@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "react-toastify";
+import { toast, Zoom } from "react-toastify";
 import {
   FaBolt,
   FaPlus,
@@ -32,7 +32,18 @@ export default function RavxArcLab() {
 
     setAIAgents((prev) => [...prev, newAgent]);
     setIsModalOpen(false);
-    toast.success("AI Agent created successfully!");
+    toast.success("AI Agent created successfully!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Zoom,
+    });
+    setActiveTab("dashboard");
   };
 
   const handleDeleteAgent = (agentId: string) => {
