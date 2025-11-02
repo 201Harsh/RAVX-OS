@@ -22,6 +22,14 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  LabTokens: {
+    type: Number,
+    default: 1,
+  },
+  AIAgentToken: {
+    type: Number,
+    default: 2,
+  },
 });
 
 UserSchema.methods.JWT_GEN = function () {

@@ -12,4 +12,6 @@ router.post(
   ArcController.CreateArcLab
 );
 
+router.post("/get", AuthMiddleware.authUser, ArcController.GetArcLab);
+
 module.exports = router;
