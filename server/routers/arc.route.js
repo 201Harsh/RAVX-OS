@@ -12,7 +12,7 @@ router.post(
   ArcController.CreateArcLab
 );
 
-router.post("/get", AuthMiddleware.authUser, ArcController.GetArcLab);
+router.get("/get", AuthMiddleware.authUser, ArcController.GetArcLab);
 
 router.post("/del/:id", AuthMiddleware.authUser, ArcController.DeleteArcLab);
 

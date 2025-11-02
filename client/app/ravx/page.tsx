@@ -1,32 +1,80 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { toast } from "react-toastify";
+import { Flip, toast } from "react-toastify";
 import ArcLab from "../components/RavxOS/ArcLab";
 import Createlab from "../components/RavxOS/Createlab";
+import AxiosInstance from "@/config/Axios";
 
 const RavxArc = () => {
   const [arcLabs, setArcLabs] = useState<any[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [newLabName, setNewLabName] = useState("");
 
-  const handleCreateLab = () => {
+  const handleCreateLab = async () => {
     if (!newLabName.trim()) {
       toast.error("Please enter a lab name");
       return;
     }
 
-    const newLab = {
-      id: arcLabs.length + 1,
-      name: newLabName,
-      created: new Date(),
-      creator: "User",
-    };
+    try {
+      const res = await AxiosInstance.post("/arc/create", {
+        name: newLabName,
+      });
 
-    setArcLabs((prev) => [newLab, ...prev]);
-    setNewLabName("");
-    setIsCreating(false);
-    toast.success(`Arc Lab "${newLabName}" created successfully!`);
+      if (res.status === 200) {
+        const ArcLabData = res.data.ArcLab;
+        const newLab = {
+          id: ArcLabData._id,
+          name: ArcLabData.name,
+          created: ArcLabData.CreatedAt,
+          creator: ArcLabData.UserId,
+        };
+        setArcLabs((prev) => [newLab, ...prev]);
+        setNewLabName("");
+        setIsCreating(false);
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Flip,
+        });
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(
+        error.response?.data?.message ||
+          error.response.data.errors.forEach((e: { msg: string }) => {
+            toast.error(e.msg, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              transition: Flip,
+            });
+          }),
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Flip,
+        }
+      );
+    }
   };
 
   const handleDeleteLab = (labId: number) => {
@@ -34,16 +82,43 @@ const RavxArc = () => {
     toast.success("Arc Lab deleted successfully!");
   };
 
-  const formatTimeAgo = (date: Date) => {
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(hours / 24);
-
-    if (days > 0) return `${days}d ago`;
-    if (hours > 0) return `${hours}h ago`;
-    return "Just now";
+  const formatTimeAgo = (date: any) => {
+    const newDate = new Date(date).toLocaleDateString();
+    return newDate;
   };
+  useEffect(() => {
+    const fetchArcLabs = async () => {
+      try {
+        const res = await AxiosInstance.get("/arc/get");
+
+        if (res.status === 200) {
+          const ArcLabs = res.data.ArcLab.map((lab: any) => {
+            return {
+              id: lab._id,
+              name: lab.name,
+              created: lab.CreatedAt,
+              creator: lab.UserId,
+            };
+          });
+          setArcLabs(ArcLabs);
+        }
+      } catch (error: any) {
+        console.log(error);
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Flip,
+        });
+      }
+    };
+    fetchArcLabs();
+  }, []);
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
