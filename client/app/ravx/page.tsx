@@ -77,9 +77,38 @@ const RavxArc = () => {
     }
   };
 
-  const handleDeleteLab = (labId: number) => {
-    setArcLabs((prev) => prev.filter((lab) => lab.id !== labId));
-    toast.success("Arc Lab deleted successfully!");
+  const handleDeleteLab = async (labId: number) => {
+    try {
+      const res = await AxiosInstance.delete(`/arc/del/${labId}`);
+
+      if (res.status === 200) {
+        setArcLabs((prev) => prev.filter((lab) => lab.id !== labId));
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Flip,
+        });
+      }
+    } catch (error: any) {
+      console.log(error)
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Flip,
+      });
+    }
   };
 
   const formatTimeAgo = (date: any) => {
@@ -103,7 +132,6 @@ const RavxArc = () => {
           setArcLabs(ArcLabs);
         }
       } catch (error: any) {
-        console.log(error);
         toast.error(error.response.data.message, {
           position: "top-right",
           autoClose: 5000,
@@ -118,7 +146,7 @@ const RavxArc = () => {
       }
     };
     fetchArcLabs();
-  }, []);
+  }, [handleCreateLab, handleDeleteLab]);
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
