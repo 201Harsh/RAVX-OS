@@ -1,11 +1,12 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FiPlus,
   FiTrash2,
   FiArrowRight,
   FiClock,
   FiUser,
+  FiAlertTriangle,
 } from "react-icons/fi";
 
 const ArcLab = ({
@@ -14,6 +15,27 @@ const ArcLab = ({
   handleDeleteLab,
   formatTimeAgo,
 }: any) => {
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [labToDelete, setLabToDelete] = useState<any>(null);
+
+  const handleDeleteClick = (lab: any) => {
+    setLabToDelete(lab);
+    setDeleteConfirm(lab.id);
+  };
+
+  const confirmDelete = () => {
+    if (labToDelete) {
+      handleDeleteLab(labToDelete.id);
+      setDeleteConfirm(null);
+      setLabToDelete(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setDeleteConfirm(null);
+    setLabToDelete(null);
+  };
+
   return (
     <>
       <div className="relative z-10 container mx-auto px-4 py-8">
@@ -55,7 +77,7 @@ const ArcLab = ({
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
-                      onClick={() => handleDeleteLab(lab.id)}
+                      onClick={() => handleDeleteClick(lab)}
                       className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors cursor-pointer"
                     >
                       <FiTrash2 />
@@ -73,6 +95,15 @@ const ArcLab = ({
                       <FiUser className="text-sm" />
                       <span className="text-sm">By {lab.creator}</span>
                     </div>
+                    {lab.aiAgents && (
+                      <div className="flex items-center gap-2 text-cyan-400">
+                        <FiPlus className="text-sm" />
+                        <span className="text-sm">
+                          {lab.aiAgents.length} AI Agent
+                          {lab.aiAgents.length !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <motion.button
@@ -114,6 +145,70 @@ const ArcLab = ({
           )}
         </motion.div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {deleteConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-gray-900 border-2 border-red-500/30 rounded-2xl shadow-2xl shadow-red-500/20 max-w-md w-full p-6"
+            >
+              {/* Warning Icon */}
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center">
+                  <FiAlertTriangle className="text-2xl text-red-400" />
+                </div>
+              </div>
+
+              {/* Confirmation Text */}
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Delete Arc Lab?
+                </h3>
+                <p className="text-gray-400 mb-4">
+                  Are you sure you want to delete{" "}
+                  <span className="text-white font-semibold">
+                    "{labToDelete?.name}"
+                  </span>
+                  ?
+                </p>
+                <p className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                  <strong>Warning:</strong> This will permanently delete the lab
+                  and all associated AI agents. This action cannot be undone.
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                <motion.button
+                  onClick={cancelDelete}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 bg-gray-800 text-white py-3 px-6 rounded-xl border-2 border-gray-600 hover:border-gray-500 hover:bg-gray-700 transition-all duration-300 font-medium cursor-pointer"
+                >
+                  Cancel
+                </motion.button>
+                <motion.button
+                  onClick={confirmDelete}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 bg-linear-to-r from-red-600 to-orange-600 text-white py-3 px-6 rounded-xl border-2 border-red-500/50 hover:from-red-500 hover:to-orange-500 transition-all duration-300 font-medium shadow-lg shadow-red-500/25 cursor-pointer"
+                >
+                  Delete Lab
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
