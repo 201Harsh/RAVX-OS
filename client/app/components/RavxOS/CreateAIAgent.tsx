@@ -227,17 +227,6 @@ export default function CreateAIAgentModal({
     };
 
     onCreate(newFormData);
-    setFormData({
-      name: "",
-      personality: "",
-      tone: "",
-      gender: "",
-      voice: "",
-      avatar: "",
-      description: "",
-      behaviors: [],
-      additionalSkills: [],
-    });
   };
 
   const toggleBehavior = (behavior: string) => {
