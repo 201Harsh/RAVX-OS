@@ -28,4 +28,6 @@ router.post(
   AIAgentController.CreateAIAgent
 );
 
+router.get("/get/:id", AuthMiddleware.authUser, AIAgentController.GetAIAgent);
+
 module.exports = router;

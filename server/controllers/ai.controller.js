@@ -53,7 +53,7 @@ module.exports.CreateAIAgent = async (req, res) => {
       return res.status(401).json({
         message: "you can't Create AI-Agent in this ArcLab!",
         message1: "Creator Your own ArcLab to Create AI-Agent.",
-      }); 
+      });
     }
 
     const AIAgent = await AIAgentServices.CreateAIAgent({
@@ -72,6 +72,49 @@ module.exports.CreateAIAgent = async (req, res) => {
 
     res.status(200).json({
       message: "AI-Agent Created Successfully!",
+      AIAgent,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports.GetAIAgent = async (req, res) => {
+  try {
+    const UserId = req.user._id;
+    const id = req.params.id;
+
+    const ArcLab = await ArcLabModel.findById(id);
+    const User = await UserModel.findById(UserId);
+
+    if (!ArcLab) {
+      return res.status(404).json({
+        message: "ArcLab not found.",
+      });
+    }
+
+    if (!User) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    if (ArcLab.UserId !== UserId) {
+      return res.status(401).json({
+        message: "you can't Get AI-Agent for this ArcLab!",
+        message1: "Creator Your own ArcLab to Get AI-Agent.",
+      });
+    }
+
+    const AIAgent = await AIAgentModel.find({
+      UserId,
+      ArcLabId: id,
+    });
+
+    res.status(200).json({
+      message: "AI-Agent Fetched Successfully!.",
       AIAgent,
     });
   } catch (error) {
