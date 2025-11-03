@@ -56,6 +56,16 @@ module.exports.CreateAIAgent = async (req, res) => {
       });
     }
 
+    const ifAIAgentExists = await AIAgentModel.findOne({
+      name,
+    });
+
+    if (ifAIAgentExists) {
+      return res.status(400).json({
+        message: "AI-Agent already exists.",
+      });
+    }
+
     const AIAgent = await AIAgentServices.CreateAIAgent({
       name,
       gender,
