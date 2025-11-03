@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaCheck, FaPlus, FaUser, FaVolumeUp } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 interface CreateAIAgentModalProps {
   isOpen: boolean;
@@ -209,6 +210,7 @@ export default function CreateAIAgentModal({
       formData.behaviors.length === 0 ||
       formData.additionalSkills.length === 0
     ) {
+      toast.error("Please fill in all the required fields.");
       return;
     }
     onCreate(formData);
