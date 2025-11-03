@@ -5,11 +5,14 @@ import { Flip, toast } from "react-toastify";
 import ArcLab from "../components/RavxOS/ArcLab";
 import Createlab from "../components/RavxOS/Createlab";
 import AxiosInstance from "@/config/Axios";
+import { useRouter } from "next/navigation";
 
 const RavxArc = () => {
   const [arcLabs, setArcLabs] = useState<any[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [newLabName, setNewLabName] = useState("");
+
+  const router = useRouter();
 
   const handleCreateLab = async () => {
     if (!newLabName.trim()) {
@@ -96,7 +99,39 @@ const RavxArc = () => {
         });
       }
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Flip,
+      });
+    }
+  };
+
+  const handleopenLab = async (labId: string) => {
+    try {
+      const res = await AxiosInstance.get(`/arc/get/${labId}`);
+      if (res.status === 200) {
+        router.push(`/ravx/arc/${labId}`);
+        toast.success("Entering ArcLab...", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Flip,
+        });
+      }
+    } catch (error: any) {
       toast.error(error.response?.data?.message, {
         position: "top-right",
         autoClose: 5000,
@@ -187,6 +222,7 @@ const RavxArc = () => {
         handleCreateLab={handleCreateLab}
         handleDeleteLab={handleDeleteLab}
         formatTimeAgo={formatTimeAgo}
+        handleopenLab={handleopenLab}
       />
 
       {/* Create Lab Modal*/}

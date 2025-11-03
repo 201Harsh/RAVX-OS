@@ -14,6 +14,7 @@ const ArcLab = ({
   setIsCreating,
   handleDeleteLab,
   formatTimeAgo,
+  handleopenLab,
 }: any) => {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [labToDelete, setLabToDelete] = useState<any>(null);
@@ -107,6 +108,9 @@ const ArcLab = ({
                   </div>
 
                   <motion.button
+                    onClick={() => {
+                      handleopenLab(lab.id);
+                    }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="w-full bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/30 text-cyan-400 py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 group/btn cursor-pointer"
