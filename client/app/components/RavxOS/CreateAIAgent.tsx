@@ -202,12 +202,17 @@ export default function CreateAIAgentModal({
       !formData.name ||
       !formData.personality ||
       !formData.tone ||
-      !formData.gender
+      !formData.gender ||
+      !formData.voice ||
+      !formData.avatar ||
+      !formData.description ||
+      formData.behaviors.length === 0 ||
+      formData.additionalSkills.length === 0
     ) {
-      alert("Please fill in all required fields");
       return;
     }
     onCreate(formData);
+    console.log(formData);
     setFormData({
       name: "",
       personality: "",
