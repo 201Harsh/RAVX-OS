@@ -5,8 +5,10 @@ export interface AIAgent {
   tone: string;
   behaviors: string[];
   additionalSkills: string[];
+  skills: string[];
   url: string;
   createdAt: Date;
+  LastUsed: Date;
 }
 
 export interface CreateAIAgentData {
@@ -14,5 +16,6 @@ export interface CreateAIAgentData {
   personality: string;
   tone: string;
   behaviors: string[];
-  additionalSkills: string[];
+  skills: string[];
+  LastUsed: Date;
 }

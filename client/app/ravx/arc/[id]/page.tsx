@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Flip, toast, Zoom } from "react-toastify";
 import {
@@ -16,6 +16,7 @@ import CreateAIAgentModal from "@/app/components/RavxOS/CreateAIAgent";
 import Dashboard from "@/app/components/RavxOS/Dashboard";
 import AxiosInstance from "@/config/Axios";
 import { useParams } from "next/navigation";
+import { pre } from "framer-motion/client";
 
 export default function RavxArcLab() {
   const [activeTab, setActiveTab] = useState<"create" | "dashboard">("create");
@@ -30,7 +31,8 @@ export default function RavxArcLab() {
       const res = await AxiosInstance.post(`/ai/create/${id}`, agentData);
 
       if (res.status === 200) {
-        setAIAgents((prev) => [...prev, res.data]);
+        const AIAgent = res.data.AIAgent;
+        setAIAgents((prev) => [...prev, AIAgent]);
         setIsModalOpen(false);
         toast.success(res.data.message, {
           position: "top-right",
@@ -46,6 +48,7 @@ export default function RavxArcLab() {
         setActiveTab("dashboard");
       }
     } catch (error: any) {
+      console.log(error);
       toast.error(
         error.response?.data?.message ||
           error.response?.data?.errors.forEach((e: { msg: string }) => {
@@ -94,6 +97,33 @@ export default function RavxArcLab() {
     );
     toast.success("AI Agent updated successfully!");
   };
+
+  const handleGetAIAgents = async () => {
+    try {
+      const res = await AxiosInstance.get(`/ai/get/${id}`);
+
+      if (res.status === 200) {
+        const AIAgents = res.data.AIAgent;
+        setAIAgents((prev) => [...prev, ...AIAgents]);
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Zoom,
+      });
+    }
+  };
+
+  useEffect(() => {
+    handleGetAIAgents();
+  }, []);
 
   return (
     <div className="min-h-screen bg-linear-to-br bg-black from-black via-black to-cyan-300/10 text-white">

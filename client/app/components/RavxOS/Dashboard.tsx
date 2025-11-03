@@ -28,14 +28,20 @@ export default function Dashboard({
 }: DashboardProps) {
   const [menuOpen, setMenuOpen] = useState<string | null>(null);
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date: any) => {
+    if (!date) return "Invalid Date";
+
+    const parsedDate = new Date(date);
+
+    if (isNaN(parsedDate.getTime())) return "Invalid Date";
+
     return new Intl.DateTimeFormat("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    }).format(date);
+    }).format(parsedDate);
   };
 
   const toggleMenu = (agentId: string) => {
@@ -63,7 +69,7 @@ export default function Dashboard({
       </div>
 
       {/* Stats */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -110,14 +116,14 @@ export default function Dashboard({
             <div>
               <p className="text-2xl font-bold text-white">
                 {aiAgents.length > 0
-                  ? formatDate(aiAgents[0].createdAt).split(",")[0]
+                  ? formatDate(aiAgents[0].LastUsed).split(",")[0]
                   : "N/A"}
               </p>
-              <p className="text-gray-400">Last Created</p>
+              <p className="text-gray-400">Last Used</p>
             </div>
           </div>
         </motion.div>
-      </div> */}
+      </div>
 
       {/* AI Agents Grid */}
       {aiAgents.length === 0 ? (
@@ -219,15 +225,15 @@ export default function Dashboard({
                 </div>
 
                 {/* URL */}
-                <div className="flex items-center space-x-2 text-gray-400 mb-3">
+                {/* <div className="flex items-center space-x-2 text-gray-400 mb-3">
                   <FaGlobe className="text-sm" />
                   <span className="text-sm truncate">{agent.url}</span>
-                </div>
+                </div> */}
 
                 {/* Created Time */}
                 <div className="flex items-center space-x-2 text-gray-400 mb-4">
                   <FaCalendar className="text-sm" />
-                  <span className="text-sm">{formatDate(agent.createdAt)}</span>
+                  <span className="text-sm">{formatDate(agent.LastUsed)}</span>
                 </div>
 
                 {/* Behaviors and Skills Preview */}
@@ -248,7 +254,7 @@ export default function Dashboard({
                     )}
                   </div>
                   <div className="flex flex-wrap gap-1">
-                    {agent.additionalSkills.slice(0, 2).map((skill) => (
+                    {agent.skills.slice(0, 2).map((skill) => (
                       <span
                         key={skill}
                         className="bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full text-xs"
@@ -256,9 +262,9 @@ export default function Dashboard({
                         {skill}
                       </span>
                     ))}
-                    {agent.additionalSkills.length > 2 && (
+                    {agent.skills.length > 2 && (
                       <span className="bg-gray-700 text-gray-400 px-2 py-1 rounded-full text-xs">
-                        +{agent.additionalSkills.length - 2}
+                        +{agent.skills.length - 2}
                       </span>
                     )}
                   </div>
