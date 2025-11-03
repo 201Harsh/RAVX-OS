@@ -21,6 +21,7 @@ export default function RavxArcLab() {
   const [activeTab, setActiveTab] = useState<"create" | "dashboard">("create");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [aiAgents, setAIAgents] = useState<AIAgent[]>([]);
+  const [clearFormData, setclearFormData] = useState<boolean>(false);
 
   const parms = useParams();
   const id = parms.id;
@@ -45,6 +46,7 @@ export default function RavxArcLab() {
           transition: Flip,
         });
         setActiveTab("dashboard");
+        setclearFormData(true);
       }
     } catch (error: any) {
       toast.error(
@@ -122,6 +124,10 @@ export default function RavxArcLab() {
   useEffect(() => {
     handleGetAIAgents();
   }, []);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-linear-to-br bg-black from-black via-black to-cyan-300/10 text-white">
@@ -242,7 +248,7 @@ export default function RavxArcLab() {
                 </div>
 
                 <motion.button
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => handleOpenModal()}
                   whileHover={{
                     scale: 1.05,
                     boxShadow: "0 0 40px rgba(34, 211, 238, 0.4)",
@@ -304,6 +310,7 @@ export default function RavxArcLab() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onCreate={handleCreateAgent}
+        clearFormData={clearFormData}
       />
     </div>
   );

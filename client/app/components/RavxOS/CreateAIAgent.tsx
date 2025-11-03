@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaCheck, FaPlus, FaUser, FaVolumeUp } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -9,6 +9,7 @@ interface CreateAIAgentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onCreate: (data: any) => void;
+  clearFormData: boolean;
 }
 
 const personalityOptions = [
@@ -180,6 +181,7 @@ export default function CreateAIAgentModal({
   isOpen,
   onClose,
   onCreate,
+  clearFormData,
 }: CreateAIAgentModalProps) {
   const [formData, setFormData] = useState({
     name: "",
@@ -199,17 +201,6 @@ export default function CreateAIAgentModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setFormData({
-      name: "",
-      personality: "",
-      tone: "",
-      gender: "male",
-      voice: "",
-      avatar: "",
-      description: "",
-      behaviors: [],
-      additionalSkills: [],
-    });
     if (
       !formData.name ||
       !formData.personality ||
@@ -239,6 +230,22 @@ export default function CreateAIAgentModal({
 
     onCreate(newFormData);
   };
+
+  useEffect(() => {
+    if (clearFormData) {
+      setFormData({
+        name: "",
+        personality: "",
+        tone: "",
+        gender: "male",
+        voice: "",
+        avatar: "",
+        description: "",
+        behaviors: [],
+        additionalSkills: [],
+      });
+    }
+  }, [clearFormData]);
 
   const toggleBehavior = (behavior: string) => {
     setFormData((prev) => ({
