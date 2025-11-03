@@ -145,7 +145,7 @@ export default function Dashboard({
           <AnimatePresence>
             {aiAgents.map((agent, index) => (
               <motion.div
-                key={agent.id}
+                key={agent._id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
@@ -155,14 +155,14 @@ export default function Dashboard({
                 {/* Three-dot Menu */}
                 <div className="absolute top-4 right-4">
                   <button
-                    onClick={() => toggleMenu(agent.id)}
+                    onClick={() => toggleMenu(agent._id)}
                     className="text-gray-400 hover:text-white transition-colors duration-200 p-2 rounded-lg hover:bg-gray-700/50"
                   >
                     <FaEllipsisV />
                   </button>
 
                   <AnimatePresence>
-                    {menuOpen === agent.id && (
+                    {menuOpen === agent._id && (
                       <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -171,7 +171,7 @@ export default function Dashboard({
                       >
                         <button
                           onClick={() => {
-                            onRunAgent(agent.id);
+                            onRunAgent(agent._id);
                             setMenuOpen(null);
                           }}
                           className="w-full text-left px-4 py-3 text-sm text-white hover:bg-gray-600 rounded-t-xl flex items-center space-x-2"
@@ -191,7 +191,7 @@ export default function Dashboard({
                         </button>
                         <button
                           onClick={() => {
-                            onDeleteAgent(agent.id);
+                            onDeleteAgent(agent._id);
                             setMenuOpen(null);
                           }}
                           className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-gray-600 rounded-b-xl flex items-center space-x-2"
@@ -275,7 +275,7 @@ export default function Dashboard({
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => onRunAgent(agent.id)}
+                    onClick={() => onRunAgent(agent._id)}
                     className="flex-1 bg-linear-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white py-2 px-4 rounded-xl transition-all duration-300 font-medium flex items-center justify-center space-x-2"
                   >
                     <FaPlay className="text-sm" />

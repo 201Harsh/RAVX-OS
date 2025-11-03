@@ -16,7 +16,6 @@ import CreateAIAgentModal from "@/app/components/RavxOS/CreateAIAgent";
 import Dashboard from "@/app/components/RavxOS/Dashboard";
 import AxiosInstance from "@/config/Axios";
 import { useParams } from "next/navigation";
-import { pre } from "framer-motion/client";
 
 export default function RavxArcLab() {
   const [activeTab, setActiveTab] = useState<"create" | "dashboard">("create");
@@ -48,7 +47,6 @@ export default function RavxArcLab() {
         setActiveTab("dashboard");
       }
     } catch (error: any) {
-      console.log(error);
       toast.error(
         error.response?.data?.message ||
           error.response?.data?.errors.forEach((e: { msg: string }) => {
@@ -80,19 +78,19 @@ export default function RavxArcLab() {
   };
 
   const handleDeleteAgent = (agentId: string) => {
-    setAIAgents((prev) => prev.filter((agent) => agent.id !== agentId));
+    setAIAgents((prev) => prev.filter((agent) => agent._id !== agentId));
     toast.success("AI Agent deleted successfully!");
   };
 
   const handleRunAgent = (agentId: string) => {
-    const agent = aiAgents.find((a) => a.id === agentId);
+    const agent = aiAgents.find((a) => a._id === agentId);
     toast.info(`Running AI Agent: ${agent?.name}`);
   };
 
   const handleEditAgent = (agentId: string, updatedData: Partial<AIAgent>) => {
     setAIAgents((prev) =>
       prev.map((agent) =>
-        agent.id === agentId ? { ...agent, ...updatedData } : agent
+        agent._id === agentId ? { ...agent, ...updatedData } : agent
       )
     );
     toast.success("AI Agent updated successfully!");

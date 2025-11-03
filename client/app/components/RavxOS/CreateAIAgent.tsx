@@ -199,6 +199,17 @@ export default function CreateAIAgentModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setFormData({
+      name: "",
+      personality: "",
+      tone: "",
+      gender: "male",
+      voice: "",
+      avatar: "",
+      description: "",
+      behaviors: [],
+      additionalSkills: [],
+    });
     if (
       !formData.name ||
       !formData.personality ||

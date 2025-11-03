@@ -1,5 +1,5 @@
 export interface AIAgent {
-  id: string;
+  _id: string;
   name: string;
   personality: string;
   tone: string;
