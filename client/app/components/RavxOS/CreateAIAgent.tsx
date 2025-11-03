@@ -213,8 +213,20 @@ export default function CreateAIAgentModal({
       toast.error("Please fill in all the required fields.");
       return;
     }
-    onCreate(formData);
-    console.log(formData);
+
+    const newFormData = {
+      name: formData.name,
+      personality: formData.personality,
+      tone: formData.tone,
+      gender: formData.gender,
+      voice: formData.voice,
+      avatar: formData.avatar,
+      description: formData.description,
+      behaviors: formData.behaviors,
+      skills: formData.additionalSkills,
+    };
+
+    onCreate(newFormData);
     setFormData({
       name: "",
       personality: "",

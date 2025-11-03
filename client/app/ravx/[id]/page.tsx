@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { toast, Zoom } from "react-toastify";
+import { Flip, toast, Zoom } from "react-toastify";
 import {
   FaBolt,
   FaPlus,
@@ -14,36 +14,66 @@ import {
 import { AIAgent } from "@/app/types/Type";
 import CreateAIAgentModal from "@/app/components/RavxOS/CreateAIAgent";
 import Dashboard from "@/app/components/RavxOS/Dashboard";
+import AxiosInstance from "@/config/Axios";
+import { useParams } from "next/navigation";
 
 export default function RavxArcLab() {
   const [activeTab, setActiveTab] = useState<"create" | "dashboard">("create");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [aiAgents, setAIAgents] = useState<AIAgent[]>([]);
 
-  const handleCreateAgent = (
-    agentData: Omit<AIAgent, "id" | "createdAt" | "url">
-  ) => {
-    const newAgent: AIAgent = {
-      ...agentData,
-      id: Math.random().toString(36).substr(2, 9),
-      createdAt: new Date(),
-      url: `https://ravx.ai/agent/${Math.random().toString(36).substr(2, 9)}`,
-    };
+  const parms = useParams();
+  const id = parms.id;
 
-    setAIAgents((prev) => [...prev, newAgent]);
-    setIsModalOpen(false);
-    toast.success("AI Agent created successfully!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-      transition: Zoom,
-    });
-    setActiveTab("dashboard");
+  const handleCreateAgent = async (agentData: Omit<AIAgent, "url">) => {
+    try {
+      const res = await AxiosInstance.post(`/ai/create/${id}`, agentData);
+
+      if (res.status === 200) {
+        setAIAgents((prev) => [...prev, res.data]);
+        setIsModalOpen(false);
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Flip,
+        });
+        setActiveTab("dashboard");
+      }
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message ||
+          error.response?.data?.errors.forEach((e: { msg: string }) => {
+            toast.error(e.msg, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              transition: Zoom,
+            });
+          }),
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Zoom,
+        }
+      );
+    }
   };
 
   const handleDeleteAgent = (agentId: string) => {
