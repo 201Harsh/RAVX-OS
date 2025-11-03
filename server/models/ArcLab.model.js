@@ -8,8 +8,7 @@ const ArcLabSchema = new mongoose.Schema({
     unqique: true,
   },
   UserId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    type: String,
     required: true,
   },
   CreatedAt: {

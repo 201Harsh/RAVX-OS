@@ -63,6 +63,55 @@ module.exports.GetArcLab = async (req, res) => {
   }
 };
 
+module.exports.GetArcLabByID = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const UserId = req.user._id;
+
+    if (!id) {
+      return res.status(404).json({
+        message: "ArcLab ID not found.",
+      });
+    }
+
+    if (!UserId) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    if (typeof id !== "string") {
+      return res.status(406).json({
+        message: "Invalid request parameters passed Only Strings Allowed!",
+      });
+    }
+
+    const ArcLab = await ArcLabModel.findById(id);
+
+    if (!ArcLab) {
+      return res.status(404).json({
+        message: "ArcLab not found.",
+      });
+    }
+
+    if (ArcLab.UserId !== UserId) {
+      return res.status(401).json({
+        message: "Only Creator can access this ArcLab.",
+        message1: "Creator Your own ArcLab to use it.",
+      });
+    }
+
+    res.status(200).json({
+      message: "ArcLab Fetched Successfully!",
+      ArcLab,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports.DeleteArcLab = async (req, res) => {
   try {
     const id = req.params.id;
