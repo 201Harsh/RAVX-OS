@@ -37,14 +37,14 @@ const AIAIgentSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  Behaviors: [
+  behaviors: [
     {
       type: String,
       required: true,
       trim: true,
     },
   ],
-  SKills: [
+  skills: [
     {
       type: String,
       required: true,

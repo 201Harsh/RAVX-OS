@@ -5,7 +5,7 @@ const AIAgentController = require("../controllers/ai.controller");
 const { body } = require("express-validator");
 
 router.post(
-  "/create",
+  "/create/:id",
   [
     body("name").isString().notEmpty().withMessage("Name is required"),
     body("gender").isString().notEmpty().withMessage("Gender is required"),
