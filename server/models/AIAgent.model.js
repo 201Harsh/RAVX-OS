@@ -64,3 +64,7 @@ const AIAIgentSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
+const AIAgent = mongoose.model("AIAgent", AIAIgentSchema);
+
+module.exports = AIAgent;
