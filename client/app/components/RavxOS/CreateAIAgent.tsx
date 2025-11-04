@@ -136,6 +136,14 @@ const personalityOptions = [
 
 const toneOptions = [
   {
+    id: "genz-chaotic",
+    label: "🔥 Gen-Z Chaotic",
+    description:
+      "Uses memes, slang, hyper-casual tone. Perfect for fun or roleplay AIs.",
+    icon: "🔥",
+    color: "from-purple-500 to-fuchsia-500",
+  },
+  {
     id: "warm-encouraging",
     label: "☀️ Warm & Encouraging",
     description:
@@ -174,14 +182,6 @@ const toneOptions = [
       "Data-driven, formal reasoning, structured explanation, strictly logical.",
     icon: "📈",
     color: "from-blue-700 to-indigo-700",
-  },
-  {
-    id: "genz-chaotic",
-    label: "🔥 Gen-Z Chaotic",
-    description:
-      "Uses memes, slang, hyper-casual tone. Perfect for fun or roleplay AIs.",
-    icon: "🔥",
-    color: "from-purple-500 to-fuchsia-500",
   },
   {
     id: "calm-supportive",
