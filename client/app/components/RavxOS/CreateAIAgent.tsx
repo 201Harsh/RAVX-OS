@@ -524,7 +524,7 @@ export default function CreateAIAgentModal({
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-black/40 border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 w-full max-w-6xl max-h-[95vh] overflow-y-auto scrollbar-small"
+            className="bg-black/70 border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 w-full max-w-6xl max-h-[95vh] overflow-y-auto scrollbar-small"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -584,13 +584,15 @@ export default function CreateAIAgentModal({
                           value: "male",
                           label: "♂️ Male",
                           desc: "Masculine voice and persona",
-                          color: "from-cyan-500 to-blue-500",
+                          text: "#20a7db",
+                          shadow: "cyan",
                         },
                         {
                           value: "female",
                           label: "♀️ Female",
                           desc: "Feminine voice and persona",
-                          color: "from-purple-500 to-pink-500",
+                          text: "#FF00FF",
+                          shadow: "pink",
                         },
                       ].map((gender) => (
                         <motion.div
@@ -599,7 +601,7 @@ export default function CreateAIAgentModal({
                           whileTap={{ scale: 0.98 }}
                           className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
                             formData.gender === gender.value
-                              ? `border-cyan-500 bg-linear-to-r ${gender.color} bg-opacity-20 shadow-lg shadow-cyan-500/25`
+                              ? `border-[${gender.text}] bg-opacity-20 shadow-lg shadow-${gender.shadow}-500/25`
                               : "border-gray-600 bg-gray-800/50 hover:border-cyan-400/50"
                           }`}
                           onClick={() => handleGenderChange(gender.value)}
@@ -609,7 +611,9 @@ export default function CreateAIAgentModal({
                               {gender.label}
                             </span>
                             {formData.gender === gender.value && (
-                              <FaCheck className="text-cyan-400 text-lg" />
+                              <FaCheck
+                                className={`text-[${gender.text}] text-lg`}
+                              />
                             )}
                           </div>
                           <p className="text-sm text-gray-300">{gender.desc}</p>
