@@ -315,8 +315,8 @@ export default function CreateAIAgentModal({
     formData.tone &&
     formData.gender &&
     formData.voice &&
-    formData.additionalSkills &&
-    formData.behaviors &&
+    formData.additionalSkills.length > 0 &&
+    formData.behaviors.length > 0 &&
     formData.description &&
     formData.avatar;
 
@@ -525,7 +525,7 @@ export default function CreateAIAgentModal({
                     <label className="block text-sm font-medium text-white mb-3">
                       AI Avatar Appearance
                     </label>
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                       {aiAvatars.map((avatar) => (
                         <motion.div
                           key={avatar.id}
@@ -762,7 +762,7 @@ export default function CreateAIAgentModal({
                   onClick={onClose}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex-1 bg-gray-800 text-white py-3 px-6 rounded-xl border-2 border-cyan-500/30 hover:border-cyan-400 hover:bg-cyan-500/10 transition-all duration-300 font-medium"
+                  className="flex-1 bg-gray-800 text-white py-3 px-6 rounded-xl border-2 border-cyan-500/30 hover:border-cyan-400 hover:bg-cyan-500/10 transition-all duration-300 font-medium cursor-pointer"
                 >
                   Cancel
                 </motion.button>
