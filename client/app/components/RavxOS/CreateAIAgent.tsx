@@ -2,7 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaTimes, FaCheck, FaPlus, FaUser, FaVolumeUp } from "react-icons/fa";
+import {
+  FaTimes,
+  FaCheck,
+  FaPlus,
+  FaUser,
+  FaVolumeUp,
+  FaRobot,
+  FaHeart,
+  FaBrain,
+  FaLightbulb,
+  FaGraduationCap,
+  FaDumbbell,
+  FaCode,
+  FaChartLine,
+  FaSmile,
+} from "react-icons/fa";
 import { toast } from "react-toastify";
 
 interface CreateAIAgentModalProps {
@@ -15,196 +30,243 @@ interface CreateAIAgentModalProps {
 const personalityOptions = [
   {
     id: "friendly-helper",
-    label: "Friendly Helper",
+    label: "🤝 Friendly Helper",
     description:
-      "Warm, approachable, and supportive — feels like a helpful friend.",
+      "Warm, approachable, and supportive — feels like a helpful friend who's always there for you.",
+    icon: <FaSmile className="text-yellow-400" />,
+    color: "from-yellow-500 to-orange-500",
   },
   {
     id: "professional-mentor",
-    label: "Professional Mentor",
+    label: "🎓 Professional Mentor",
     description:
-      "Guides users with wisdom, structured advice, and long-term growth focus.",
+      "Guides users with wisdom, structured advice, and long-term growth focus. Perfect for career development.",
+    icon: <FaGraduationCap className="text-blue-400" />,
+    color: "from-blue-500 to-cyan-500",
   },
   {
     id: "creative-writer",
-    label: "Creative Writer",
+    label: "🎨 Creative Writer",
     description:
-      "Great with storytelling, brainstorming, and turning ideas into content.",
+      "Great with storytelling, brainstorming, and turning ideas into compelling content. Your creative partner.",
+    icon: <FaLightbulb className="text-purple-400" />,
+    color: "from-purple-500 to-pink-500",
   },
   {
     id: "study-buddy",
-    label: "Study Buddy",
+    label: "📚 Study Buddy",
     description:
-      "Helps with learning, explaining concepts, and keeping the user accountable.",
+      "Helps with learning, explaining complex concepts, and keeping you accountable. Your perfect study partner.",
+    icon: <FaBrain className="text-green-400" />,
+    color: "from-green-500 to-emerald-500",
   },
   {
     id: "fitness-coach",
-    label: "Fitness Coach",
+    label: "💪 Fitness Coach",
     description:
-      "Motivates, tracks progress, and gives mental + physical health tips.",
+      "Motivates, tracks progress, and gives mental + physical health tips. Your personal wellness guide.",
+    icon: <FaDumbbell className="text-red-400" />,
+    color: "from-red-500 to-orange-500",
   },
   {
     id: "emotional-companion",
-    label: "Emotional Companion",
+    label: "💖 Emotional Companion",
     description:
-      "Listens, supports emotionally, responds with empathy and care.",
+      "Listens, supports emotionally, responds with empathy and care. Always here to understand you.",
+    icon: <FaHeart className="text-pink-400" />,
+    color: "from-pink-500 to-rose-500",
   },
   {
     id: "tech-assistant",
-    label: "Tech Assistant",
+    label: "💻 Tech Assistant",
     description:
-      "Good at coding help, debugging, and breaking down technical concepts.",
+      "Good at coding help, debugging, and breaking down technical concepts. Your coding companion.",
+    icon: <FaCode className="text-cyan-400" />,
+    color: "from-cyan-500 to-blue-500",
   },
   {
     id: "business-strategist",
-    label: "Business Strategist",
+    label: "📊 Business Strategist",
     description:
-      "Gives structured insights on growth, decisions, planning, and strategy.",
+      "Gives structured insights on growth, decisions, planning, and strategy. Your business advisor.",
+    icon: <FaChartLine className="text-indigo-400" />,
+    color: "from-indigo-500 to-purple-500",
   },
 ];
 
 const toneOptions = [
   {
     id: "calm-supportive",
-    label: "Calm & Supportive",
+    label: "🌊 Calm & Supportive",
     description:
-      "Gentle, patient, and reassuring — ideal for guidance and emotional safety.",
+      "Gentle, patient, and reassuring — ideal for guidance and emotional safety. Like a trusted friend.",
+    icon: "🌊",
+    color: "from-blue-400 to-cyan-400",
   },
   {
     id: "energetic-motivational",
-    label: "Energetic & Motivational",
+    label: "⚡ Energetic & Motivational",
     description:
-      "Hype tone, uplifting responses, keeps the user moving forward.",
+      "Hype tone, uplifting responses, keeps you moving forward. Perfect for productivity and fitness goals!",
+    icon: "⚡",
+    color: "from-yellow-500 to-orange-500",
   },
   {
     id: "professional-formal",
-    label: "Professional & Formal",
+    label: "💼 Professional & Formal",
     description:
-      "Clear, structured, corporate-friendly language — no slang or emojis.",
+      "Clear, structured, corporate-friendly language — no slang or emojis. Ideal for business contexts.",
+    icon: "💼",
+    color: "from-gray-500 to-gray-700",
   },
   {
     id: "fun-casual",
-    label: "Fun & Casual",
+    label: "😄 Fun & Casual",
     description:
-      "Light, friendly, uses emojis, makes small jokes and keeps things informal.",
+      "Light, friendly, uses emojis, makes small jokes and keeps things informal. Like chatting with a friend!",
+    icon: "😄",
+    color: "from-green-400 to-emerald-400",
   },
   {
     id: "short-direct",
-    label: "Short & Direct",
+    label: "🎯 Short & Direct",
     description:
-      "Gives fast, concise answers with no extra fluff or paragraphs.",
+      "Fast, concise answers with no extra fluff. Get straight to the point without unnecessary details.",
+    icon: "🎯",
+    color: "from-red-400 to-orange-400",
   },
   {
     id: "deep-reflective",
-    label: "Deep & Reflective",
-    description: "Philosophical, thoughtful, asks introspective questions.",
+    label: "🌌 Deep & Reflective",
+    description:
+      "Philosophical, thoughtful, asks introspective questions. For meaningful conversations and insights.",
+    icon: "🌌",
+    color: "from-purple-500 to-indigo-500",
   },
 ];
 
 const behaviorOptions = [
-  "Greets user by name",
-  "Asks follow-up questions automatically",
-  "Summarizes long messages before replying",
-  "Suggests improvements without being asked",
-  "Learns and adapts to user preferences",
-  "Keeps responses short unless asked to expand",
-  "Tracks user goals over time",
-  "Uses emojis when appropriate",
-  "Offers alternatives instead of just answers",
-  "Detects confusion and explains more simply",
+  "👋 Greets user by name",
+  "❓ Asks follow-up questions",
+  "📝 Summarizes long messages",
+  "💡 Suggests improvements",
+  "🧠 Learns user preferences",
+  "⚡ Keeps responses short",
+  "🎯 Tracks user goals",
+  "😊 Uses emojis appropriately",
+  "🔄 Offers alternatives",
+  "🤔 Explains simply",
 ];
 
 const skillOptions = [
-  "Content writing & rewriting",
-  "Research and fact-finding",
-  "Task planning & productivity help",
-  "Coding assistance & debugging",
-  "Mental wellness conversation support",
-  "Resume and career guidance",
-  "Brainstorming creative ideas",
-  "Study explanations and tutoring",
-  "Social media caption & post writing",
-  "Reminder and schedule management",
+  "✍️ Content writing",
+  "🔍 Research",
+  "📅 Task planning",
+  "💻 Coding help",
+  "🧘 Mental wellness",
+  "💼 Career guidance",
+  "💡 Brainstorming",
+  "🎓 Study help",
+  "📱 Social media",
+  "⏰ Reminders",
 ];
 
 const maleVoices = [
   {
     id: "male-1",
-    label: "Deep Command",
-    description: "Authoritative and clear",
+    label: "🎙️ Deep Command",
+    description: "Authoritative and clear - perfect for leadership roles",
+    icon: "🎙️",
   },
-  { id: "male-2", label: "Warm Mentor", description: "Friendly and guiding" },
+  {
+    id: "male-2",
+    label: "👨‍🏫 Warm Mentor",
+    description: "Friendly and guiding - like a trusted teacher",
+    icon: "👨‍🏫",
+  },
   {
     id: "male-3",
-    label: "Tech Analyst",
-    description: "Precise and professional",
+    label: "💻 Tech Analyst",
+    description: "Precise and professional - ideal for technical topics",
+    icon: "💻",
   },
   {
     id: "male-4",
-    label: "Cyber Narrator",
-    description: "Mysterious and engaging",
+    label: "🌙 Cyber Narrator",
+    description: "Mysterious and engaging - great for storytelling",
+    icon: "🌙",
   },
 ];
 
 const femaleVoices = [
   {
     id: "female-1",
-    label: "Crystal Clear",
-    description: "Warm and articulate",
+    label: "💎 Crystal Clear",
+    description: "Warm and articulate - perfect for clear communication",
+    icon: "💎",
   },
   {
     id: "female-2",
-    label: "Tech Assistant",
-    description: "Efficient and helpful",
+    label: "🤖 Tech Assistant",
+    description: "Efficient and helpful - ideal for productivity tasks",
+    icon: "🤖",
   },
   {
     id: "female-3",
-    label: "Neon Guide",
-    description: "Energetic and friendly",
+    label: "🌈 Neon Guide",
+    description: "Energetic and friendly - great for creative projects",
+    icon: "🌈",
   },
   {
     id: "female-4",
-    label: "Quantum Voice",
-    description: "Calm and intelligent",
+    label: "🔮 Quantum Voice",
+    description: "Calm and intelligent - perfect for deep conversations",
+    icon: "🔮",
   },
 ];
 
 const aiAvatars = [
   {
     id: "avatar-1",
-    label: "Cyber Male",
+    label: "🤖 Cyber Male",
     image: "/api/placeholder/80/80",
     gender: "male",
+    emoji: "🤖",
   },
   {
     id: "avatar-2",
-    label: "Neon Female",
+    label: "👩‍💻 Neon Female",
     image: "/api/placeholder/80/80",
     gender: "female",
+    emoji: "👩‍💻",
   },
   {
     id: "avatar-3",
-    label: "Quantum Analyst",
+    label: "🔬 Quantum Analyst",
     image: "/api/placeholder/80/80",
     gender: "male",
+    emoji: "🔬",
   },
   {
     id: "avatar-4",
-    label: "Synth Operator",
+    label: "🎛️ Synth Operator",
     image: "/api/placeholder/80/80",
     gender: "female",
+    emoji: "🎛️",
   },
   {
     id: "avatar-5",
-    label: "Data Explorer",
+    label: "🌐 Data Explorer",
     image: "/api/placeholder/80/80",
     gender: "male",
+    emoji: "🌐",
   },
   {
     id: "avatar-6",
-    label: "Binary Assistant",
+    label: "💫 Binary Assistant",
     image: "/api/placeholder/80/80",
     gender: "female",
+    emoji: "💫",
   },
 ];
 
@@ -243,7 +305,9 @@ export default function CreateAIAgentModal({
       formData.behaviors.length === 0 ||
       formData.additionalSkills.length === 0
     ) {
-      toast.error("Please fill in all the required fields.");
+      toast.error(
+        "Please fill in all the required fields and select at least one behavior and skill."
+      );
       return;
     }
 
@@ -326,7 +390,7 @@ export default function CreateAIAgentModal({
     setFormData((prev) => ({
       ...prev,
       gender,
-      voice: "", // Reset voice when gender changes
+      voice: "",
     }));
     setSelectedVoices(gender === "female" ? femaleVoices : maleVoices);
   };
@@ -335,7 +399,7 @@ export default function CreateAIAgentModal({
     setFormData((prev) => ({
       ...prev,
       avatar: avatarId,
-      gender: gender, // Auto-set gender based on avatar selection
+      gender: gender,
     }));
     setSelectedVoices(gender === "female" ? femaleVoices : maleVoices);
   };
@@ -365,17 +429,23 @@ export default function CreateAIAgentModal({
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-gray-900 border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 w-full max-w-7xl max-h-[95vh] overflow-y-auto scrollbar-small"
+            className="bg-gray-900 border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 w-full max-w-6xl max-h-[95vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-cyan-500/20 sticky top-0 bg-gray-900 rounded-t-2xl">
-              <h2 className="text-2xl font-bold bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                Create New AI Agent
-              </h2>
+              <div>
+                <h2 className="text-2xl font-bold bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                  🤖 Create Your AI Agent
+                </h2>
+                <p className="text-sm text-gray-400 mt-1">
+                  Design a unique AI companion with personality, voice, and
+                  specialized skills
+                </p>
+              </div>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110"
+                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110 p-2"
               >
                 <FaTimes className="text-xl" />
               </button>
@@ -383,13 +453,14 @@ export default function CreateAIAgentModal({
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="p-6">
-              {/* Grid Layout for Desktop */}
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-                {/* Left Column */}
+              {/* Grid Layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Left Column - Core Settings */}
                 <div className="space-y-6">
                   {/* Agent Name */}
                   <div>
-                    <label className="block text-sm font-medium text-white mb-2">
+                    <label className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                      <FaRobot className="text-cyan-400" />
                       AI Agent Name *
                     </label>
                     <input
@@ -402,79 +473,73 @@ export default function CreateAIAgentModal({
                         }))
                       }
                       className="w-full bg-gray-800 border-2 border-cyan-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
-                      placeholder="Enter your AI agent's name"
+                      placeholder="Give your AI agent a unique name..."
                       required
                     />
                   </div>
 
                   {/* AI Gender */}
                   <div>
-                    <label className="block text-sm font-medium text-white mb-3">
-                      AI Gender *
+                    <label className="block text-sm font-semibold text-white mb-3">
+                      👤 AI Gender *
                     </label>
                     <div className="grid grid-cols-2 gap-3">
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                          formData.gender === "male"
-                            ? "border-cyan-500 bg-cyan-500/10 shadow-lg shadow-cyan-500/25"
-                            : "border-cyan-500/30 bg-gray-800/50 hover:border-cyan-400/50"
-                        }`}
-                        onClick={() => handleGenderChange("male")}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-semibold text-white">Male</span>
-                          {formData.gender === "male" && (
-                            <FaCheck className="text-cyan-400" />
-                          )}
-                        </div>
-                        <p className="text-sm text-gray-400">
-                          Masculine voice and persona
-                        </p>
-                      </motion.div>
-
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                          formData.gender === "female"
-                            ? "border-purple-500 bg-purple-500/10 shadow-lg shadow-purple-500/25"
-                            : "border-purple-500/30 bg-gray-800/50 hover:border-purple-400/50"
-                        }`}
-                        onClick={() => handleGenderChange("female")}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-semibold text-white">
-                            Female
-                          </span>
-                          {formData.gender === "female" && (
-                            <FaCheck className="text-purple-400" />
-                          )}
-                        </div>
-                        <p className="text-sm text-gray-400">
-                          Feminine voice and persona
-                        </p>
-                      </motion.div>
+                      {[
+                        {
+                          value: "male",
+                          label: "♂️ Male",
+                          desc: "Masculine voice and persona",
+                          color: "from-cyan-500 to-blue-500",
+                        },
+                        {
+                          value: "female",
+                          label: "♀️ Female",
+                          desc: "Feminine voice and persona",
+                          color: "from-purple-500 to-pink-500",
+                        },
+                      ].map((gender) => (
+                        <motion.div
+                          key={gender.value}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                            formData.gender === gender.value
+                              ? `border-cyan-500 bg-linear-to-r ${gender.color} bg-opacity-20 shadow-lg shadow-cyan-500/25`
+                              : "border-gray-600 bg-gray-800/50 hover:border-cyan-400/50"
+                          }`}
+                          onClick={() => handleGenderChange(gender.value)}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-semibold text-white text-lg">
+                              {gender.label}
+                            </span>
+                            {formData.gender === gender.value && (
+                              <FaCheck className="text-cyan-400 text-lg" />
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-300">{gender.desc}</p>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
 
                   {/* Voice Selection */}
                   {formData.gender && (
                     <div>
-                      <label className="block text-sm font-medium text-white mb-3">
+                      <label className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                        <FaVolumeUp className="text-blue-400" />
                         Voice Selection *
                       </label>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 gap-3">
                         {selectedVoices.map((voice) => (
                           <motion.div
                             key={voice.id}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.99 }}
                             className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
                               formData.voice === voice.id
                                 ? "border-blue-500 bg-blue-500/10 shadow-lg shadow-blue-500/25"
-                                : "border-blue-500/30 bg-gray-800/50 hover:border-blue-400/50"
+                                : "border-gray-600 bg-gray-800/50 hover:border-blue-400/50"
                             }`}
                             onClick={() =>
                               setFormData((prev) => ({
@@ -483,80 +548,36 @@ export default function CreateAIAgentModal({
                               }))
                             }
                           >
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="flex items-center space-x-2">
-                                <FaVolumeUp
-                                  className={`text-sm ${
-                                    formData.voice === voice.id
-                                      ? "text-blue-400"
-                                      : "text-gray-400"
-                                  }`}
-                                />
-                                <span className="font-semibold text-white">
-                                  {voice.label}
-                                </span>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <div>
+                                  <div className="font-semibold text-white">
+                                    {voice.label}
+                                  </div>
+                                  <p className="text-sm text-gray-300">
+                                    {voice.description}
+                                  </p>
+                                </div>
                               </div>
                               {formData.voice === voice.id && (
-                                <FaCheck className="text-blue-400" />
+                                <FaCheck className="text-blue-400 text-lg" />
                               )}
                             </div>
-                            <p className="text-sm text-gray-400">
-                              {voice.description}
-                            </p>
                           </motion.div>
                         ))}
                       </div>
                     </div>
                   )}
-
-                  {/* Personality */}
-                  <div>
-                    <label className="block text-sm font-medium text-white mb-3">
-                      Personality *
-                    </label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {personalityOptions.map((option) => (
-                        <motion.div
-                          key={option.id}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                            formData.personality === option.id
-                              ? "border-cyan-500 bg-cyan-500/10 shadow-lg shadow-cyan-500/25"
-                              : "border-cyan-500/30 bg-gray-800/50 hover:border-cyan-400/50"
-                          }`}
-                          onClick={() =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              personality: option.id,
-                            }))
-                          }
-                        >
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="font-semibold text-white">
-                              {option.label}
-                            </span>
-                            {formData.personality === option.id && (
-                              <FaCheck className="text-cyan-400" />
-                            )}
-                          </div>
-                          <p className="text-sm text-gray-400">
-                            {option.description}
-                          </p>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
                 </div>
 
-                {/* Right Column */}
+                {/* Right Column - Personality & Appearance */}
                 <div className="space-y-6">
                   {/* AI Avatar Selection */}
                   <div>
-                    <label className="block text-sm font-medium text-white mb-3">
-                      AI Avatar Appearance
+                    <label className="block text-sm font-semibold text-white mb-3">
+                      🎭 AI Avatar Appearance *
                     </label>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-3 gap-3">
                       {aiAvatars.map((avatar) => (
                         <motion.div
                           key={avatar.id}
@@ -571,11 +592,9 @@ export default function CreateAIAgentModal({
                             handleAvatarSelect(avatar.id, avatar.gender)
                           }
                         >
-                          <div className="flex flex-col items-center">
-                            <div className="w-16 h-16 bg-linear-to-br from-cyan-400 to-purple-500 rounded-full flex items-center justify-center mb-2">
-                              <FaUser className="text-white text-lg" />
-                            </div>
-                            <span className="text-xs font-medium text-white text-center">
+                          <div className="flex flex-col items-center text-center">
+                            <div className="text-2xl mb-2">{avatar.emoji}</div>
+                            <span className="text-xs font-medium text-white">
                               {avatar.label}
                             </span>
                             <span
@@ -595,8 +614,8 @@ export default function CreateAIAgentModal({
 
                   {/* Brief Description */}
                   <div>
-                    <label className="block text-sm font-medium text-white mb-2">
-                      Brief Description
+                    <label className="block text-sm font-semibold text-white mb-3">
+                      📝 Brief Description *
                     </label>
                     <textarea
                       value={formData.description}
@@ -607,193 +626,261 @@ export default function CreateAIAgentModal({
                         }))
                       }
                       className="w-full bg-gray-800 border-2 border-cyan-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300 resize-none"
-                      placeholder="Describe your AI agent's purpose, characteristics, and how it should interact..."
-                      rows={4}
+                      placeholder="Describe your AI agent's purpose, personality traits, and how it should interact with users..."
+                      rows={3}
+                      required
                     />
                   </div>
+                </div>
+              </div>
 
-                  {/* Tone */}
-                  <div>
-                    <label className="block text-sm font-medium text-white mb-3">
-                      Tone *
-                    </label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {toneOptions.map((option) => (
-                        <motion.div
-                          key={option.id}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                            formData.tone === option.id
-                              ? "border-blue-500 bg-blue-500/10 shadow-lg shadow-blue-500/25"
-                              : "border-blue-500/30 bg-gray-800/50 hover:border-blue-400/50"
-                          }`}
-                          onClick={() =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              tone: option.id,
-                            }))
-                          }
-                        >
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="font-semibold text-white">
-                              {option.label}
-                            </span>
-                            {formData.tone === option.id && (
-                              <FaCheck className="text-blue-400" />
-                            )}
+              {/* Personality & Tone Grid */}
+              <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Personality */}
+                <div>
+                  <label className="block text-sm font-semibold text-white mb-4">
+                    🧠 Core Personality *
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {personalityOptions.map((option) => (
+                      <motion.div
+                        key={option.id}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                          formData.personality === option.id
+                            ? "border-cyan-500 bg-cyan-500/10 shadow-lg shadow-cyan-500/25"
+                            : "border-gray-600 bg-gray-800/50 hover:border-cyan-400/50"
+                        }`}
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            personality: option.id,
+                          }))
+                        }
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-semibold text-white text-sm">
+                                {option.label}
+                              </span>
+                              {formData.personality === option.id && (
+                                <FaCheck className="text-cyan-400" />
+                              )}
+                            </div>
+                            <p className="text-xs text-gray-300 leading-relaxed">
+                              {option.description}
+                            </p>
                           </div>
-                          <p className="text-sm text-gray-400">
-                            {option.description}
-                          </p>
-                        </motion.div>
-                      ))}
-                    </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Tone */}
+                <div>
+                  <label className="block text-sm font-semibold text-white mb-4">
+                    🎵 Communication Tone *
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {toneOptions.map((option) => (
+                      <motion.div
+                        key={option.id}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                          formData.tone === option.id
+                            ? "border-blue-500 bg-blue-500/10 shadow-lg shadow-blue-500/25"
+                            : "border-gray-600 bg-gray-800/50 hover:border-blue-400/50"
+                        }`}
+                        onClick={() =>
+                          setFormData((prev) => ({ ...prev, tone: option.id }))
+                        }
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-semibold text-white text-sm">
+                                {option.label}
+                              </span>
+                              {formData.tone === option.id && (
+                                <FaCheck className="text-blue-400" />
+                              )}
+                            </div>
+                            <p className="text-xs text-gray-300 leading-relaxed">
+                              {option.description}
+                            </p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
                 </div>
               </div>
 
-              {/* Full Width Sections */}
-              <div className="mt-8 space-y-6">
+              {/* Behaviors & Skills */}
+              <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Behaviors */}
                 <div>
-                  <label className="block text-sm font-medium text-white mb-3">
-                    Behaviors
+                  <label className="block text-sm font-semibold text-white mb-3">
+                    🔄 AI Behaviors * (Select at least one)
                   </label>
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap gap-2">
-                      {behaviorOptions.map((behavior) => (
-                        <motion.button
-                          key={behavior}
-                          type="button"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-                            formData.behaviors.includes(behavior)
-                              ? "bg-cyan-600 text-white shadow-lg shadow-cyan-500/25"
-                              : "bg-gray-800 text-gray-300 hover:bg-cyan-500/20 border border-cyan-500/30"
-                          }`}
-                          onClick={() => toggleBehavior(behavior)}
-                        >
-                          {behavior}
-                        </motion.button>
-                      ))}
-                    </div>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={customBehavior}
-                        onChange={(e) => setCustomBehavior(e.target.value)}
-                        placeholder="Add custom behavior..."
-                        className="flex-1 bg-gray-800 border-2 border-cyan-500/30 rounded-xl px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
-                        onKeyPress={(e) =>
-                          e.key === "Enter" &&
-                          (e.preventDefault(), addCustomBehavior())
-                        }
-                      />
+                  <div className="flex flex-wrap gap-2">
+                    {behaviorOptions.map((behavior) => (
                       <motion.button
+                        key={behavior}
                         type="button"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={addCustomBehavior}
-                        className="bg-cyan-600 text-white px-4 py-2 rounded-xl border-2 border-cyan-500/50 hover:bg-cyan-500 transition-all duration-300 shadow-lg shadow-cyan-500/25"
+                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+                          formData.behaviors.includes(behavior)
+                            ? "bg-cyan-600 text-white shadow-lg shadow-cyan-500/25 border-2 border-cyan-500"
+                            : "bg-gray-800 text-gray-300 hover:bg-cyan-500/20 border-2 border-cyan-500/30"
+                        }`}
+                        onClick={() => toggleBehavior(behavior)}
                       >
-                        <FaPlus />
+                        {formData.behaviors.includes(behavior) && (
+                          <FaCheck className="text-xs" />
+                        )}
+                        {behavior}
                       </motion.button>
-                    </div>
+                    ))}
+                  </div>
+                  <div className="flex gap-2 mt-3">
+                    <input
+                      type="text"
+                      value={customBehavior}
+                      onChange={(e) => setCustomBehavior(e.target.value)}
+                      placeholder="Add custom behavior..."
+                      className="flex-1 bg-gray-800 border-2 border-cyan-500/30 rounded-xl px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 text-sm"
+                      onKeyPress={(e) =>
+                        e.key === "Enter" &&
+                        (e.preventDefault(), addCustomBehavior())
+                      }
+                    />
+                    <motion.button
+                      type="button"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={addCustomBehavior}
+                      className="bg-cyan-600 text-white px-3 py-2 rounded-xl border-2 border-cyan-500/50 hover:bg-cyan-500 transition-all duration-300"
+                    >
+                      <FaPlus />
+                    </motion.button>
                   </div>
                 </div>
 
-                {/* Additional Skills */}
+                {/* Skills */}
                 <div>
-                  <label className="block text-sm font-medium text-white mb-3">
-                    Additional Skills
+                  <label className="block text-sm font-semibold text-white mb-3">
+                    🛠️ Additional Skills * (Select at least one)
                   </label>
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap gap-2">
-                      {skillOptions.map((skill) => (
-                        <motion.button
-                          key={skill}
-                          type="button"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-                            formData.additionalSkills.includes(skill)
-                              ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25"
-                              : "bg-gray-800 text-gray-300 hover:bg-blue-500/20 border border-blue-500/30"
-                          }`}
-                          onClick={() => toggleSkill(skill)}
-                        >
-                          {skill}
-                        </motion.button>
-                      ))}
-                    </div>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={customSkill}
-                        onChange={(e) => setCustomSkill(e.target.value)}
-                        placeholder="Add custom skill..."
-                        className="flex-1 bg-gray-800 border-2 border-blue-500/30 rounded-xl px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:shadow-lg focus:shadow-blue-500/20 transition-all duration-300"
-                        onKeyPress={(e) =>
-                          e.key === "Enter" &&
-                          (e.preventDefault(), addCustomSkill())
-                        }
-                      />
+                  <div className="flex flex-wrap gap-2">
+                    {skillOptions.map((skill) => (
                       <motion.button
+                        key={skill}
                         type="button"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={addCustomSkill}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-xl border-2 border-blue-500/50 hover:bg-blue-500 transition-all duration-300 shadow-lg shadow-blue-500/25"
+                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+                          formData.additionalSkills.includes(skill)
+                            ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25 border-2 border-blue-500"
+                            : "bg-gray-800 text-gray-300 hover:bg-blue-500/20 border-2 border-blue-500/30"
+                        }`}
+                        onClick={() => toggleSkill(skill)}
                       >
-                        <FaPlus />
+                        {formData.additionalSkills.includes(skill) && (
+                          <FaCheck className="text-xs" />
+                        )}
+                        {skill}
                       </motion.button>
-                    </div>
+                    ))}
+                  </div>
+                  <div className="flex gap-2 mt-3">
+                    <input
+                      type="text"
+                      value={customSkill}
+                      onChange={(e) => setCustomSkill(e.target.value)}
+                      placeholder="Add custom skill..."
+                      className="flex-1 bg-gray-800 border-2 border-blue-500/30 rounded-xl px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 text-sm"
+                      onKeyPress={(e) =>
+                        e.key === "Enter" &&
+                        (e.preventDefault(), addCustomSkill())
+                      }
+                    />
+                    <motion.button
+                      type="button"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={addCustomSkill}
+                      className="bg-blue-600 text-white px-3 py-2 rounded-xl border-2 border-blue-500/50 hover:bg-blue-500 transition-all duration-300"
+                    >
+                      <FaPlus />
+                    </motion.button>
                   </div>
                 </div>
-
-                {/* Selected Items Display */}
-                {(formData.behaviors.length > 0 ||
-                  formData.additionalSkills.length > 0) && (
-                  <div className="bg-gray-800/50 rounded-xl p-4 border-2 border-cyan-500/20">
-                    <h3 className="font-semibold text-white mb-2">
-                      Selected Features:
-                    </h3>
-                    <div className="space-y-2">
-                      {formData.behaviors.length > 0 && (
-                        <div>
-                          <span className="text-sm text-cyan-400">
-                            Behaviors:{" "}
-                          </span>
-                          <span className="text-sm text-gray-300">
-                            {formData.behaviors.join(", ")}
-                          </span>
-                        </div>
-                      )}
-                      {formData.additionalSkills.length > 0 && (
-                        <div>
-                          <span className="text-sm text-blue-400">
-                            Skills:{" "}
-                          </span>
-                          <span className="text-sm text-gray-300">
-                            {formData.additionalSkills.join(", ")}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
               </div>
 
-              {/* Actions - Full Width */}
-              <div className="flex gap-3 pt-8 mt-6 border-t border-cyan-500/20">
+              {/* Selected Features Summary */}
+              {(formData.behaviors.length > 0 ||
+                formData.additionalSkills.length > 0) && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 bg-gray-800/50 rounded-xl p-4 border-2 border-cyan-500/20"
+                >
+                  <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
+                    📋 Selected Features
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {formData.behaviors.length > 0 && (
+                      <div>
+                        <span className="text-sm text-cyan-400 font-medium">
+                          Behaviors:
+                        </span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {formData.behaviors.map((behavior, index) => (
+                            <span
+                              key={index}
+                              className="text-xs bg-cyan-500/20 text-cyan-300 px-2 py-1 rounded"
+                            >
+                              {behavior}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {formData.additionalSkills.length > 0 && (
+                      <div>
+                        <span className="text-sm text-blue-400 font-medium">
+                          Skills:
+                        </span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {formData.additionalSkills.map((skill, index) => (
+                            <span
+                              key={index}
+                              className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Actions */}
+              <div className="flex gap-4 pt-8 mt-6 border-t border-cyan-500/20">
                 <motion.button
                   type="button"
                   onClick={onClose}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex-1 bg-gray-800 text-white py-3 px-6 rounded-xl border-2 border-cyan-500/30 hover:border-cyan-400 hover:bg-cyan-500/10 transition-all duration-300 font-medium cursor-pointer"
+                  className="flex-1 bg-gray-800 text-white py-4 px-6 rounded-xl border-2 border-gray-600 hover:border-cyan-400 hover:bg-cyan-500/10 transition-all duration-300 font-semibold cursor-pointer"
                 >
                   Cancel
                 </motion.button>
@@ -802,13 +889,13 @@ export default function CreateAIAgentModal({
                   whileHover={{ scale: isFormValid ? 1.02 : 1 }}
                   whileTap={{ scale: isFormValid ? 0.98 : 1 }}
                   disabled={!isFormValid}
-                  className={`flex-1 py-3 px-6 rounded-xl border-2 font-medium shadow-lg transition-all duration-300 ${
+                  className={`flex-1 py-4 px-6 rounded-xl border-2 font-semibold shadow-lg transition-all duration-300 ${
                     isFormValid
                       ? "bg-linear-to-r from-cyan-600 to-blue-600 text-white border-cyan-400/50 hover:from-cyan-500 hover:to-blue-500 shadow-cyan-500/25 cursor-pointer"
                       : "bg-gray-700 text-gray-400 border-gray-600/50 cursor-not-allowed"
                   }`}
                 >
-                  Create AI Agent
+                  {isFormValid ? "🚀 Create AI Agent" : "Complete All Fields"}
                 </motion.button>
               </div>
             </form>
