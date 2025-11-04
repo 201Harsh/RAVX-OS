@@ -29,7 +29,6 @@ export default function RavxArcLab() {
   const handleCreateAgent = async (agentData: Omit<AIAgent, "url">) => {
     try {
       const res = await AxiosInstance.post(`/ai/create/${id}`, agentData);
-
       if (res.status === 200) {
         const AIAgent = res.data.AIAgent;
         setAIAgents((prev) => [...prev, AIAgent]);
@@ -79,9 +78,37 @@ export default function RavxArcLab() {
     }
   };
 
-  const handleDeleteAgent = (agentId: string) => {
-    setAIAgents((prev) => prev.filter((agent) => agent._id !== agentId));
-    toast.success("AI Agent deleted successfully!");
+  const handleDeleteAgent = async (agentId: string) => {
+    try {
+      const res = await AxiosInstance.delete(`/ai/del/${agentId}`);
+      if (res.status === 200) {
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Zoom,
+        });
+        setAIAgents((prev) => prev.filter((a) => a._id !== agentId));
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Zoom,
+      });
+    }
   };
 
   const handleRunAgent = (agentId: string) => {
@@ -101,7 +128,6 @@ export default function RavxArcLab() {
   const handleGetAIAgents = async () => {
     try {
       const res = await AxiosInstance.get(`/ai/get/${id}`);
-
       if (res.status === 200) {
         const AIAgents = res.data.AIAgent;
         setAIAgents((prev) => [...prev, ...AIAgents]);
