@@ -7,7 +7,7 @@ module.exports.CreateAIAgent = async ({
   gender,
   voice,
   personality,
-  avatar,
+  engineModel,
   description,
   tone,
   behaviors,
@@ -20,7 +20,7 @@ module.exports.CreateAIAgent = async ({
     !gender ||
     !voice ||
     !personality ||
-    !avatar ||
+    !engineModel ||
     !description ||
     !tone ||
     !behaviors ||
@@ -48,7 +48,7 @@ module.exports.CreateAIAgent = async ({
     gender,
     voice,
     personality,
-    avatar,
+    engineModel,
     description,
     tone,
     behaviors,

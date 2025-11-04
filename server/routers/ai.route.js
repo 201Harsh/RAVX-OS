@@ -14,7 +14,7 @@ router.post(
       .isString()
       .notEmpty()
       .withMessage("Personality is required"),
-    body("avatar").isString().notEmpty().withMessage("Avatar is required"),
+    body("engineModel").isString().notEmpty().withMessage("engineModel is required"),
     body("description")
       .isString()
       .notEmpty()

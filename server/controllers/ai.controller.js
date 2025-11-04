@@ -10,7 +10,7 @@ module.exports.CreateAIAgent = async (req, res) => {
       gender,
       voice,
       personality,
-      avatar,
+      engineModel,
       description,
       tone,
       behaviors,
@@ -25,7 +25,7 @@ module.exports.CreateAIAgent = async (req, res) => {
       typeof gender !== "string" ||
       typeof voice !== "string" ||
       typeof personality !== "string" ||
-      typeof avatar !== "string" ||
+      typeof engineModel !== "string" ||
       typeof description !== "string" ||
       typeof tone !== "string"
     ) {
@@ -78,7 +78,7 @@ module.exports.CreateAIAgent = async (req, res) => {
       gender,
       voice,
       personality,
-      avatar,
+      engineModel,
       description,
       tone,
       behaviors,

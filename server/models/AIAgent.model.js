@@ -22,7 +22,7 @@ const AIAIgentSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  avatar: {
+  engineModel: {
     type: String,
     required: true,
     trim: true,
