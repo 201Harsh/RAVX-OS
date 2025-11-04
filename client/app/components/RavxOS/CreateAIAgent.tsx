@@ -17,6 +17,14 @@ import {
   FaCode,
   FaChartLine,
   FaSmile,
+  FaInfinity,
+  FaCalendarCheck,
+  FaPiggyBank,
+  FaSearch,
+  FaBullhorn,
+  FaBookOpen,
+  FaSpa,
+  FaLanguage,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -28,6 +36,46 @@ interface CreateAIAgentModalProps {
 }
 
 const personalityOptions = [
+  {
+    id: "ultimate-aio",
+    label: "🧠 AIO Intelligence",
+    description:
+      "A fully balanced agent that can assist in creativity, logic, productivity, learning, and emotional support. The ultimate all-round AI.",
+    icon: <FaInfinity className="text-white" />,
+    color: "from-slate-700 to-gray-900",
+  },
+  {
+    id: "emotional-companion",
+    label: "💖 Emotional Companion",
+    description:
+      "Listens, supports emotionally, responds with empathy and care. Always here to understand you.",
+    icon: <FaHeart className="text-pink-400" />,
+    color: "from-pink-500 to-rose-500",
+  },
+  {
+    id: "research-analyst",
+    label: "🔍 Research Analyst",
+    description:
+      "Finds, summarizes, compares, and analyzes information for you. Perfect for deep learning and decision-making.",
+    icon: <FaSearch className="text-blue-300" />,
+    color: "from-blue-600 to-indigo-600",
+  },
+  {
+    id: "brand-builder",
+    label: "🚀 Brand Builder",
+    description:
+      "Creates identity, voice, content strategy, and social media ideas for creators or startups.",
+    icon: <FaBullhorn className="text-pink-300" />,
+    color: "from-pink-500 to-rose-500",
+  },
+  {
+    id: "story-narrator",
+    label: "📖 Story Narrator",
+    description:
+      "Builds stories, characters, plots, dialogue, and lore. Ideal for authors, game devs, and roleplay AI.",
+    icon: <FaBookOpen className="text-orange-400" />,
+    color: "from-orange-500 to-amber-500",
+  },
   {
     id: "friendly-helper",
     label: "🤝 Friendly Helper",
@@ -69,12 +117,12 @@ const personalityOptions = [
     color: "from-red-500 to-orange-500",
   },
   {
-    id: "emotional-companion",
-    label: "💖 Emotional Companion",
+    id: "financial-advisor",
+    label: "💸 Financial Advisor",
     description:
-      "Listens, supports emotionally, responds with empathy and care. Always here to understand you.",
-    icon: <FaHeart className="text-pink-400" />,
-    color: "from-pink-500 to-rose-500",
+      "Smart with budgeting, money decisions, investing basics, and spending analysis. Helps you think long-term.",
+    icon: <FaPiggyBank className="text-lime-400" />,
+    color: "from-lime-500 to-green-500",
   },
   {
     id: "tech-assistant",
@@ -84,17 +132,57 @@ const personalityOptions = [
     icon: <FaCode className="text-cyan-400" />,
     color: "from-cyan-500 to-blue-500",
   },
-  {
-    id: "business-strategist",
-    label: "📊 Business Strategist",
-    description:
-      "Gives structured insights on growth, decisions, planning, and strategy. Your business advisor.",
-    icon: <FaChartLine className="text-indigo-400" />,
-    color: "from-indigo-500 to-purple-500",
-  },
 ];
 
 const toneOptions = [
+  {
+    id: "warm-encouraging",
+    label: "☀️ Warm & Encouraging",
+    description:
+      "Positive, gentle, reassuring tone — great for personal growth, learning, and emotional support.",
+    icon: "☀️",
+    color: "from-amber-400 to-yellow-500",
+  },
+  {
+    id: "sarcastic-humor",
+    label: "😏 Sarcastic & Humorous",
+    description:
+      "Playful teasing, witty replies, lightly sarcastic tone but still helpful. More personality, less robotic.",
+    icon: "😏",
+    color: "from-rose-400 to-pink-500",
+  },
+  {
+    id: "robotic-neutral",
+    label: "🤖 Robotic & Neutral",
+    description:
+      "No emotion, no emojis, pure logic and direct responses, machine-like tone.",
+    icon: "🤖",
+    color: "from-gray-600 to-gray-800",
+  },
+  {
+    id: "soft-emotional",
+    label: "💗 Soft & Emotional",
+    description:
+      "Speaks with empathy, emotional reasoning, comforting language.",
+    icon: "💗",
+    color: "from-pink-300 to-red-400",
+  },
+  {
+    id: "analytical-serious",
+    label: "📈 Analytical & Serious",
+    description:
+      "Data-driven, formal reasoning, structured explanation, strictly logical.",
+    icon: "📈",
+    color: "from-blue-700 to-indigo-700",
+  },
+  {
+    id: "genz-chaotic",
+    label: "🔥 Gen-Z Chaotic",
+    description:
+      "Uses memes, slang, hyper-casual tone. Perfect for fun or roleplay AIs.",
+    icon: "🔥",
+    color: "from-purple-500 to-fuchsia-500",
+  },
   {
     id: "calm-supportive",
     label: "🌊 Calm & Supportive",
