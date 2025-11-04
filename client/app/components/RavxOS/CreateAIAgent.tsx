@@ -6,7 +6,6 @@ import {
   FaTimes,
   FaCheck,
   FaPlus,
-  FaUser,
   FaVolumeUp,
   FaRobot,
   FaHeart,
@@ -15,16 +14,14 @@ import {
   FaGraduationCap,
   FaDumbbell,
   FaCode,
-  FaChartLine,
   FaSmile,
   FaInfinity,
-  FaCalendarCheck,
   FaPiggyBank,
   FaSearch,
   FaBullhorn,
   FaBookOpen,
-  FaSpa,
-  FaLanguage,
+  FaCrown,
+  FaFire,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -43,14 +40,8 @@ const personalityOptions = [
       "A fully balanced agent that can assist in creativity, logic, productivity, learning, and emotional support. The ultimate all-round AI.",
     icon: <FaInfinity className="text-white" />,
     color: "from-slate-700 to-gray-900",
-  },
-  {
-    id: "emotional-companion",
-    label: "💖 Emotional Companion",
-    description:
-      "Listens, supports emotionally, responds with empathy and care. Always here to understand you.",
-    icon: <FaHeart className="text-pink-400" />,
-    color: "from-pink-500 to-rose-500",
+    recommended: true,
+    badge: "🔥 MOST POPULAR",
   },
   {
     id: "research-analyst",
@@ -59,6 +50,16 @@ const personalityOptions = [
       "Finds, summarizes, compares, and analyzes information for you. Perfect for deep learning and decision-making.",
     icon: <FaSearch className="text-blue-300" />,
     color: "from-blue-600 to-indigo-600",
+  },
+  {
+    id: "tech-assistant",
+    label: "💻 Tech Assistant",
+    description:
+      "Good at coding help, debugging, and breaking down technical concepts. Your coding companion.",
+    icon: <FaCode className="text-cyan-400" />,
+    color: "from-cyan-500 to-blue-500",
+    recommended: true,
+    badge: "📌 Code-Focused Agent",
   },
   {
     id: "brand-builder",
@@ -75,6 +76,16 @@ const personalityOptions = [
       "Builds stories, characters, plots, dialogue, and lore. Ideal for authors, game devs, and roleplay AI.",
     icon: <FaBookOpen className="text-orange-400" />,
     color: "from-orange-500 to-amber-500",
+  },
+  {
+    id: "emotional-companion",
+    label: "💖 Emotional Companion",
+    description:
+      "Listens, supports emotionally, responds with empathy and care. Always here to understand you.",
+    icon: <FaHeart className="text-pink-400" />,
+    color: "from-pink-500 to-rose-500",
+    recommended: true,
+    badge: "💘 Love-Centric AI Companion",
   },
   {
     id: "friendly-helper",
@@ -124,14 +135,6 @@ const personalityOptions = [
     icon: <FaPiggyBank className="text-lime-400" />,
     color: "from-lime-500 to-green-500",
   },
-  {
-    id: "tech-assistant",
-    label: "💻 Tech Assistant",
-    description:
-      "Good at coding help, debugging, and breaking down technical concepts. Your coding companion.",
-    icon: <FaCode className="text-cyan-400" />,
-    color: "from-cyan-500 to-blue-500",
-  },
 ];
 
 const toneOptions = [
@@ -142,6 +145,8 @@ const toneOptions = [
       "Uses memes, slang, hyper-casual tone. Perfect for fun or roleplay AIs.",
     icon: "🔥",
     color: "from-purple-500 to-fuchsia-500",
+    recommended: true,
+    badge: "✨ GEN-Z FAVORITE",
   },
   {
     id: "warm-encouraging",
@@ -166,6 +171,8 @@ const toneOptions = [
       "No emotion, no emojis, pure logic and direct responses, machine-like tone.",
     icon: "🤖",
     color: "from-gray-600 to-gray-800",
+    recommended: true,
+    badge: "🧊 EMOTIONLESS MODE",
   },
   {
     id: "soft-emotional",
@@ -190,6 +197,8 @@ const toneOptions = [
       "Gentle, patient, and reassuring — ideal for guidance and emotional safety. Like a trusted friend.",
     icon: "🌊",
     color: "from-blue-400 to-cyan-400",
+    recommended: true,
+    badge: "🧘 PEACEFUL VIBES",
   },
   {
     id: "energetic-motivational",
@@ -517,7 +526,7 @@ export default function CreateAIAgentModal({
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-gray-900 border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 w-full max-w-6xl max-h-[95vh] overflow-y-auto scrollbar-small"
+            className="bg-black/40 border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 w-full max-w-6xl max-h-[95vh] overflow-y-auto scrollbar-small"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -735,10 +744,14 @@ export default function CreateAIAgentModal({
                         key={option.id}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 relative ${
                           formData.personality === option.id
                             ? "border-cyan-500 bg-cyan-500/10 shadow-lg shadow-cyan-500/25"
                             : "border-gray-600 bg-gray-800/50 hover:border-cyan-400/50"
+                        } ${
+                          option.recommended
+                            ? "ring-2 ring-cyan-400 ring-opacity-50"
+                            : ""
                         }`}
                         onClick={() =>
                           setFormData((prev) => ({
@@ -747,6 +760,16 @@ export default function CreateAIAgentModal({
                           }))
                         }
                       >
+                        {/* Recommended Badge */}
+                        {option.recommended && (
+                          <div className="absolute -top-2 -right-2">
+                            <div className="bg-linear-to-r from-blue-500 to-cyan-700 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-lg">
+                              <FaCrown className="text-xs" />
+                              {option.badge}
+                            </div>
+                          </div>
+                        )}
+
                         <div className="flex items-start gap-3">
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-2">
@@ -778,15 +801,29 @@ export default function CreateAIAgentModal({
                         key={option.id}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 relative ${
                           formData.tone === option.id
                             ? "border-blue-500 bg-blue-500/10 shadow-lg shadow-blue-500/25"
                             : "border-gray-600 bg-gray-800/50 hover:border-blue-400/50"
+                        } ${
+                          option.recommended
+                            ? "ring-2 ring-purple-400 ring-opacity-50"
+                            : ""
                         }`}
                         onClick={() =>
                           setFormData((prev) => ({ ...prev, tone: option.id }))
                         }
                       >
+                        {/* Recommended Badge */}
+                        {option.recommended && (
+                          <div className="absolute -top-2 -right-2">
+                            <div className="bg-linear-to-r from-purple-500 to-fuchsia-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-lg">
+                              <FaFire className="text-xs" />
+                              {option.badge}
+                            </div>
+                          </div>
+                        )}
+
                         <div className="flex items-start gap-3">
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-2">
