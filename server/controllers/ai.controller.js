@@ -2,6 +2,7 @@ const UserModel = require("../models/user.model");
 const AIAgentModel = require("../models/AIAgent.model");
 const AIAgentServices = require("../services/ai.service");
 const ArcLabModel = require("../models/ArcLab.model");
+const AIAgentSerciceAi = require("../services/aiagent.service");
 
 module.exports.CreateAIAgent = async (req, res) => {
   try {
@@ -186,12 +187,70 @@ module.exports.DeleteAIAgent = async (req, res) => {
     user.AIAgentToken += 1;
     await user.save();
 
-
     res.status(200).json({
       message: "AI-Agent Deleted Successfully!",
       AIAgent,
     });
   } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports.AIAgent = async (req, res) => {
+  try {
+    const { prompt } = req.body;
+    const id = req.params.id;
+
+    if (!prompt) {
+      return res.status(404).json({
+        message: "Prompt not found.",
+      });
+    }
+
+    if (!id) {
+      return res.status(404).json({
+        message: "AI-Agent ID not found.",
+      });
+    }
+
+    if (typeof id !== "string" || typeof prompt !== "string") {
+      return res.status(406).json({
+        message: "Invalid request parameters passed Only Strings Allowed!",
+      });
+    }
+
+    const AIAgent = await AIAgentModel.findById(id);
+
+    if (!AIAgent) {
+      return res.status(404).json({
+        message: "AI-Agent not found.",
+      });
+    }
+
+    const USerId = AIAgent.UserId;
+
+    const user = await UserModel.findById(USerId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    const response = await AIAgentSerciceAi({
+      prompt,
+      AIAgent,
+      user,
+    });
+
+    res.status(200).json({
+      message: "AI-Agent Responded Successfully!",
+      response,
+    });
+  } catch (error) {
+    console.log(error)
     res.status(500).json({
       message: error.message,
     });

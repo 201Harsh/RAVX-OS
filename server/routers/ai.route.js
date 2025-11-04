@@ -14,7 +14,10 @@ router.post(
       .isString()
       .notEmpty()
       .withMessage("Personality is required"),
-    body("engineModel").isString().notEmpty().withMessage("engineModel is required"),
+    body("engineModel")
+      .isString()
+      .notEmpty()
+      .withMessage("engineModel is required"),
     body("description")
       .isString()
       .notEmpty()
@@ -34,6 +37,13 @@ router.delete(
   "/del/:id",
   AuthMiddleware.authUser,
   AIAgentController.DeleteAIAgent
+);
+
+router.post(
+  "/agent/:id",
+  [body("prompt").isString().notEmpty().withMessage("Prompt is required")],
+  ValidateMiddleware.ValidateData,
+  AIAgentController.AIAgent
 );
 
 module.exports = router;
