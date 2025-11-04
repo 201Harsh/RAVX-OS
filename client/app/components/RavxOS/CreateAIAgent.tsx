@@ -244,28 +244,26 @@ const toneOptions = [
 
 const behaviorOptions = [
   "👋 Greets user by name",
-  "❓ Asks follow-up questions",
-  "📝 Summarizes long messages",
-  "💡 Suggests improvements",
-  "🧠 Learns user preferences",
-  "⚡ Keeps responses short",
-  "🎯 Tracks user goals",
-  "😊 Uses emojis appropriately",
-  "🔄 Offers alternatives",
   "🤔 Explains simply",
+  "💬 Matches user's communication style",
+  "😌 Offers emotional reassurance when needed",
+  "🤝 Apologizes when making a mistake",
+  "👀 Notices when user is confused",
+  "🗣️ Adds personality (jokes, reactions, tone shifts)",
+  "🧩 Breaks complex info into simple steps",
+  "🌍 Adds relevant real-world examples",
 ];
 
 const skillOptions = [
-  "✍️ Content writing",
-  "🔍 Research",
-  "📅 Task planning",
-  "💻 Coding help",
-  "🧘 Mental wellness",
-  "💼 Career guidance",
-  "💡 Brainstorming",
-  "🎓 Study help",
-  "📱 Social media",
-  "⏰ Reminders",
+  "🧾 Resume + portfolio writing",
+  "🎥 Script writing for YouTube / Shorts / Reels",
+  "🛠️ fixing errors",
+  "🛍️ Buying recommendations / comparison",
+  "🛡️ Cybersecurity guidance",
+  "🧪 Experiment design + hypothesis testing",
+  "🌐 Website copywriting / landing pages",
+  "🏷️ Product recommendation / evaluation",
+  "📝 Copywriting for blog / social media",
 ];
 
 const maleVoices = [
