@@ -14,86 +14,117 @@ interface CreateAIAgentModalProps {
 
 const personalityOptions = [
   {
-    id: "cyber-sentinel",
-    label: "Cyber Sentinel",
-    description: "Vigilant and analytical",
+    id: "friendly-helper",
+    label: "Friendly Helper",
+    description:
+      "Warm, approachable, and supportive — feels like a helpful friend.",
   },
   {
-    id: "neon-adept",
-    label: "Neon Adept",
-    description: "Creative and adaptive",
+    id: "professional-mentor",
+    label: "Professional Mentor",
+    description:
+      "Guides users with wisdom, structured advice, and long-term growth focus.",
   },
   {
-    id: "quantum-analyst",
-    label: "Quantum Analyst",
-    description: "Precise and logical",
+    id: "creative-writer",
+    label: "Creative Writer",
+    description:
+      "Great with storytelling, brainstorming, and turning ideas into content.",
   },
   {
-    id: "synth-operator",
-    label: "Synth Operator",
-    description: "Efficient and systematic",
+    id: "study-buddy",
+    label: "Study Buddy",
+    description:
+      "Helps with learning, explaining concepts, and keeping the user accountable.",
   },
   {
-    id: "data-nomad",
-    label: "Data Nomad",
-    description: "Explorative and curious",
+    id: "fitness-coach",
+    label: "Fitness Coach",
+    description:
+      "Motivates, tracks progress, and gives mental + physical health tips.",
   },
   {
-    id: "binary-bard",
-    label: "Binary Bard",
-    description: "Expressive and engaging",
+    id: "emotional-companion",
+    label: "Emotional Companion",
+    description:
+      "Listens, supports emotionally, responds with empathy and care.",
+  },
+  {
+    id: "tech-assistant",
+    label: "Tech Assistant",
+    description:
+      "Good at coding help, debugging, and breaking down technical concepts.",
+  },
+  {
+    id: "business-strategist",
+    label: "Business Strategist",
+    description:
+      "Gives structured insights on growth, decisions, planning, and strategy.",
   },
 ];
 
 const toneOptions = [
-  { id: "cyber-punk", label: "Cyber Punk", description: "Edgy and futuristic" },
   {
-    id: "neon-noir",
-    label: "Neon Noir",
-    description: "Mysterious and atmospheric",
+    id: "calm-supportive",
+    label: "Calm & Supportive",
+    description:
+      "Gentle, patient, and reassuring — ideal for guidance and emotional safety.",
   },
   {
-    id: "quantum-cool",
-    label: "Quantum Cool",
-    description: "Calm and calculated",
+    id: "energetic-motivational",
+    label: "Energetic & Motivational",
+    description:
+      "Hype tone, uplifting responses, keeps the user moving forward.",
   },
   {
-    id: "synth-wave",
-    label: "Synth Wave",
-    description: "Rhythmic and energetic",
+    id: "professional-formal",
+    label: "Professional & Formal",
+    description:
+      "Clear, structured, corporate-friendly language — no slang or emojis.",
   },
   {
-    id: "tech-savvy",
-    label: "Tech Savvy",
-    description: "Knowledgeable and sharp",
+    id: "fun-casual",
+    label: "Fun & Casual",
+    description:
+      "Light, friendly, uses emojis, makes small jokes and keeps things informal.",
   },
   {
-    id: "future-forward",
-    label: "Future Forward",
-    description: "Visionary and bold",
+    id: "short-direct",
+    label: "Short & Direct",
+    description:
+      "Gives fast, concise answers with no extra fluff or paragraphs.",
+  },
+  {
+    id: "deep-reflective",
+    label: "Deep & Reflective",
+    description: "Philosophical, thoughtful, asks introspective questions.",
   },
 ];
 
 const behaviorOptions = [
-  "Neural Processing",
-  "Data Stream Analysis",
-  "Pattern Recognition",
-  "Quantum Computation",
-  "Cyber Intuition",
-  "Binary Reasoning",
-  "Signal Processing",
-  "Algorithm Optimization",
+  "Greets user by name",
+  "Asks follow-up questions automatically",
+  "Summarizes long messages before replying",
+  "Suggests improvements without being asked",
+  "Learns and adapts to user preferences",
+  "Keeps responses short unless asked to expand",
+  "Tracks user goals over time",
+  "Uses emojis when appropriate",
+  "Offers alternatives instead of just answers",
+  "Detects confusion and explains more simply",
 ];
 
 const skillOptions = [
-  "Quantum Encryption",
-  "Neural Network Training",
-  "Data Stream Mining",
-  "Cyber Security Protocols",
-  "AI Model Fine-tuning",
-  "Blockchain Analysis",
-  "Predictive Analytics",
-  "Virtual Reality Integration",
+  "Content writing & rewriting",
+  "Research and fact-finding",
+  "Task planning & productivity help",
+  "Coding assistance & debugging",
+  "Mental wellness conversation support",
+  "Resume and career guidance",
+  "Brainstorming creative ideas",
+  "Study explanations and tutoring",
+  "Social media caption & post writing",
+  "Reminder and schedule management",
 ];
 
 const maleVoices = [
