@@ -62,7 +62,13 @@ module.exports.CreateAIAgent = async (req, res) => {
 
     if (ifAIAgentExists) {
       return res.status(400).json({
-        message: "AI-Agent already exists.",
+        message: "AI-Agent with this name already exists. Please try again with a different name.",
+      });
+    }
+
+    if (user.AIAgentToken <= 0) {
+      return res.status(400).json({
+        message: "You have no AI-Agent tokens left.",
       });
     }
 
@@ -79,6 +85,9 @@ module.exports.CreateAIAgent = async (req, res) => {
       UserId,
       id,
     });
+
+    user.AIAgentToken -= 1;
+    await user.save();
 
     res.status(200).json({
       message: "AI-Agent Created Successfully!",
