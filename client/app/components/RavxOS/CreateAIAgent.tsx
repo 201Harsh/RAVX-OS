@@ -22,6 +22,10 @@ import {
   FaBookOpen,
   FaCrown,
   FaFire,
+  FaBolt,
+  FaRocket,
+  FaShieldAlt,
+  FaMagic,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -320,48 +324,46 @@ const femaleVoices = [
   },
 ];
 
-const aiAvatars = [
+const aiEngineModels = [
   {
-    id: "avatar-1",
-    label: "🤖 Cyber Male",
-    image: "/api/placeholder/80/80",
-    gender: "male",
-    emoji: "🤖",
+    id: "ravx-neo",
+    label: "🚀 RAVX-NEO",
+    description:
+      "Fast, efficient model perfect for everyday tasks and quick responses",
+    icon: <FaRocket className="text-purple-400" />,
+    speed: "⚡ Fast",
+    intelligence: "⚡ Neo-Smart",
+    recommended: true,
+    badge: "🚀 MOST EFFICIENT",
   },
   {
-    id: "avatar-2",
-    label: "👩‍💻 Neon Female",
-    image: "/api/placeholder/80/80",
-    gender: "female",
-    emoji: "👩‍💻",
+    id: "ravx-pro",
+    label: "💎 RAVX-PRO",
+    description:
+      "Advanced reasoning with superior problem-solving capabilities",
+    icon: <FaShieldAlt className="text-blue-400" />,
+    speed: "🏃‍♂️ Standard",
+    intelligence: "🌟 Advanced",
   },
   {
-    id: "avatar-3",
-    label: "🔬 Quantum Analyst",
-    image: "/api/placeholder/80/80",
-    gender: "male",
-    emoji: "🔬",
+    id: "ravx-lite",
+    label: "⚡ RAVX-LITE",
+    description: "Lightweight model optimized for speed and efficiency",
+    icon: <FaMagic className="text-green-400" />,
+    speed: "🚀 Ultra Fast",
+    intelligence: "💡 Basic",
+    recommended: false,
+    badge: "⚡ LITE",
   },
   {
-    id: "avatar-4",
-    label: "🎛️ Synth Operator",
-    image: "/api/placeholder/80/80",
-    gender: "female",
-    emoji: "🎛️",
-  },
-  {
-    id: "avatar-5",
-    label: "🌐 Data Explorer",
-    image: "/api/placeholder/80/80",
-    gender: "male",
-    emoji: "🌐",
-  },
-  {
-    id: "avatar-6",
-    label: "💫 Binary Assistant",
-    image: "/api/placeholder/80/80",
-    gender: "female",
-    emoji: "💫",
+    id: "ravx-ultra",
+    label: "🔥 RAVX-ULTRA",
+    description: "Maximum intelligence for complex analysis and creative tasks",
+    icon: <FaBolt className="text-yellow-400" />,
+    speed: "🐢 Powerful",
+    intelligence: "🚀 Maximum",
+    recommended: true,
+    badge: "🧠 MASTER-LEVEL AI",
   },
 ];
 
@@ -377,7 +379,7 @@ export default function CreateAIAgentModal({
     tone: "",
     gender: "male",
     voice: "",
-    avatar: "",
+    engineModel: "",
     description: "",
     behaviors: [] as string[],
     additionalSkills: [] as string[],
@@ -395,7 +397,7 @@ export default function CreateAIAgentModal({
       !formData.tone ||
       !formData.gender ||
       !formData.voice ||
-      !formData.avatar ||
+      !formData.engineModel ||
       !formData.description ||
       formData.behaviors.length === 0 ||
       formData.additionalSkills.length === 0
@@ -412,7 +414,7 @@ export default function CreateAIAgentModal({
       tone: formData.tone,
       gender: formData.gender,
       voice: formData.voice,
-      avatar: formData.avatar,
+      engineModel: formData.engineModel,
       description: formData.description,
       behaviors: formData.behaviors,
       skills: formData.additionalSkills,
@@ -429,7 +431,7 @@ export default function CreateAIAgentModal({
         tone: "",
         gender: "male",
         voice: "",
-        avatar: "",
+        engineModel: "",
         description: "",
         behaviors: [],
         additionalSkills: [],
@@ -490,25 +492,16 @@ export default function CreateAIAgentModal({
     setSelectedVoices(gender === "female" ? femaleVoices : maleVoices);
   };
 
-  const handleAvatarSelect = (avatarId: string, gender: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      avatar: avatarId,
-      gender: gender,
-    }));
-    setSelectedVoices(gender === "female" ? femaleVoices : maleVoices);
-  };
-
   const isFormValid =
     formData.name &&
     formData.personality &&
     formData.tone &&
     formData.gender &&
     formData.voice &&
+    formData.engineModel &&
     formData.additionalSkills.length > 0 &&
     formData.behaviors.length > 0 &&
-    formData.description &&
-    formData.avatar;
+    formData.description;
 
   return (
     <AnimatePresence>
@@ -584,15 +577,11 @@ export default function CreateAIAgentModal({
                           value: "male",
                           label: "♂️ Male",
                           desc: "Masculine voice and persona",
-                          text: "#20a7db",
-                          shadow: "cyan",
                         },
                         {
                           value: "female",
                           label: "♀️ Female",
                           desc: "Feminine voice and persona",
-                          text: "#FF00FF",
-                          shadow: "pink",
                         },
                       ].map((gender) => (
                         <motion.div
@@ -601,7 +590,7 @@ export default function CreateAIAgentModal({
                           whileTap={{ scale: 0.98 }}
                           className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
                             formData.gender === gender.value
-                              ? `border-[${gender.text}] bg-opacity-20 shadow-lg shadow-${gender.shadow}-500/25`
+                              ? "border-cyan-500 bg-cyan-500/10 shadow-lg shadow-cyan-500/25"
                               : "border-gray-600 bg-gray-800/50 hover:border-cyan-400/50"
                           }`}
                           onClick={() => handleGenderChange(gender.value)}
@@ -611,9 +600,7 @@ export default function CreateAIAgentModal({
                               {gender.label}
                             </span>
                             {formData.gender === gender.value && (
-                              <FaCheck
-                                className={`text-[${gender.text}] text-lg`}
-                              />
+                              <FaCheck className="text-cyan-400 text-lg" />
                             )}
                           </div>
                           <p className="text-sm text-gray-300">{gender.desc}</p>
@@ -669,42 +656,67 @@ export default function CreateAIAgentModal({
                   )}
                 </div>
 
-                {/* Right Column - Personality & Appearance */}
+                {/* Right Column - Engine Model & Description */}
                 <div className="space-y-6">
-                  {/* AI Avatar Selection */}
+                  {/* AI Engine Model Selection */}
                   <div>
                     <label className="block text-sm font-semibold text-white mb-3">
-                      🎭 AI Avatar Appearance *
+                      🚀 AI Engine Model *
                     </label>
-                    <div className="grid grid-cols-3 gap-3">
-                      {aiAvatars.map((avatar) => (
+                    <div className="grid grid-cols-2 gap-3">
+                      {aiEngineModels.map((model) => (
                         <motion.div
-                          key={avatar.id}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className={`p-3 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                            formData.avatar === avatar.id
-                              ? "border-green-500 bg-green-500/10 shadow-lg shadow-green-500/25"
-                              : "border-gray-600 bg-gray-800/50 hover:border-green-400/50"
+                          key={model.id}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 relative ${
+                            formData.engineModel === model.id
+                              ? "border-emerald-500 bg-green-500/10 shadow-lg shadow-purple-500/25"
+                              : "border-gray-600 bg-gray-800/50 hover:border-emerald-400/50"
+                          } ${
+                            model.recommended
+                              ? "ring-2 ring-emerald-400 ring-opacity-50"
+                              : ""
                           }`}
                           onClick={() =>
-                            handleAvatarSelect(avatar.id, avatar.gender)
+                            setFormData((prev) => ({
+                              ...prev,
+                              engineModel: model.id,
+                            }))
                           }
                         >
-                          <div className="flex flex-col items-center text-center">
-                            <div className="text-2xl mb-2">{avatar.emoji}</div>
-                            <span className="text-xs font-medium text-white">
-                              {avatar.label}
-                            </span>
-                            <span
-                              className={`text-xs ${
-                                avatar.gender === "male"
-                                  ? "text-cyan-400"
-                                  : "text-purple-400"
-                              }`}
-                            >
-                              {avatar.gender}
-                            </span>
+                          {/* Recommended Badge */}
+                          {model.recommended && (
+                            <div className="absolute -top-2 -right-2">
+                              <div className="bg-linear-to-r from-green-600 to-emerald-700 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-lg">
+                                {model.badge}
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="flex items-start gap-3">
+                            <div className="text-xl mt-1">{model.icon}</div>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="font-semibold text-white text-sm">
+                                  {model.label}
+                                </span>
+                                {formData.engineModel === model.id && (
+                                  <FaCheck className="text-emerald-400" />
+                                )}
+                              </div>
+                              <p className="text-xs text-gray-300 leading-relaxed mb-2">
+                                {model.description}
+                              </p>
+                              <div className="flex justify-between text-xs">
+                                <span className="text-cyan-400">
+                                  {model.speed}
+                                </span>
+                                <span className="text-yellow-400">
+                                  {model.intelligence}
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </motion.div>
                       ))}
@@ -712,7 +724,7 @@ export default function CreateAIAgentModal({
                   </div>
 
                   {/* Brief Description */}
-                  <div className="h-96">
+                  <div>
                     <label className="block text-sm font-semibold text-white mb-3">
                       📝 Brief Description *
                     </label>
@@ -724,9 +736,8 @@ export default function CreateAIAgentModal({
                           description: e.target.value,
                         }))
                       }
-                      className="w-full h-[90%] bg-gray-800 border-2 border-cyan-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300 resize-none"
+                      className="w-full h-72 bg-gray-800 border-2 border-cyan-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300 resize-none"
                       placeholder="Describe your AI agent's purpose, personality traits, and how it should interact with users..."
-                      rows={3}
                       required
                     />
                   </div>
