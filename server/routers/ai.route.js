@@ -30,4 +30,10 @@ router.post(
 
 router.get("/get/:id", AuthMiddleware.authUser, AIAgentController.GetAIAgent);
 
+router.delete(
+  "/del/:id",
+  AuthMiddleware.authUser,
+  AIAgentController.DeleteAIAgent
+);
+
 module.exports = router;

@@ -62,7 +62,8 @@ module.exports.CreateAIAgent = async (req, res) => {
 
     if (ifAIAgentExists) {
       return res.status(400).json({
-        message: "AI-Agent with this name already exists. Please try again with a different name.",
+        message:
+          "AI-Agent with this name already exists. Please try again with a different name.",
       });
     }
 
@@ -134,6 +135,60 @@ module.exports.GetAIAgent = async (req, res) => {
 
     res.status(200).json({
       message: "AI-Agent Fetched Successfully!.",
+      AIAgent,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports.DeleteAIAgent = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const UserId = req.user._id;
+
+    if (typeof id !== "string") {
+      return res.status(406).json({
+        message: "Invalid request parameters passed Only Strings Allowed!",
+      });
+    }
+
+    if (!id) {
+      return res.status(404).json({
+        message: "AI-Agent not found.",
+      });
+    }
+
+    const user = await UserModel.findById(UserId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    const AIAgent = await AIAgentModel.findById(id);
+
+    if (!AIAgent) {
+      return res.status(404).json({
+        message: "AI-Agent not found.",
+      });
+    }
+
+    if (AIAgent.UserId !== UserId) {
+      return res.status(401).json({
+        message: "Only Owner of AI-Agent can delete it.",
+      });
+    }
+    await AIAgentModel.findByIdAndDelete(id);
+    user.AIAgentToken += 1;
+    await user.save();
+
+
+    res.status(200).json({
+      message: "AI-Agent Deleted Successfully!",
       AIAgent,
     });
   } catch (error) {
