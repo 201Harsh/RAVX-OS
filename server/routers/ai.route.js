@@ -33,6 +33,8 @@ router.post(
 
 router.get("/get/:id", AuthMiddleware.authUser, AIAgentController.GetAIAgent);
 
+router.get("/get/ai/:id", AIAgentController.GetAIAgentBYId);
+
 router.delete(
   "/del/:id",
   AuthMiddleware.authUser,

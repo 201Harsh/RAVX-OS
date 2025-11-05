@@ -250,7 +250,42 @@ module.exports.AIAgent = async (req, res) => {
       response,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports.GetAIAgentBYId = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    if (!id) {
+      return res.status(404).json({
+        message: "AI-Agent ID not found.",
+      });
+    }
+
+    if (typeof id !== "string") {
+      return res.status(406).json({
+        message: "Invalid request parameters passed Only Strings Allowed!",
+      });
+    }
+
+    const AIAgent = await AIAgentModel.findById(id);
+
+    if (!AIAgent) {
+      return res.status(404).json({
+        message: "AI-Agent not found.",
+      });
+    }
+
+    res.status(200).json({
+      message: "AI-Agent Fetched Successfully!.",
+      AIAgent,
+    });
+  } catch (error) {
     res.status(500).json({
       message: error.message,
     });
