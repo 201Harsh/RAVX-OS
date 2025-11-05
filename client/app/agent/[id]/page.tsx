@@ -1,26 +1,14 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  FaRobot,
-  FaUser,
-  FaPaperPlane,
-  FaPlus,
-  FaFile,
-  FaEdit,
-  FaCode,
-  FaSearch,
-  FaTrash,
-  FaSave,
-  FaFolder,
-  FaCog,
-} from "react-icons/fa";
+import { AnimatePresence } from "framer-motion";
+import { FaRobot, FaCode } from "react-icons/fa";
 import { Flip, toast } from "react-toastify";
 import AxiosInstance from "@/config/Axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import ChatContainer from "@/app/components/Agent/ChatContainer";
 import MCPAgent from "@/app/components/Agent/MCPAgent";
+import { AIAgent } from "@/app/types/Type";
 
 interface Message {
   id: string;
@@ -38,11 +26,12 @@ interface FileItem {
 }
 
 export default function AIChatBotPage() {
+  const [AIAgentData, setAIAgentData] = useState<AIAgent[]>([]);
   const [activeTab, setActiveTab] = useState<"chat" | "mcp">("chat");
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      content: "Hello! I'm your AI assistant. How can I help you today?",
+      content: "Your AI Agent is Ready Made by RAVX-OS.",
       sender: "ai",
       timestamp: new Date(),
     },
@@ -75,10 +64,38 @@ export default function AIChatBotPage() {
   const params = useParams();
   const id = params.id;
 
+  const router = useRouter();
+
   // Auto-scroll to bottom of messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  const GetAIAgentById = async () => {
+    try {
+      const res = await AxiosInstance.get(`/ai/get/agent/${id}`);
+      if (res.status === 200) {
+        setAIAgentData(res.data.AIAgent);
+      }
+    } catch (error: any) {
+      router.push("/arc");
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Flip,
+      });
+    }
+  };
+
+  useEffect(() => {
+    GetAIAgentById();
+  }, []);
 
   const handleSendMessage = async () => {
     setIsLoading(true);
@@ -189,7 +206,11 @@ export default function AIChatBotPage() {
   };
 
   const formatTimestamp = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return new Date(date).toLocaleTimeString("en-IN", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
   };
 
   return (
@@ -235,6 +256,8 @@ export default function AIChatBotPage() {
                 handleKeyPress={handleKeyPress}
                 isLoading={isLoading}
                 messagesEndRef={messagesEndRef}
+                AIAgentData={AIAgentData}
+                formatTimestamp={formatTimestamp}
               />
             </>
           )}

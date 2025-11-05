@@ -10,6 +10,8 @@ const ChatContainer = ({
   handleKeyPress,
   isLoading,
   messagesEndRef,
+  AIAgentData,
+  formatTimestamp,
 }: any) => {
   return (
     <>
@@ -22,7 +24,7 @@ const ChatContainer = ({
         className="w-full max-w-full"
       >
         {/* Chat Container */}
-        <div className="bg-gray-800/50 backdrop-blur-sm border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 h-[calc(100vh-100px)] flex flex-col w-full">
+        <div className="bg-black backdrop-blur-sm border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 h-[calc(100vh-100px)] flex flex-col w-full">
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 scrollbar-small">
             {messages.map((message: any) => (
@@ -35,33 +37,47 @@ const ChatContainer = ({
                 }`}
               >
                 <div
-                  className={`max-w-[90%] sm:max-w-[80%] rounded-2xl p-3 sm:p-4 ${
+                  className={`max-w-[90%] sm:max-w-[80%] rounded-2xl p-3 sm:p-4 relative ${
                     message.sender === "user"
                       ? "bg-cyan-600/20 border border-cyan-500/30 text-white"
-                      : "bg-gray-700/50 border border-gray-600/30 text-gray-100"
+                      : "bg-gray-950/50 border border-gray-600/30 text-gray-100"
                   }`}
                 >
                   <div className="flex items-center space-x-2 mb-2">
                     <div
-                      className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center ${
+                      className={`w-28 h-5 sm:w-28 sm:h-7 rounded-full flex items-center justify-center ${
                         message.sender === "user"
-                          ? "bg-cyan-500"
-                          : "bg-blue-500"
+                          ? "bg-transparent"
+                          : "bg-transparent"
                       }`}
                     >
                       {message.sender === "user" ? (
-                        <FaUser className="text-xs text-white" />
+                        <div className="flex items-center space-x-2">
+                          <FaUser className="text-xs text-white" />
+                          <span className="text-sm whitespace-nowrap">You</span>
+                        </div>
                       ) : (
-                        <FaRobot className="text-xs text-white" />
+                        <>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-6 h-6 rounded-full bg-cyan-600 flex items-center justify-center">
+                              <span className="text-white text-xs font-semibold">
+                                {AIAgentData.name?.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                            <span className="text-sm font-bold text-cyan-500 whitespace-nowrap">
+                              {AIAgentData.name}
+                            </span>
+                          </div>
+                        </>
                       )}
                     </div>
-                    {/* <span className="text-xs text-gray-400">
-                      {formatTimestamp(message.timestamp)}
-                    </span> */}
                   </div>
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap wrap-break-word">
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap wrap-break-word mb-2">
                     {message.content}
                   </p>
+                  <span className="text-xs text-gray-400 absolute bottom-1 right-2">
+                    {formatTimestamp(message.timestamp)}
+                  </span>
                 </div>
               </motion.div>
             ))}
@@ -123,7 +139,7 @@ const ChatContainer = ({
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
                       >
-                        AI is thinking...
+                        {AIAgentData.name} is thinking...
                       </motion.p>
                     </div>
                   </div>
