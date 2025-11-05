@@ -67,27 +67,83 @@ const ChatContainer = ({
             ))}
             {isLoading && (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
                 className="flex justify-start"
               >
-                <div className="bg-gray-700/50 border border-gray-600/30 rounded-2xl p-4 max-w-[80%]">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
+                <div className="max-w-[90%] sm:max-w-[80%] bg-gray-700/50 border border-gray-600/30 rounded-2xl p-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-6 h-6 rounded-full bg-linear-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
                       <FaRobot className="text-xs text-white" />
                     </div>
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                      <div
-                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.1s" }}
-                      ></div>
-                      <div
-                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.2s" }}
-                      ></div>
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex space-x-1">
+                        <motion.div
+                          className="w-2 h-2 bg-cyan-400 rounded-full"
+                          animate={{
+                            scale: [1, 1.2, 1],
+                            opacity: [0.7, 1, 0.7],
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                          }}
+                        />
+                        <motion.div
+                          className="w-2 h-2 bg-cyan-400 rounded-full"
+                          animate={{
+                            scale: [1, 1.2, 1],
+                            opacity: [0.7, 1, 0.7],
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                            delay: 0.2,
+                          }}
+                        />
+                        <motion.div
+                          className="w-2 h-2 bg-cyan-400 rounded-full"
+                          animate={{
+                            scale: [1, 1.2, 1],
+                            opacity: [0.7, 1, 0.7],
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                            delay: 0.4,
+                          }}
+                        />
+                      </div>
+                      <motion.p
+                        className="text-xs text-cyan-300 font-medium"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                      >
+                        AI is thinking...
+                      </motion.p>
                     </div>
                   </div>
+                  <motion.div
+                    className="mt-3 flex space-x-1"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.8 }}
+                  >
+                    <motion.div
+                      className="h-1 bg-linear-to-r from-cyan-500 to-blue-500 rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: "100%" }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                      }}
+                    />
+                  </motion.div>
                 </div>
               </motion.div>
             )}

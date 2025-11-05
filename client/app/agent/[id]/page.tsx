@@ -81,6 +81,7 @@ export default function AIChatBotPage() {
   }, [messages]);
 
   const handleSendMessage = async () => {
+    setIsLoading(true);
     if (!inputMessage.trim()) return;
 
     const userMessage: Message = {
