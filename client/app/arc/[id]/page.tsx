@@ -15,7 +15,7 @@ import { AIAgent } from "@/app/types/Type";
 import CreateAIAgentModal from "@/app/components/RavxOS/CreateAIAgent";
 import Dashboard from "@/app/components/RavxOS/Dashboard";
 import AxiosInstance from "@/config/Axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 export default function RavxArcLab() {
   const [activeTab, setActiveTab] = useState<"create" | "dashboard">("create");
@@ -25,6 +25,8 @@ export default function RavxArcLab() {
 
   const parms = useParams();
   const id = parms.id;
+
+  const router = useRouter();
 
   const handleCreateAgent = async (agentData: Omit<AIAgent, "url">) => {
     try {
@@ -110,9 +112,12 @@ export default function RavxArcLab() {
     }
   };
 
-  const handleRunAgent = (agentId: string) => {
-    const agent = aiAgents.find((a) => a._id === agentId);
-    toast.info(`Running AI Agent: ${agent?.name}`);
+  const handleRunAgent = async (agentId: string) => {
+    try {
+      router.push(`/agent/${agentId}`);
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
   };
 
   const handleEditAgent = (agentId: string, updatedData: Partial<AIAgent>) => {
