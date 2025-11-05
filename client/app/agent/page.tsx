@@ -16,9 +16,11 @@ import {
   FaFolder,
   FaCog,
 } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { Flip, toast } from "react-toastify";
 import ChatContainer from "../components/Agent/ChatContainer";
 import MCPAgent from "../components/Agent/MCPAgent";
+import AxiosInstance from "@/config/Axios";
+import { useParams } from "next/navigation";
 
 interface Message {
   id: string;
@@ -70,38 +72,13 @@ export default function AIChatBotPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileContentRef = useRef<HTMLTextAreaElement>(null);
 
+  const params = useParams();
+  const id = params.id;
+
   // Auto-scroll to bottom of messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  // Simulate AI response
-  const simulateAIResponse = async (userMessage: string) => {
-    setIsLoading(true);
-
-    // Simulate API delay
-    await new Promise((resolve) =>
-      setTimeout(resolve, 1000 + Math.random() * 2000)
-    );
-
-    const responses = [
-      "I understand what you're asking. Let me help you with that.",
-      "That's an interesting question! Here's what I think about it...",
-      "Based on your query, I'd recommend the following approach:",
-      "I've analyzed your request and here's my response:",
-      "Great question! Let me break this down for you:",
-      "I can help you with that. Here are my thoughts:",
-      "Thanks for asking! Here's what I found:",
-      "I understand your concern. Let me provide some insights:",
-      "That's a common question. Here's the information you need:",
-      "I've processed your request. Here's the result:",
-    ];
-
-    const randomResponse =
-      responses[Math.floor(Math.random() * responses.length)];
-
-    return `${randomResponse}\n\nRegarding "${userMessage}", I can assist you further if you provide more details.`;
-  };
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
@@ -116,17 +93,35 @@ export default function AIChatBotPage() {
     setMessages((prev) => [...prev, userMessage]);
     setInputMessage("");
 
-    const aiResponse = await simulateAIResponse(inputMessage);
+    try {
+      const res = await AxiosInstance.post(`/ai/agent/${id}`, {
+        prompt: inputMessage,
+      });
 
-    const aiMessage: Message = {
-      id: (Date.now() + 1).toString(),
-      content: aiResponse,
-      sender: "ai",
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, aiMessage]);
-    setIsLoading(false);
+      if (res.status === 200) {
+        const aiMessage: Message = {
+          id: Date.now().toString(),
+          content: res.data.response,
+          sender: "ai",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, aiMessage]);
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Flip,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
