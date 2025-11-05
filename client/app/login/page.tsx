@@ -79,7 +79,7 @@ const LoginPage: React.FC = () => {
       const res = await AxiosProxyInstance.post("/api/login", formData);
 
       if (res.status === 200) {
-        router.push("/ravx");
+        router.push("/arc");
         toast.success(res.data.message, {
           position: "top-right",
           autoClose: 4000,

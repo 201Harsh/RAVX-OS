@@ -362,7 +362,7 @@ const RegisterPage: React.FC = () => {
         });
         localStorage.setItem("token", res.data.token);
         setShowOTP(false);
-        router.push("/ravx");
+        router.push("/arc");
       }
     } catch (error: any) {
       console.log(error);
