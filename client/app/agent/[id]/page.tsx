@@ -17,10 +17,10 @@ import {
   FaCog,
 } from "react-icons/fa";
 import { Flip, toast } from "react-toastify";
-import ChatContainer from "../components/Agent/ChatContainer";
-import MCPAgent from "../components/Agent/MCPAgent";
 import AxiosInstance from "@/config/Axios";
 import { useParams } from "next/navigation";
+import ChatContainer from "@/app/components/Agent/ChatContainer";
+import MCPAgent from "@/app/components/Agent/MCPAgent";
 
 interface Message {
   id: string;
@@ -99,7 +99,7 @@ export default function AIChatBotPage() {
       });
 
       if (res.status === 200) {
-        console.log(res)
+        console.log(res);
         const aiMessage: Message = {
           id: Date.now().toString(),
           content: res.data.response,
