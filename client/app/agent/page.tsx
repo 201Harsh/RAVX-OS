@@ -195,41 +195,16 @@ export default function AIChatBotPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
-      {/* Header */}
-      <header className="bg-gray-800/50 backdrop-blur-lg border-b border-cyan-500/20">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center">
-                <FaRobot className="text-white text-lg" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                  RAVX AI Assistant
-                </h1>
-                <p className="text-sm text-gray-400">Powered by RAVX OS</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 text-cyan-400">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm">Online</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-linear-to-br from-gray-900 to-black text-white">
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-800/80 backdrop-blur-lg rounded-2xl p-2 shadow-2xl z-50">
-        <div className="flex space-x-2">
+      <nav className="fixed w-full bottom-1 left-1/2 transform -translate-x-1/2 backdrop-blur-lg rounded-2xl p-5 shadow-2xl z-50">
+        <div className="flex space-x-2 w-full justify-between">
           <button
             onClick={() => setActiveTab("chat")}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 ${
+            className={`w-1/2 cursor-pointer flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 ${
               activeTab === "chat"
                 ? "bg-cyan-600 text-white shadow-lg shadow-cyan-600/25"
-                : "text-gray-400 hover:text-white hover:bg-gray-700/50"
+                : "text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700/50"
             }`}
           >
             <FaRobot className="text-lg" />
@@ -237,10 +212,10 @@ export default function AIChatBotPage() {
           </button>
           <button
             onClick={() => setActiveTab("mcp")}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 ${
+            className={`w-1/2 cursor-pointer flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 ${
               activeTab === "mcp"
                 ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25"
-                : "text-gray-400 hover:text-white hover:bg-gray-700/50"
+                : "text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700/50"
             }`}
           >
             <FaCode className="text-lg" />
@@ -250,7 +225,7 @@ export default function AIChatBotPage() {
       </nav>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 pb-32">
+      <main className="w-full min-h-screen">
         <AnimatePresence mode="wait">
           {activeTab === "chat" && (
             <motion.div
@@ -259,10 +234,10 @@ export default function AIChatBotPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="max-w-4xl mx-auto"
+              className="max-w-full p-2"
             >
               {/* Chat Container */}
-              <div className="bg-gray-800/50 backdrop-blur-sm border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 h-[600px] flex flex-col">
+              <div className="bg-gray-800/50 backdrop-blur-sm border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 h-[700px] flex flex-col w-full">
                 {/* Messages Area */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-small">
                   {messages.map((message) => (
