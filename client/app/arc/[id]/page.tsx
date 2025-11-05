@@ -30,8 +30,7 @@ export default function RavxArcLab() {
     try {
       const res = await AxiosInstance.post(`/ai/create/${id}`, agentData);
       if (res.status === 200) {
-        const AIAgent = res.data.AIAgent;
-        setAIAgents((prev) => [...prev, AIAgent]);
+        handleGetAIAgents();
         setIsModalOpen(false);
         toast.success(res.data.message, {
           position: "top-right",
@@ -93,7 +92,7 @@ export default function RavxArcLab() {
           theme: "dark",
           transition: Zoom,
         });
-        setAIAgents((prev) => prev.filter((a) => a._id !== agentId));
+        handleGetAIAgents();
       }
     } catch (error: any) {
       console.log(error);
@@ -130,7 +129,7 @@ export default function RavxArcLab() {
       const res = await AxiosInstance.get(`/ai/get/${id}`);
       if (res.status === 200) {
         const AIAgents = res.data.AIAgent;
-        setAIAgents((prev) => [...prev, ...AIAgents]);
+        setAIAgents(AIAgents);
       }
     } catch (error: any) {
       toast.error(error.response?.data?.message, {
