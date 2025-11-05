@@ -99,6 +99,7 @@ export default function AIChatBotPage() {
       });
 
       if (res.status === 200) {
+        console.log(res)
         const aiMessage: Message = {
           id: Date.now().toString(),
           content: res.data.response,
