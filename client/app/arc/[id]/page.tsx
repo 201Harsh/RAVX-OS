@@ -115,7 +115,7 @@ export default function RavxArcLab() {
   const handleRunAgent = async (agentId: string) => {
     try {
       router.push(`/agent/${agentId}`);
-      toast.error("Agent is running");
+      toast.success("Agent is running");
     } catch (error) {
       toast.error("Something went wrong");
     }
