@@ -25,6 +25,88 @@ interface FileItem {
   lastModified: Date;
 }
 
+// Component to render formatted message content
+const FormattedMessage = ({ content }: { content: string }) => {
+  const formatContent = (text: string) => {
+    // Split by code blocks first
+    const parts = text.split(/(```[\s\S]*?```)/g);
+
+    return parts.map((part, index) => {
+      // Check if this part is a code block
+      if (part.startsWith("```") && part.endsWith("```")) {
+        const codeMatch = part.match(/```(\w+)?\n?([\s\S]*?)```/);
+        if (codeMatch) {
+          const [, language, code] = codeMatch;
+          return (
+            <div key={index} className="my-3">
+              {language && (
+                <div className="bg-gray-800 text-gray-300 px-3 py-1 text-xs font-mono rounded-t-lg border-b border-gray-600">
+                  {language}
+                </div>
+              )}
+              <pre
+                className={`bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm font-mono ${
+                  language ? "rounded-tl-none" : "rounded-lg"
+                }`}
+              >
+                <code>{code.trim()}</code>
+              </pre>
+            </div>
+          );
+        }
+      }
+
+      // Process inline formatting for non-code parts
+      const formattedText = part
+        // Bold text with ** **
+        .replace(
+          /\*\*(.*?)\*\*/g,
+          '<strong class="font-bold text-cyan-400">$1</strong>'
+        )
+        // Italic text with * *
+        .replace(/\*(.*?)\*/g, '<em class="italic text-pink-300">$1</em>')
+        // Bold text with __ __
+        .replace(
+          /__(.*?)__/g,
+          '<strong class="font-bold text-white">$1</strong>'
+        )
+        // Inline code with ` `
+        .replace(
+          /`(.*?)`/g,
+          '<code class="bg-gray-950 px-1 py-0.5 rounded text-sm font-mono text-cyan-300">$1</code>'
+        )
+        // Headers (###, ##, #)
+        .replace(
+          /^### (.*$)/gim,
+          '<h3 class="text-lg font-bold text-emerald-400 mt-4 mb-2">$1</h3>'
+        )
+        .replace(
+          /^## (.*$)/gim,
+          '<h2 class="text-xl font-bold text-white mt-4 mb-2">$1</h2>'
+        )
+        .replace(
+          /^# (.*$)/gim,
+          '<h1 class="text-2xl font-bold text-white mt-4 mb-3">$1</h1>'
+        )
+        // Lists
+        .replace(/^- (.*$)/gim, '<li class="ml-4 list-disc">$1</li>')
+        .replace(/^\* (.*$)/gim, '<li class="ml-4 list-disc">$1</li>')
+        // Line breaks
+        .replace(/\n/g, "<br />");
+
+      return (
+        <div
+          key={index}
+          className="whitespace-pre-wrap wrap-break-word"
+          dangerouslySetInnerHTML={{ __html: formattedText }}
+        />
+      );
+    });
+  };
+
+  return <div className="message-content">{formatContent(content)}</div>;
+};
+
 export default function AIChatBotPage() {
   const [AIAgentData, setAIAgentData] = useState<AIAgent[]>([]);
   const [activeTab, setActiveTab] = useState<"chat" | "mcp">("chat");
@@ -126,7 +208,7 @@ export default function AIChatBotPage() {
         setMessages((prev) => [...prev, aiMessage]);
       }
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       toast.error(error.response?.data?.message, {
         position: "top-right",
         autoClose: 5000,
@@ -259,6 +341,7 @@ export default function AIChatBotPage() {
                 messagesEndRef={messagesEndRef}
                 AIAgentData={AIAgentData}
                 formatTimestamp={formatTimestamp}
+                FormattedMessage={FormattedMessage}
               />
             </>
           )}

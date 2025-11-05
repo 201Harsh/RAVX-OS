@@ -12,6 +12,7 @@ const ChatContainer = ({
   messagesEndRef,
   AIAgentData,
   formatTimestamp,
+  FormattedMessage,
 }: any) => {
   return (
     <>
@@ -72,9 +73,12 @@ const ChatContainer = ({
                       )}
                     </div>
                   </div>
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap wrap-break-word mb-2">
-                    {message.content}
-                  </p>
+
+                  {/* Use FormattedMessage component here */}
+                  <div className="text-sm leading-relaxed wrap-break-word mb-2">
+                    <FormattedMessage content={message.content} />
+                  </div>
+
                   <span className="text-xs text-gray-400 absolute bottom-1 right-2">
                     {formatTimestamp(message.timestamp)}
                   </span>
