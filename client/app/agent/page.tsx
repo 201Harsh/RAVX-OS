@@ -195,7 +195,7 @@ export default function AIChatBotPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <div className="min-h-screen bg-linear-to-br from-gray-900 to-black text-white">
       {/* Top Navigation */}
       <nav className="w-full backdrop-blur-lg p-4 shadow-2xl z-50 border-b border-gray-700/50 fixed">
         <div className="flex space-x-2 w-full justify-between max-w-4xl mx-auto">
@@ -276,7 +276,7 @@ export default function AIChatBotPage() {
                             {formatTimestamp(message.timestamp)}
                           </span>
                         </div>
-                        <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
+                        <p className="text-sm leading-relaxed whitespace-pre-wrap wrap-break-word">
                           {message.content}
                         </p>
                       </div>
@@ -430,7 +430,7 @@ export default function AIChatBotPage() {
                             e.stopPropagation();
                             deleteFile(file.id);
                           }}
-                          className="w-5 h-5 text-red-400 hover:text-red-300 transition-colors cursor-pointer flex-shrink-0"
+                          className="w-5 h-5 text-red-400 hover:text-red-300 transition-colors cursor-pointer shrink-0"
                         >
                           <FaTrash className="text-xs" />
                         </button>
