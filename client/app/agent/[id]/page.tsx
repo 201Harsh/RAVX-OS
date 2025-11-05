@@ -28,11 +28,8 @@ interface FileItem {
 // Component to render formatted message content
 const FormattedMessage = ({ content }: { content: string }) => {
   const formatContent = (text: string) => {
-    // Split by code blocks first
     const parts = text.split(/(```[\s\S]*?```)/g);
-
     return parts.map((part, index) => {
-      // Check if this part is a code block
       if (part.startsWith("```") && part.endsWith("```")) {
         const codeMatch = part.match(/```(\w+)?\n?([\s\S]*?)```/);
         if (codeMatch) {
@@ -56,7 +53,6 @@ const FormattedMessage = ({ content }: { content: string }) => {
         }
       }
 
-      // Process inline formatting for non-code parts
       const formattedText = part
         // Bold text with ** **
         .replace(
@@ -82,7 +78,7 @@ const FormattedMessage = ({ content }: { content: string }) => {
         )
         .replace(
           /^## (.*$)/gim,
-          '<h2 class="text-xl font-bold text-white mt-4 mb-2">$1</h2>'
+          '<h2 class="text-xl font-bold text-purple-400 mt-4 mb-2">$1</h2>'
         )
         .replace(
           /^# (.*$)/gim,
