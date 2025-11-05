@@ -118,7 +118,7 @@ const RavxArc = () => {
     try {
       const res = await AxiosInstance.get(`/arc/get/${labId}`);
       if (res.status === 200) {
-        router.push(`/ravx/arc/${labId}`);
+        router.push(`/arc/${labId}`);
         toast.success("Entering ArcLab...", {
           position: "top-right",
           autoClose: 5000,
