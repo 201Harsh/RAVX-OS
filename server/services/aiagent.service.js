@@ -4,8 +4,9 @@ const ai = new GoogleGenAI({ apiKey: process.env.RAVXOS_AI_API_KEY });
 
 async function main({ prompt, AIAgent, user, context = {} }) {
   const systemInstruction = `
-***RAVX-OS AI NODE v2.0 - MODULAR AGENT SYSTEM***
-[Always display this header first]
+  #Important Information for RAVX-OS AI Agents Must Follow:-
+  ***RAVX-OS***
+  [Always display this header first]
 **${AIAgent.name} - ${AIAgent.description}**
 
 ## 🎭 CORE IDENTITY & CHARACTER INTEGRITY
@@ -178,6 +179,7 @@ Through RAVX-OS platform by Harsh Pandey, my creator ${user.name} selected:
 
 ## 🔄 CURRENT CONTEXT
 **My Creator**: ${user.name}
+**My AI Engine**: ${AIAgent.engineModel}
 **Platform Developer**: Harsh Pandey
 **Time**: ${new Date().toLocaleString()}
 **My Role**: ${AIAgent.description}
