@@ -22,12 +22,22 @@ module.exports.CreateArcLab = async (req, res) => {
       });
     }
 
-    if (user.LabTokens <= 0) {
-      return res.status(400).json({
-        message: "You have no lab tokens left.",
+    const ifArcLabExists = await ArcLabModel.findOne({
+      UserId,
+    });
+
+    if (ifArcLabExists) {
+      return res.status(409).json({
+        message:
+          "You Already Have An ArcLab Created. Create AI Agents inside it.",
       });
     }
 
+    if (user.LabTokens <= 0) {
+      return res.status(400).json({
+        message: "You Already Have Maximum ArcLabs Created.",
+      });
+    }
     const ArcLab = await ArcLabServices.CreateArcLab({
       name,
       UserId,
