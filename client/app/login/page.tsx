@@ -133,7 +133,7 @@ const LoginPage: React.FC = () => {
   };
 
   const handleForgotPassword = () => {
-    router.push("/forgot-password");
+    router.push("/forgot");
   };
 
   return (
