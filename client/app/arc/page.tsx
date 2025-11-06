@@ -1,11 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Flip, toast } from "react-toastify";
+import { Flip, Slide, toast } from "react-toastify";
 import ArcLab from "../components/RavxOS/ArcLab";
 import Createlab from "../components/RavxOS/Createlab";
 import AxiosInstance from "@/config/Axios";
 import { useRouter } from "next/navigation";
+import AxiosProxyInstance from "@/config/AxiosProxy";
 
 const RavxArc = () => {
   const [arcLabs, setArcLabs] = useState<any[]>([]);
@@ -150,24 +151,46 @@ const RavxArc = () => {
     const newDate = new Date(date).toLocaleDateString();
     return newDate;
   };
-  useEffect(() => {
-    const fetchArcLabs = async () => {
-      try {
-        const res = await AxiosInstance.get("/arc/get");
 
-        if (res.status === 200) {
-          const ArcLabs = res.data.ArcLab.map((lab: any) => {
-            return {
-              id: lab._id,
-              name: lab.name,
-              created: lab.CreatedAt,
-              creator: lab.UserId,
-            };
-          });
-          setArcLabs(ArcLabs);
-        }
-      } catch (error: any) {
-        toast.error(error.response.data.message, {
+  const fetchArcLabs = async () => {
+    try {
+      const res = await AxiosInstance.get("/arc/get");
+      if (res.status === 200) {
+        const ArcLabs = res.data.ArcLab.map((lab: any) => {
+          return {
+            id: lab._id,
+            name: lab.name,
+            created: lab.CreatedAt,
+            creator: lab.UserId,
+          };
+        });
+        setArcLabs(ArcLabs);
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Flip,
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchArcLabs();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const res = await AxiosProxyInstance.post("/api/logout");
+      if (res.status === 200) {
+        router.push("/");
+        toast.success("Logged out successfully!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -176,12 +199,23 @@ const RavxArc = () => {
           draggable: true,
           progress: undefined,
           theme: "dark",
-          transition: Flip,
+          transition: Slide,
         });
       }
-    };
-    fetchArcLabs();
-  }, [handleCreateLab, handleDeleteLab]);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen text-white relative overflow-hidden">
@@ -223,6 +257,7 @@ const RavxArc = () => {
         handleDeleteLab={handleDeleteLab}
         formatTimeAgo={formatTimeAgo}
         handleopenLab={handleopenLab}
+        handleLogout={handleLogout}
       />
 
       {/* Create Lab Modal*/}

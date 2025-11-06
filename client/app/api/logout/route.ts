@@ -3,31 +3,33 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const response = await AxiosInstance.post("/users/logout");
+    const cookieHeader = req.headers.get("cookie") || "";
 
-    const NextRes = NextResponse.json(response.data, {
+    const response = await AxiosInstance.post(
+      "/users/logout",
+      {},
+      {
+        headers: {
+          Cookie: cookieHeader, // ✅ forward cookie to backend
+        },
+        withCredentials: true,
+      }
+    );
+
+    const res = NextResponse.json(response.data, {
       status: response.status,
     });
 
-    const cookies: any = response.headers["set-cookie"];
-    if (cookies) {
-      NextRes.headers.set("set-cookie", cookies);
+    const backendCookie: any = response.headers["set-cookie"];
+    if (backendCookie) {
+      res.headers.set("set-cookie", backendCookie);
     }
 
-    return Response.json({
-      data: response.data,
-      status: response.status,
-    });
+    return res;
   } catch (error: any) {
-    if (error.response) {
-      return Response.json({
-        error: error.response.data.message,
-        status: error.response.status,
-      });
-    }
-    return Response.json({
-      error: error.message,
-      status: 500,
-    });
+    return NextResponse.json(
+      { error: error.response?.data?.message },
+      { status: error.response?.status }
+    );
   }
 }

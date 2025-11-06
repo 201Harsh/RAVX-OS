@@ -104,7 +104,7 @@ const Createlab = ({
               initial={{ opacity: 0, scale: 0.8, y: 50 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: 50 }}
-              className="fixed p-4 md:p-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-4xl "
+              className="fixed p-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-4xl "
             >
               {/* Terminal Window */}
               <div className="bg-gray-900 border-2 border-cyan-400/40 rounded-xl overflow-hidden shadow-2xl shadow-cyan-500/20">

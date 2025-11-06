@@ -311,7 +311,7 @@ module.exports.UpdateNewPassword = async (req, res) => {
 
 module.exports.Logoutuser = async (req, res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("token",);
 
     res.status(200).json({
       message: "Logout Successful",

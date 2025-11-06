@@ -8,12 +8,10 @@ import {
   FiUser,
   FiAlertTriangle,
   FiTerminal,
-  FiHardDrive,
   FiCpu,
-  FiShield,
-  FiSettings,
   FiLogOut,
 } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 
 const ArcLab = ({
   arcLabs,
@@ -21,6 +19,7 @@ const ArcLab = ({
   handleDeleteLab,
   formatTimeAgo,
   handleopenLab,
+  handleLogout,
 }: any) => {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [labToDelete, setLabToDelete] = useState<any>(null);
@@ -29,6 +28,7 @@ const ArcLab = ({
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const userMenuRef = useRef<HTMLDivElement>(null);
+
 
   const handleDeleteClick = (lab: any) => {
     setLabToDelete(lab);
@@ -78,7 +78,6 @@ const ArcLab = ({
       "> Connection: SECURE",
       " ",
       "> Welcome to RAVX Web Operating System",
-      "> Type 'help' for available commands",
       " ",
       "root@ravx-webos:~/# system status --labs",
     ];
@@ -104,18 +103,6 @@ const ArcLab = ({
     setIsUserMenuOpen(!isUserMenuOpen);
   };
 
-  const handleMenuItemClick = (action: string) => {
-    console.log(`Menu item clicked: ${action}`);
-    setIsUserMenuOpen(false);
-    // Add your menu item handlers here
-  };
-
-  const handleLogout = () => {
-    console.log("Logging out...");
-    setIsUserMenuOpen(false);
-    // Add your logout logic here
-  };
-
   return (
     <>
       <div className="min-h-screen text-white p-4">
@@ -123,7 +110,7 @@ const ArcLab = ({
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-7xl mx-auto mb-8"
+          className="max-w-7xl mx-auto mb-8 relative z-50"
         >
           <div className="bg-gray-800/50 border border-cyan-400/30 rounded-xl p-4 backdrop-blur-sm">
             <div className="flex items-center justify-between">
@@ -211,55 +198,11 @@ const ArcLab = ({
                           whileHover={{
                             backgroundColor: "rgba(34, 211, 238, 0.1)",
                           }}
-                          onClick={() => handleMenuItemClick("profile")}
-                          className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
-                        >
-                          <FiUser className="text-cyan-400" />
-                          <span>Profile Settings</span>
-                        </motion.button>
-
-                        <motion.button
-                          whileHover={{
-                            backgroundColor: "rgba(34, 211, 238, 0.1)",
-                          }}
-                          onClick={() => handleMenuItemClick("create-agent")}
+                          onClick={() => setIsCreating(true)}
                           className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
                         >
                           <FiPlus className="text-green-400" />
                           <span>Create AI Agent</span>
-                        </motion.button>
-
-                        <motion.button
-                          whileHover={{
-                            backgroundColor: "rgba(34, 211, 238, 0.1)",
-                          }}
-                          onClick={() => handleMenuItemClick("my-agents")}
-                          className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
-                        >
-                          <FiCpu className="text-purple-400" />
-                          <span>My Agents</span>
-                        </motion.button>
-
-                        <motion.button
-                          whileHover={{
-                            backgroundColor: "rgba(34, 211, 238, 0.1)",
-                          }}
-                          onClick={() => handleMenuItemClick("security")}
-                          className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
-                        >
-                          <FiShield className="text-blue-400" />
-                          <span>Security</span>
-                        </motion.button>
-
-                        <motion.button
-                          whileHover={{
-                            backgroundColor: "rgba(34, 211, 238, 0.1)",
-                          }}
-                          onClick={() => handleMenuItemClick("settings")}
-                          className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
-                        >
-                          <FiSettings className="text-yellow-400" />
-                          <span>System Settings</span>
                         </motion.button>
                       </div>
 
