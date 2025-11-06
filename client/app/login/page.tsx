@@ -236,7 +236,7 @@ const LoginPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleForgotPassword}
-                    className="text-cyan-400 hover:text-cyan-300 text-sm transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 text-sm transition-colors cursor-pointer"
                   >
                     Forgot Password?
                   </button>
