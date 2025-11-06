@@ -50,7 +50,10 @@ const RavxArc = () => {
         });
       }
     } catch (error: any) {
-      console.log(error);
+      if (error.status === 409) {
+        setIsCreating(false);
+      }
+
       toast.error(
         error.response?.data?.message ||
           error.response.data.errors.forEach((e: { msg: string }) => {
