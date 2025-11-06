@@ -71,6 +71,35 @@ router.post(
   ValidateData.ValidateData,
   UserController.LoginUser
 );
+
+router.post(
+  "/forgot",
+  [body("email").trim().isEmail().withMessage("Invalid Email")],
+  ValidateData.ValidateData,
+  UserController.ForgotPassword
+);
+
+router.post(
+  "/reset",
+  [
+    body("email").trim().isEmail().withMessage("Invalid Email"),
+    body("otp")
+      .isString()
+      .notEmpty()
+      .withMessage("OTP is required")
+      .isLength({ min: 6 })
+      .withMessage("OTP must be at least 6 characters"),
+    body("password")
+      .isString()
+      .notEmpty()
+      .withMessage("Password is required")
+      .isLength({ min: 6 })
+      .withMessage("Password must be at least 6 characters"),
+  ],
+  ValidateData.ValidateData,
+  UserController.UpdateNewPassword
+);
+
 router.post("/logout", AuthMiddleware.authUser, UserController.Logoutuser);
 
 module.exports = router;

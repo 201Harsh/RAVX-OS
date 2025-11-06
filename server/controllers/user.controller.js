@@ -224,6 +224,83 @@ module.exports.LoginUser = async (req, res) => {
   }
 };
 
+module.exports.ForgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (typeof email !== "string") {
+      return res.status(406).json({
+        message: "Invalid request parameters passed Only Strings Allowed!",
+      });
+    }
+
+    const ValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!ValidEmail.test(email)) {
+      return res.status(406).json({
+        message: "Invalid Email Address!",
+      });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otpExpiry = new Date().getTime() + 5 * 60 * 1000;
+
+    const ForgotPasswordOtp = await UserServices.ForgotPasswordOtpSend({
+      email,
+      otp,
+      otpExpiry,
+    });
+
+    res.status(200).json({
+      message: "OTP Sent Successfully! Check Your Email",
+      ForgotPasswordOtp,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports.UpdateNewPassword = async (req, res) => {
+  try {
+    const { email, otp, password } = req.body;
+
+    if (
+      typeof email !== "string" ||
+      typeof otp !== "string" ||
+      typeof password !== "string"
+    ) {
+      return res.status(406).json({
+        message: "Invalid request parameters passed Only Strings Allowed!",
+      });
+    }
+
+    const ValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!ValidEmail.test(email)) {
+      return res.status(406).json({
+        message: "Invalid Email Address!",
+      });
+    }
+
+    const UpdatePassword = await UserServices.UpdateNewPassword({
+      email,
+      otp,
+      password,
+    });
+
+    res.status(200).json({
+      message: "Password Updated Successfully! Login With New Password",
+      UpdatePassword,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports.Logoutuser = async (req, res) => {
   try {
     res.clearCookie("token");

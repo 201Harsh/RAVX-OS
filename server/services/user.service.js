@@ -1,5 +1,6 @@
 const UserModel = require("../models/user.model");
 const TempUserModel = require("../models/tempuser.model");
+const bcrypt = require("bcrypt");
 
 module.exports.CreateTempUser = async ({
   name,
@@ -74,4 +75,62 @@ module.exports.verifyotp = async ({ email, otp }) => {
   await TempUserModel.deleteOne({ email });
 
   return User;
+};
+
+module.exports.ForgotPasswordOtpSend = async ({ email, otp, otpExpiry }) => {
+  if (!email || !otp || !otpExpiry) {
+    throw new Error("All fields are required for Sending a OTP.");
+  }
+
+  const user = await UserModel.findOne({ email });
+
+  if (!user) {
+    throw new Error("User not found.");
+  }
+
+  const TempUser = await TempUserModel.create({
+    name: user.name,
+    email: user.email,
+    password: user.password,
+    otp,
+    otpExpiry,
+  });
+
+  return TempUser;
+};
+
+module.exports.UpdateNewPassword = async ({ email, otp, password }) => {
+  if (!email || !otp || !password) {
+    throw new Error("All fields are required for Updating a Password.");
+  }
+
+  const tempUser = await TempUserModel.findOne({ email });
+
+  if (!tempUser) {
+    throw new Error("User not found.");
+  }
+
+  if (tempUser.otp !== otp) {
+    throw new Error("Invalid OTP.");
+  }
+  if (tempUser.otpExpiry < Date.now()) {
+    throw new Error("OTP has expired.");
+  }
+
+  const isSamePassword = await bcrypt.compare(password, tempUser.password);
+
+  if (isSamePassword) {
+    throw new Error("Password used before cannot be used again");
+  }
+
+  const hashedPassword = await UserModel.hashPassword(password);
+
+  const updatedUser = await UserModel.findOneAndUpdate(
+    { email },
+    { password: hashedPassword }
+  );
+
+  await TempUserModel.deleteOne({ email });
+
+  return updatedUser;
 };
