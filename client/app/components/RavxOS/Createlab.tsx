@@ -15,7 +15,13 @@ const Createlab = ({
   const terminalRef = useRef<HTMLDivElement>(null);
 
   const terminalLines = [
-    "> Initializing RAVX-OS Terminal v2.4.1...",
+    "┌───────────────────────────────────────────────┐",
+    "│  ▶  RAVX  - ARC -  LAB  - TERMINAL ",
+    "│  ▶  Version 2.4.1  |  Neural Build: v2.4.1.4731  ",
+    "│  ▶  Status: SYSTEM ONLINE                        ",
+    "└───────────────────────────────────────────────┘",
+    " ",
+    "> Initializing RAVX-OS Arc Terminal v2.4.1...",
     "> Booting cybernetic interface...",
     "> Loading neural network protocols...",
     "> Establishing secure connection...",
@@ -60,7 +66,7 @@ const Createlab = ({
           setTimeout(() => setShowInput(true), 300);
           setTimeout(() => inputRef.current?.focus(), 500);
         }
-      }, 40);
+      }, 25);
 
       return () => clearInterval(typeWriter);
     }
