@@ -29,6 +29,13 @@ router.post(
 );
 
 router.post(
+  "/resend",
+  [body("email").trim().isEmail().withMessage("Invalid Email")],
+  ValidateData.ValidateData,
+  UserController.ResendOTP
+);
+
+router.post(
   "/verify",
   [
     body("email").trim().isEmail().withMessage("Invalid Email"),

@@ -80,6 +80,43 @@ module.exports.RegisterUser = async (req, res) => {
   }
 };
 
+module.exports.ResendOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (typeof email !== "string") {
+      return res.status(406).json({
+        message: "Invalid request parameters passed Only Strings Allowed!",
+      });
+    }
+
+    const iftempUser = await TempUserModel.findOne({ email });
+
+    if (!iftempUser) {
+      return res.status(404).json({
+        message: "User not found!",
+      });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otpExpiry = new Date().getTime() + 5 * 60 * 1000;
+
+    const ResendOtp = await UserServices.ResendOTP({
+      email,
+      otp,
+      otpExpiry,
+    });
+
+    res.status(200).json({
+      message: "OTP Resent Successfully! Check Your Email",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports.VerifyUser = async (req, res) => {
   try {
     const { email, otp } = req.body;

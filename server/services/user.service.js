@@ -24,6 +24,25 @@ module.exports.CreateTempUser = async ({
   return TempUser;
 };
 
+module.exports.ResendOTP = async ({ email, otp, otpExpiry }) => {
+  if (!email || !otp || !otpExpiry) {
+    throw new Error("All fields are required for Resending a OTP.");
+  }
+
+  const updatedTempUser = await TempUserModel.findOneAndUpdate(
+    { email },
+    { otp, otpExpiry }
+  );
+
+  await updatedTempUser.save();
+
+  if (!updatedTempUser) {
+    throw new Error("User not found.");
+  }
+
+  return updatedTempUser;
+};
+
 module.exports.verifyotp = async ({ email, otp }) => {
   if (!email || !otp) {
     throw new Error("All fields are required for Verifying a user.");
