@@ -154,6 +154,7 @@ export default function AIChatBotPage() {
       const res = await AxiosInstance.get(`/ai/get/agent/${id}`);
       if (res.status === 200) {
         setAIAgentData(res.data.AIAgent);
+        document.title = `${res.data.AIAgent.name} - Arc Lab`;
       }
     } catch (error: any) {
       router.push("/arc");
