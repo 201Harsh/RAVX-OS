@@ -66,7 +66,7 @@ const Createlab = ({
           setTimeout(() => setShowInput(true), 300);
           setTimeout(() => inputRef.current?.focus(), 500);
         }
-      }, 25);
+      }, 12);
 
       return () => clearInterval(typeWriter);
     }

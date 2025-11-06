@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiPlus,
@@ -7,6 +7,12 @@ import {
   FiClock,
   FiUser,
   FiAlertTriangle,
+  FiTerminal,
+  FiHardDrive,
+  FiCpu,
+  FiShield,
+  FiSettings,
+  FiLogOut,
 } from "react-icons/fi";
 
 const ArcLab = ({
@@ -18,6 +24,11 @@ const ArcLab = ({
 }: any) => {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [labToDelete, setLabToDelete] = useState<any>(null);
+  const [terminalOutput, setTerminalOutput] = useState<string[]>([]);
+  const [isBooting, setIsBooting] = useState(true);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   const handleDeleteClick = (lab: any) => {
     setLabToDelete(lab);
@@ -37,177 +48,491 @@ const ArcLab = ({
     setLabToDelete(null);
   };
 
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Simulate terminal boot sequence
+  useEffect(() => {
+    const bootSequence = [
+      "> Booting RAVX Web-OS v3.1.4...",
+      "> Initializing cybernetic framework...",
+      "> Loading neural interface...",
+      "> Mounting virtual file systems...",
+      "> Starting ARC Lab Management System...",
+      "> Security protocols: ACTIVE",
+      "> Encryption: AES-256-GCM",
+      "> Connection: SECURE",
+      " ",
+      "> Welcome to RAVX Web Operating System",
+      "> Type 'help' for available commands",
+      " ",
+      "root@ravx-webos:~/# system status --labs",
+    ];
+
+    let currentLine = 0;
+    const output: string[] = [];
+
+    const bootInterval = setInterval(() => {
+      if (currentLine < bootSequence.length) {
+        output.push(bootSequence[currentLine]);
+        setTerminalOutput([...output]);
+        currentLine++;
+      } else {
+        clearInterval(bootInterval);
+        setTimeout(() => setIsBooting(false), 1000);
+      }
+    }, 100);
+
+    return () => clearInterval(bootInterval);
+  }, []);
+
+  const handleUserMenuToggle = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  };
+
+  const handleMenuItemClick = (action: string) => {
+    console.log(`Menu item clicked: ${action}`);
+    setIsUserMenuOpen(false);
+    // Add your menu item handlers here
+  };
+
+  const handleLogout = () => {
+    console.log("Logging out...");
+    setIsUserMenuOpen(false);
+    // Add your logout logic here
+  };
+
   return (
     <>
-      <div className="relative z-10 container mx-auto px-4 py-8">
-        {/* Header */}
+      <div className="min-h-screen text-white p-4">
+        {/* Terminal-style Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="max-w-7xl mx-auto mb-8"
         >
-          <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-linear-to-bl from-pink-400 via-cyan-400 to-purple-400 mb-4">
-            RAVX ARC
-          </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Create your AI development labs and build intelligent agents
-          </p>
+          <div className="bg-gray-800/50 border border-cyan-400/30 rounded-xl p-4 backdrop-blur-sm">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="flex space-x-2">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div className="font-mono text-cyan-400 text-sm">
+                  root@ravx-os:~/# arc-lab
+                </div>
+              </div>
+
+              {/* User Profile with Dropdown */}
+              <div className="relative" ref={userMenuRef}>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleUserMenuToggle}
+                  className="flex items-center space-x-3 p-2 rounded-lg bg-cyan-500/10 border border-cyan-400/20 hover:bg-cyan-500/20 hover:border-cyan-400/30 transition-all duration-300 cursor-pointer group"
+                >
+                  <div className="w-8 h-8 bg-linear-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center border border-cyan-400/30">
+                    <FiUser className="text-white text-sm" />
+                  </div>
+                  <div className="text-left">
+                    <div className="text-cyan-300 text-sm font-mono font-semibold">
+                      USER
+                    </div>
+                    <div className="text-cyan-400/70 text-xs font-mono">
+                      admin@ravx
+                    </div>
+                  </div>
+                  <motion.div
+                    animate={{ rotate: isUserMenuOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-cyan-400/60 group-hover:text-cyan-300"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </motion.div>
+                </motion.button>
+
+                {/* Dropdown Menu */}
+                <AnimatePresence>
+                  {isUserMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      style={{ zIndex: 100 }}
+                      className="absolute right-0 top-12 w-64 bg-gray-800/95 backdrop-blur-sm border border-cyan-400/30 rounded-xl shadow-2xl shadow-cyan-500/20 z-50 overflow-hidden"
+                    >
+                      {/* User Info Section */}
+                      <div className="p-4 border-b border-cyan-400/20">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-10 h-10 bg-linear-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center border border-cyan-400/30">
+                            <FiUser className="text-white text-base" />
+                          </div>
+                          <div>
+                            <div className="text-cyan-300 font-mono font-semibold text-sm">
+                              ADMIN USER
+                            </div>
+                            <div className="text-cyan-400/70 font-mono text-xs">
+                              admin@ravx-os.com
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Menu Items */}
+                      <div className="p-2">
+                        <motion.button
+                          whileHover={{
+                            backgroundColor: "rgba(34, 211, 238, 0.1)",
+                          }}
+                          onClick={() => handleMenuItemClick("profile")}
+                          className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
+                        >
+                          <FiUser className="text-cyan-400" />
+                          <span>Profile Settings</span>
+                        </motion.button>
+
+                        <motion.button
+                          whileHover={{
+                            backgroundColor: "rgba(34, 211, 238, 0.1)",
+                          }}
+                          onClick={() => handleMenuItemClick("create-agent")}
+                          className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
+                        >
+                          <FiPlus className="text-green-400" />
+                          <span>Create AI Agent</span>
+                        </motion.button>
+
+                        <motion.button
+                          whileHover={{
+                            backgroundColor: "rgba(34, 211, 238, 0.1)",
+                          }}
+                          onClick={() => handleMenuItemClick("my-agents")}
+                          className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
+                        >
+                          <FiCpu className="text-purple-400" />
+                          <span>My Agents</span>
+                        </motion.button>
+
+                        <motion.button
+                          whileHover={{
+                            backgroundColor: "rgba(34, 211, 238, 0.1)",
+                          }}
+                          onClick={() => handleMenuItemClick("security")}
+                          className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
+                        >
+                          <FiShield className="text-blue-400" />
+                          <span>Security</span>
+                        </motion.button>
+
+                        <motion.button
+                          whileHover={{
+                            backgroundColor: "rgba(34, 211, 238, 0.1)",
+                          }}
+                          onClick={() => handleMenuItemClick("settings")}
+                          className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
+                        >
+                          <FiSettings className="text-yellow-400" />
+                          <span>System Settings</span>
+                        </motion.button>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="border-t border-cyan-400/20"></div>
+
+                      {/* Bottom Actions */}
+                      <div className="p-2">
+                        <motion.button
+                          whileHover={{
+                            backgroundColor: "rgba(239, 68, 68, 0.1)",
+                          }}
+                          onClick={handleLogout}
+                          className="w-full flex items-center space-x-3 p-3 rounded-lg text-red-400 hover:text-red-300 transition-all duration-200 cursor-pointer text-sm font-mono"
+                        >
+                          <FiLogOut className="text-red-400" />
+                          <span>Logout</span>
+                        </motion.button>
+                      </div>
+
+                      {/* System Status Footer */}
+                      <div className="bg-cyan-500/10 border-t border-cyan-400/20 p-3">
+                        <div className="flex justify-between items-center text-xs text-cyan-400/70 font-mono">
+                          <span>STATUS: ONLINE</span>
+                          <span>v3.1.4</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
-        {/* Arc Labs Grid */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="max-w-6xl mx-auto"
-        >
-          {arcLabs.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {arcLabs.map((lab: any, index: number) => (
-                <motion.div
-                  key={lab.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * index }}
-                  className="bg-gray-900/50 backdrop-blur-sm border border-cyan-400/20 rounded-2xl p-6 hover:border-cyan-400/40 transition-all duration-300 group cursor-pointer"
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-xl font-semibold text-white group-hover:text-cyan-400 transition-colors">
-                      {lab.name}
-                    </h3>
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => handleDeleteClick(lab)}
-                      className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors cursor-pointer"
-                    >
-                      <FiTrash2 />
-                    </motion.button>
-                  </div>
-
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center gap-2 text-gray-400">
-                      <FiClock className="text-sm" />
-                      <span className="text-sm">
-                        Created {formatTimeAgo(lab.created)}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-400">
-                      <FiUser className="text-sm" />
-                      <span className="text-sm">By {lab.creator}</span>
-                    </div>
-                    {lab.aiAgents && (
-                      <div className="flex items-center gap-2 text-cyan-400">
-                        <FiPlus className="text-sm" />
-                        <span className="text-sm">
-                          {lab.aiAgents.length} AI Agent
-                          {lab.aiAgents.length !== 1 ? "s" : ""}
-                        </span>
-                      </div>
+        {/* Main Content Grid */}
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Terminal Panel */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-1"
+          >
+            <div className="bg-black/80 border-2 border-cyan-400/40 rounded-xl p-4 h-full font-mono text-sm">
+              <div className="text-cyan-300 border-b border-cyan-400/20 pb-2 mb-3">
+                SYSTEM TERMINAL
+              </div>
+              <div className="scrollbar-hide">
+                {terminalOutput.map((line, index) => (
+                  <div
+                    key={index}
+                    className={`mb-1 ${
+                      line.startsWith(">") ? "text-cyan-100" : "text-gray-400"
+                    } ${line === " " ? "h-3" : ""}`}
+                  >
+                    {line}
+                    {index === terminalOutput.length - 1 && isBooting && (
+                      <motion.span
+                        animate={{ opacity: [1, 0, 1] }}
+                        transition={{ duration: 0.8, repeat: Infinity }}
+                        className="ml-1 text-cyan-400"
+                      >
+                        █
+                      </motion.span>
                     )}
                   </div>
-
-                  <motion.button
-                    onClick={() => {
-                      handleopenLab(lab.id);
-                    }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/30 text-cyan-400 py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 group/btn cursor-pointer"
-                  >
-                    <span>Enter Lab</span>
-                    <FiArrowRight className="group-hover/btn:translate-x-1 transition-transform" />
-                  </motion.button>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-16"
-            >
-              <div className="w-24 h-24 bg-gray-800/50 rounded-full flex items-center justify-center mx-auto mb-6">
-                <FiPlus className="text-3xl text-cyan-400" />
+                ))}
+                {!isBooting && (
+                  <div className="text-green-400 mt-2">
+                    $ System ready. {arcLabs.length} lab(s) detected.
+                  </div>
+                )}
               </div>
-              <h3 className="text-2xl font-semibold text-gray-400 mb-3">
-                No Arc Labs Yet
-              </h3>
-              <p className="text-gray-500 max-w-md mx-auto mb-6">
-                Create your first Arc Lab to start building AI agents
-              </p>
+            </div>
+          </motion.div>
+
+          {/* Labs Grid */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="lg:col-span-3"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h1 className="text-3xl font-bold text-cyan-400 font-mono">
+                  ARC LAB MANAGEMENT
+                </h1>
+                <p className="text-gray-400 text-sm mt-1">
+                  Virtual AI Development Environments
+                </p>
+              </div>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsCreating(true)}
-                className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-xl flex items-center gap-2 transition-all duration-300 mx-auto cursor-pointer"
+                className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-6 py-3 rounded-lg flex items-center gap-2 transition-all duration-300 cursor-pointer font-mono text-sm"
               >
                 <FiPlus className="text-lg" />
-                <span>Create First Lab</span>
+                <span>CREATE LAB</span>
               </motion.button>
-            </motion.div>
-          )}
-        </motion.div>
+            </div>
+
+            {/* Labs Grid */}
+            {arcLabs.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {arcLabs.map((lab: any, index: number) => (
+                  <motion.div
+                    key={lab.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * index + 0.5 }}
+                    className="bg-gray-800/30 backdrop-blur-sm border-2 border-cyan-400/20 rounded-xl p-4 hover:border-cyan-400/40 transition-all duration-300 group cursor-pointer hover:bg-gray-800/50"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex items-center space-x-2">
+                        <FiTerminal className="text-cyan-400 text-sm" />
+                        <h3 className="text-lg font-semibold text-white group-hover:text-cyan-400 transition-colors font-mono">
+                          {lab.name}
+                        </h3>
+                      </div>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteClick(lab);
+                        }}
+                        className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors cursor-pointer"
+                      >
+                        <FiTrash2 className="text-sm" />
+                      </motion.button>
+                    </div>
+
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-gray-400 text-xs">
+                        <FiClock className="text-xs" />
+                        <span>Created {formatTimeAgo(lab.created)}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-gray-400 text-xs">
+                        <FiUser className="text-xs" />
+                        <span>Owner: {lab.creator}</span>
+                      </div>
+                      {lab.aiAgents && (
+                        <div className="flex items-center gap-2 text-cyan-400 text-xs">
+                          <FiCpu className="text-xs" />
+                          <span>
+                            {lab.aiAgents.length} AI Agent
+                            {lab.aiAgents.length !== 1 ? "s" : ""}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    <motion.button
+                      onClick={() => handleopenLab(lab.id)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-400/30 text-cyan-400 py-2 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 group/btn cursor-pointer text-sm font-mono"
+                    >
+                      <span>ACCESS LAB</span>
+                      <FiArrowRight className="group-hover/btn:translate-x-1 transition-transform text-xs" />
+                    </motion.button>
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="text-center py-16 bg-gray-800/30 border-2 border-cyan-400/20 rounded-xl backdrop-blur-sm"
+              >
+                <div className="w-20 h-20 bg-cyan-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-cyan-400/30">
+                  <FiTerminal className="text-2xl text-cyan-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-400 mb-3 font-mono">
+                  NO ACTIVE LABS
+                </h3>
+                <p className="text-gray-500 max-w-md mx-auto mb-6 text-sm">
+                  Initialize your first virtual AI development environment
+                </p>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsCreating(true)}
+                  className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-6 py-3 rounded-lg flex items-center gap-2 transition-all duration-300 mx-auto cursor-pointer font-mono text-sm"
+                >
+                  <FiPlus className="text-lg" />
+                  <span>INITIALIZE LAB</span>
+                </motion.button>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
       </div>
 
-      {/* Delete Confirmation Modal */}
+      {/* Delete Confirmation Modal - Terminal Style */}
       <AnimatePresence>
         {deleteConfirm && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="bg-gray-900 border-2 border-red-500/30 rounded-2xl shadow-2xl shadow-red-500/20 max-w-md w-full p-6"
+              exit={{ opacity: 0, scale: 0.8, y: 20 }}
+              className="bg-gray-900 border-2 border-red-500/40 rounded-xl shadow-2xl shadow-red-500/20 max-w-md w-full"
             >
-              {/* Warning Icon */}
-              <div className="flex justify-center mb-4">
-                <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center">
-                  <FiAlertTriangle className="text-2xl text-red-400" />
+              {/* Terminal Header */}
+              <div className="bg-gray-800 border-b border-red-500/30 px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <div className="flex space-x-1.5">
+                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  </div>
+                  <span className="text-red-300 font-mono text-sm">
+                    root@ravx-webos:~/# system delete --lab
+                  </span>
                 </div>
               </div>
 
-              {/* Confirmation Text */}
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-bold text-white mb-2">
-                  Delete Arc Lab?
-                </h3>
-                <p className="text-gray-400 mb-4">
-                  Are you sure you want to delete{" "}
-                  <span className="text-white font-semibold">
-                    "{labToDelete?.name}"
-                  </span>
-                  ?
-                </p>
-                <p className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-lg p-3">
-                  <strong>Warning:</strong> This will permanently delete the lab
-                  and all associated AI agents. This action cannot be undone.
-                </p>
-              </div>
+              {/* Confirmation Content */}
+              <div className="p-6">
+                <div className="flex justify-center mb-4">
+                  <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center border border-red-500/30">
+                    <FiAlertTriangle className="text-lg text-red-400" />
+                  </div>
+                </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-3">
-                <motion.button
-                  onClick={cancelDelete}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex-1 bg-gray-800 text-white py-3 px-6 rounded-xl border-2 border-gray-600 hover:border-gray-500 hover:bg-gray-700 transition-all duration-300 font-medium cursor-pointer"
-                >
-                  Cancel
-                </motion.button>
-                <motion.button
-                  onClick={confirmDelete}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex-1 bg-linear-to-r from-red-600 to-orange-600 text-white py-3 px-6 rounded-xl border-2 border-red-500/50 hover:from-red-500 hover:to-orange-500 transition-all duration-300 font-medium shadow-lg shadow-red-500/25 cursor-pointer"
-                >
-                  Delete Lab
-                </motion.button>
+                <div className="text-center mb-6">
+                  <h3 className="text-lg font-bold text-white mb-2 font-mono">
+                    CONFIRM LAB DELETION
+                  </h3>
+                  <p className="text-gray-400 mb-4 text-sm">
+                    Delete lab:{" "}
+                    <span className="text-red-300 font-semibold font-mono">
+                      "{labToDelete?.name}"
+                    </span>
+                  </p>
+                  <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                    <p className="text-red-400 text-xs font-mono">
+                      ⚠️ WARNING: This action is irreversible. All lab data and
+                      agents will be permanently erased.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3">
+                  <motion.button
+                    onClick={cancelDelete}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex-1 bg-gray-800 text-gray-300 py-2 px-4 rounded-lg border border-gray-600 hover:border-gray-500 hover:bg-gray-700 transition-all duration-300 font-mono text-sm cursor-pointer"
+                  >
+                    CANCEL
+                  </motion.button>
+                  <motion.button
+                    onClick={confirmDelete}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex-1 bg-linear-to-r from-red-600 to-orange-600 text-white py-2 px-4 rounded-lg border border-red-500/50 hover:from-red-500 hover:to-orange-500 transition-all duration-300 font-mono text-sm shadow-lg shadow-red-500/25 cursor-pointer"
+                  >
+                    CONFIRM DELETE
+                  </motion.button>
+                </div>
               </div>
             </motion.div>
           </motion.div>
