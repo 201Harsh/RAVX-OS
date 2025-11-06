@@ -1,5 +1,6 @@
 const ArcLabModel = require("../models/ArcLab.model");
 const UserModel = require("../models/user.model");
+const AIAgentModel = require("../models/AIAgent.model");
 const ArcLabServices = require("../services/arc.service");
 
 module.exports.CreateArcLab = async (req, res) => {
@@ -135,6 +136,18 @@ module.exports.DeleteArcLab = async (req, res) => {
       return res.status(404).json({
         message: "User not found.",
       });
+    }
+
+    const AIAgents = await AIAgentModel.find({
+      ArcLabId: id,
+    });
+
+    if (AIAgents.length >= 1) {
+      AIAgents.forEach(async (agent) => {
+        await AIAgentModel.findByIdAndDelete(agent._id);
+      });
+      user.AIAgentToken += AIAgents.length;
+      await user.save();
     }
 
     const ArcLab = await ArcLabModel.findByIdAndDelete(id);
