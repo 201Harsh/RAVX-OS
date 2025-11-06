@@ -242,6 +242,14 @@ module.exports.ForgotPassword = async (req, res) => {
       });
     }
 
+    const tempUser = await TempUserModel.findOne({ email });
+
+    if (tempUser) {
+      return res.status(201).json({
+        message: "User already exists Just Proceed to Reset Password!",
+      });
+    }
+
     const otp = Math.floor(100000 + Math.random() * 900000);
     const otpExpiry = new Date().getTime() + 5 * 60 * 1000;
 

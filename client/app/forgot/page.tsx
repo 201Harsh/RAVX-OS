@@ -8,9 +8,9 @@ import {
   FiCheckCircle,
   FiLock,
 } from "react-icons/fi";
-import { useRouter } from "next/navigation";
 import { Slide, toast } from "react-toastify";
-import AxiosProxyInstance from "@/config/AxiosProxy";
+import AxiosInstance from "@/config/Axios";
+import { useRouter } from "next/navigation";
 
 interface ForgotPasswordForm {
   email: string;
@@ -98,11 +98,59 @@ const ForgotPasswordPage: React.FC = () => {
 
     setIsLoading(true);
     setApiError("");
+    setCurrentStep(1);
 
-    setTimeout(() => {
+    try {
+      const res = await AxiosInstance.post("/users/forgot", {
+        email: formData.email,
+      });
+
+      if (res.status === 201) {
+        toast.error(res.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+        setCurrentStep(2);
+        return null;
+      }
+
+      if (res.status === 200) {
+        setCurrentStep(2);
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+    } catch (error: any) {
+      const mainerror = error.response?.data?.message || "An error occurred";
+      const middlewareerrors = error.response?.data?.errors;
+
+      if (mainerror) {
+        setApiError(mainerror);
+      }
+
+      if (middlewareerrors) {
+        middlewareerrors.forEach((e: { msg: string }) => {
+          setApiError(e.msg);
+        });
+      }
+    } finally {
       setIsLoading(false);
-      setCurrentStep(2);
-    }, 2000);
+    }
   };
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -115,9 +163,43 @@ const ForgotPasswordPage: React.FC = () => {
     setIsLoading(true);
     setApiError("");
 
-    setTimeout(() => {
+    try {
+      const res = await AxiosInstance.post("/users/reset", {
+        email: formData.email,
+        otp: formData.otp,
+        password: formData.newPassword,
+      });
+
+      if (res.status === 200) {
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+        router.push("/login");
+      }
+    } catch (error: any) {
+      const mainerror = error.response?.data?.message || "An error occurred";
+      const middlewareerrors = error.response?.data?.errors;
+
+      if (mainerror) {
+        setApiError(mainerror);
+      }
+
+      if (middlewareerrors) {
+        middlewareerrors.forEach((e: { msg: string }) => {
+          setApiError(e.msg);
+        });
+      }
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   const handleResendOtp = async () => {
