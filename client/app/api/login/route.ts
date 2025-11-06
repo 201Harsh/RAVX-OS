@@ -24,7 +24,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     if (error.response) {
       return Response.json(
-        { error: error.response.data.message },
+        { error: error.response?.data?.message || error.response?.data?.errors },
         { status: error.response.status }
       );
     }

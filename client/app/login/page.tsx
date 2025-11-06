@@ -96,36 +96,11 @@ const LoginPage: React.FC = () => {
       const apiErrors = error.response?.data?.error;
 
       if (Array.isArray(apiErrors)) {
-        apiErrors.forEach((elem: { msg: string }) => {
-          setLoginError((prev) => prev + "\n" + elem.msg);
-          if (loginError) {
-            return;
-          }
-          toast.error(elem.msg, {
-            position: "top-right",
-            autoClose: 4000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce,
-          });
+        apiErrors.forEach((e: { msg: string }) => {
+          setLoginError((prev) => (prev ? prev + " " + e.msg : e.msg));
         });
-      } else if (typeof apiErrors === "object" && apiErrors?.message) {
-        setLoginError(apiErrors.message);
-        toast.error(apiErrors.message, {
-          position: "top-right",
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Slide,
-        });
+      } else if (typeof apiErrors === "string") {
+        setLoginError(apiErrors || "Login failed. Please try again.");
       }
     } finally {
       setIsLoading(false);
