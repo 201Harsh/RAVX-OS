@@ -19,6 +19,7 @@ import {
 import { useRouter } from "next/navigation";
 import { FaRocket } from "react-icons/fa";
 import Image from "next/image";
+import LandingHeader from "../components/Welcome Page/LandingHeader";
 
 // Type definitions
 interface TechStack {
@@ -164,18 +165,12 @@ const AboutRAVXOS: React.FC = () => {
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
+        <LandingHeader itemVariants={itemVariants} />
         <motion.header
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between mb-12"
+          className="flex items-center justify-center mt-24 mb-10"
         >
-          <button
-            onClick={() => navigate.push("/")}
-            className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 transition-colors"
-          >
-            <FiBookOpen className="text-lg" />
-            <span>Back to Home</span>
-          </button>
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
               About RAVX OS
@@ -190,8 +185,6 @@ const AboutRAVXOS: React.FC = () => {
         {/* Creator Section */}
         <motion.section
           variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
           viewport={{ once: true }}
           className="mb-20"
         >

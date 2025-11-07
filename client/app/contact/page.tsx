@@ -16,6 +16,7 @@ import {
   FiAlertCircle,
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import LandingHeader from "../components/Welcome Page/LandingHeader";
 
 interface ContactForm {
   name: string;
@@ -258,19 +259,12 @@ const ContactPage: React.FC = () => {
 
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
+        <LandingHeader itemVariants={itemVariants} />
         <motion.header
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center justify-between mb-12"
         >
-          <button
-            onClick={() => router.push("/")}
-            className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 transition-colors"
-          >
-            <FiArrowLeft className="text-lg" />
-            <span>Back to Home</span>
-          </button>
-
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
               Get In Touch
