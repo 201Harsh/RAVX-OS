@@ -41,6 +41,11 @@ export default function RavxArcLab() {
   const [terminalOutput, setTerminalOutput] = useState<string[]>([]);
   const [isBooting, setIsBooting] = useState(true);
   const [UserData, setUserData] = useState<UserDataType[]>([]);
+  const [memory, setMemory] = useState({
+    usedJSHeapSize: 0,
+    totalJSHeapSize: 0,
+    jsHeapSizeLimit: 0,
+  });
 
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -335,6 +340,28 @@ export default function RavxArcLab() {
     }
   };
 
+  useEffect(() => {
+    const updateMemory = () => {
+      if (performance && (performance as any).memory) {
+        const { usedJSHeapSize, totalJSHeapSize, jsHeapSizeLimit } = (
+          performance as any
+        ).memory;
+        setMemory({
+          usedJSHeapSize,
+          totalJSHeapSize,
+          jsHeapSizeLimit,
+        });
+      }
+    };
+
+    updateMemory();
+    const interval = setInterval(updateMemory, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const mb = (bytes: number) => (bytes / 1024 / 1024).toFixed(2);
+
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-900 via-black to-cyan-900/20 text-white p-4">
       {/* Terminal-style Header */}
@@ -568,8 +595,10 @@ export default function RavxArcLab() {
                 <span className="text-cyan-400">ONLINE</span>
               </div>
               <div className="flex justify-between">
-                <span>Memory Usage:</span>
-                <span className="text-cyan-400">42%</span>
+                <span>Total Memory Usage:</span>
+                <span className="text-cyan-400">
+                  {mb(memory.totalJSHeapSize)} MB
+                </span>
               </div>
             </div>
           </motion.div>
