@@ -1,26 +1,32 @@
 "use client";
-
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Flip, Slide, toast, Zoom } from "react-toastify";
 import {
   FaBolt,
-  FaPlus,
   FaRobot,
   FaTachometerAlt,
   FaUser,
   FaVolumeUp,
   FaTerminal,
   FaCog,
-  FaCode,
 } from "react-icons/fa";
 import { AIAgent } from "@/app/types/Type";
 import CreateAIAgentModal from "@/app/components/RavxOS/CreateAIAgent";
 import Dashboard from "@/app/components/RavxOS/Dashboard";
 import AxiosInstance from "@/config/Axios";
 import { useParams, useRouter } from "next/navigation";
-import { FaShield } from "react-icons/fa6";
 import AxiosProxyInstance from "@/config/AxiosProxy";
+
+interface UserDataType {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  LabTokens: number;
+  AIAgentTokens: number;
+  createdAt: string;
+}
 
 export default function RavxArcLab() {
   const [activeTab, setActiveTab] = useState<"create" | "dashboard">("create");
@@ -30,6 +36,7 @@ export default function RavxArcLab() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [terminalOutput, setTerminalOutput] = useState<string[]>([]);
   const [isBooting, setIsBooting] = useState(true);
+  const [UserData, setUserData] = useState<UserDataType[]>([]);
 
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -214,8 +221,31 @@ export default function RavxArcLab() {
     }
   };
 
+  const fetchUserData = async () => {
+    try {
+      const res = await AxiosInstance.get("/users/profile");
+      if (res.status === 200) {
+        setUserData(res.data.User);
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Flip,
+      });
+    }
+  };
+
   useEffect(() => {
     handleGetAIAgents();
+    fetchUserData();
   }, []);
 
   const handleOpenModal = () => {
