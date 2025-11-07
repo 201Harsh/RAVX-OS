@@ -257,10 +257,11 @@ export default function RavxArcLab() {
   };
 
   const handleMenuItemClick = (action: string) => {
-    console.log(`Menu item clicked: ${action}`);
-    setIsUserMenuOpen(false);
+    if (action === "agents") {
+      setActiveTab("dashboard");
+      setIsUserMenuOpen(false);
+    }
   };
-
   const handleLogout = async () => {
     try {
       const res = await AxiosProxyInstance.post("/api/logout");
