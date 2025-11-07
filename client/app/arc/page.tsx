@@ -202,7 +202,7 @@ const RavxArc = () => {
         setUserData(res.data.User);
       }
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       toast.error(error.response?.data?.message, {
         position: "top-right",
         autoClose: 5000,
@@ -224,7 +224,7 @@ const RavxArc = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await AxiosProxyInstance.post("/api/logout");
+      const res = await AxiosInstance.post("/users/logout");
       if (res.status === 200) {
         router.push("/");
         toast.success("Logged out successfully!", {
