@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Flip, toast, Zoom } from "react-toastify";
+import { Flip, Slide, toast, Zoom } from "react-toastify";
 import {
   FaBolt,
   FaPlus,
@@ -20,6 +20,7 @@ import Dashboard from "@/app/components/RavxOS/Dashboard";
 import AxiosInstance from "@/config/Axios";
 import { useParams, useRouter } from "next/navigation";
 import { FaShield } from "react-icons/fa6";
+import AxiosProxyInstance from "@/config/AxiosProxy";
 
 export default function RavxArcLab() {
   const [activeTab, setActiveTab] = useState<"create" | "dashboard">("create");
@@ -230,9 +231,37 @@ export default function RavxArcLab() {
     setIsUserMenuOpen(false);
   };
 
-  const handleLogout = () => {
-    console.log("Logging out...");
-    setIsUserMenuOpen(false);
+  const handleLogout = async () => {
+    try {
+      const res = await AxiosProxyInstance.post("/api/logout");
+      if (res.status === 200) {
+        router.push("/");
+        toast.success("Logged out successfully!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+        setIsUserMenuOpen(false);
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
+    }
   };
 
   return (
