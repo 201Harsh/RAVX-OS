@@ -138,7 +138,7 @@ const RAVXOSLanding = () => {
           <LandingHeader itemVariants={itemVariants} />
 
           {/* Hero Section */}
-          <div className="text-center mb-24">
+          <div className="text-center mt-24 mb-20">
             <motion.div variants={itemVariants} className="mb-8">
               <motion.span
                 className="inline-block px-4 py-1 bg-cyan-500/20 border border-cyan-400/30 rounded-full text-cyan-400 text-sm mb-6"

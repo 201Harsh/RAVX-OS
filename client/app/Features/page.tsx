@@ -20,6 +20,7 @@ import {
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { FaBrain } from "react-icons/fa";
+import LandingHeader from "../components/Welcome Page/LandingHeader";
 
 // Type definitions
 interface FeatureCategory {
@@ -398,169 +399,172 @@ const RAVXOSFeatures: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, -50, 0],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"
-          animate={{
-            x: [0, -100, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      </div>
+    <>
+      <div className="min-h-screen bg-black text-white relative overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"
+            animate={{
+              x: [0, 100, 0],
+              y: [0, -50, 0],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div
+            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"
+            animate={{
+              x: [0, -100, 0],
+              y: [0, 50, 0],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 container mx-auto px-4 py-8">
-        {/* Header */}
-        <motion.header className="flex items-center justify-between mb-12">
-          <button
-            onClick={() => navigate.push("/")}
-            className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
-          >
-            <FiArrowLeft className="text-lg" />
-            <span>Back to Home</span>
-          </button>
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
-              RAVX OS Features
-            </h1>
-            <p className="text-gray-400 mt-2">
-              Discover the power behind your personal AI operating system
-            </p>
-          </div>
-          <div className="w-24"></div> {/* Spacer for balance */}
-        </motion.header>
-
-        {/* Category Filter */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex flex-wrap justify-center gap-4 mb-12"
-        >
-          {featureCategories.map((category) => (
-            <motion.button
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 ${
-                activeCategory === category.id
-                  ? "border-cyan-400 bg-cyan-500/20 text-cyan-400 shadow-lg shadow-cyan-500/20"
-                  : "border-gray-700 bg-gray-800/20 text-gray-400 hover:border-cyan-400/50 hover:text-cyan-400"
-              }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+        {/* Main Content */}
+        <div className="relative z-10 container mx-auto px-4 py-8">
+          {/* Header */}
+          <LandingHeader itemVariants={itemVariants} />
+          <motion.header className="flex items-center justify-between mb-12">
+            <button
+              onClick={() => navigate.push("/")}
+              className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
             >
-              {category.icon}
-              <span>{category.label}</span>
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Features Grid */}
-        <motion.div
-          variants={containerVariants}
-          animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-16"
-        >
-          <AnimatePresence>
-            {filteredFeatures.map((feature) => (
-              <motion.div
-                key={feature.id}
-                variants={itemVariants}
-                layout
-                className="bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-cyan-400/30 transition-all duration-300 cursor-pointer group"
-                whileHover={{ y: -5, scale: 1.02 }}
-                onClick={() => setSelectedFeature(feature)}
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div
-                    className={`p-3 rounded-xl bg-linear-to-r ${getColorClass(
-                      feature.color
-                    )}`}
-                  >
-                    {feature.icon}
-                  </div>
-                  <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs border border-green-500/30">
-                    Active
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-cyan-400 transition-colors">
-                  {feature.title}
-                </h3>
-
-                <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  {feature.description}
-                </p>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-cyan-400 text-sm font-medium capitalize">
-                    {feature.category}
-                  </span>
-                  <motion.div
-                    className="text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                    whileHover={{ x: 5 }}
-                  >
-                    <FiChevronRight className="text-lg" />
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center"
-        >
-          <div className="bg-linear-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 rounded-2xl p-12 backdrop-blur-sm max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ready to Experience These Features?
-            </h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join thousands of users who are already creating their own
-              sentient AI avatars with RAVX OS.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25 cursor-pointer"
-              >
-                <FiPlay className="text-lg" />
-                <span>Start Free Trial</span>
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 font-semibold px-8 py-4 rounded-lg transition-all duration-300 cursor-pointer"
-              >
-                Schedule Demo
-              </motion.button>
+              <FiArrowLeft className="text-lg" />
+              <span>Back to Home</span>
+            </button>
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
+                RAVX OS Features
+              </h1>
+              <p className="text-gray-400 mt-2">
+                Discover the power behind your personal AI operating system
+              </p>
             </div>
-          </div>
-        </motion.div>
+            <div className="w-24"></div> {/* Spacer for balance */}
+          </motion.header>
+
+          {/* Category Filter */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-wrap justify-center gap-4 mb-12"
+          >
+            {featureCategories.map((category) => (
+              <motion.button
+                key={category.id}
+                onClick={() => setActiveCategory(category.id)}
+                className={`flex items-center space-x-2 px-6 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 ${
+                  activeCategory === category.id
+                    ? "border-cyan-400 bg-cyan-500/20 text-cyan-400 shadow-lg shadow-cyan-500/20"
+                    : "border-gray-700 bg-gray-800/20 text-gray-400 hover:border-cyan-400/50 hover:text-cyan-400"
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {category.icon}
+                <span>{category.label}</span>
+              </motion.button>
+            ))}
+          </motion.div>
+
+          {/* Features Grid */}
+          <motion.div
+            variants={containerVariants}
+            animate="visible"
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-16"
+          >
+            <AnimatePresence>
+              {filteredFeatures.map((feature) => (
+                <motion.div
+                  key={feature.id}
+                  variants={itemVariants}
+                  layout
+                  className="bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-cyan-400/30 transition-all duration-300 cursor-pointer group"
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  onClick={() => setSelectedFeature(feature)}
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div
+                      className={`p-3 rounded-xl bg-linear-to-r ${getColorClass(
+                        feature.color
+                      )}`}
+                    >
+                      {feature.icon}
+                    </div>
+                    <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs border border-green-500/30">
+                      Active
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-cyan-400 transition-colors">
+                    {feature.title}
+                  </h3>
+
+                  <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                    {feature.description}
+                  </p>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-cyan-400 text-sm font-medium capitalize">
+                      {feature.category}
+                    </span>
+                    <motion.div
+                      className="text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                      whileHover={{ x: 5 }}
+                    >
+                      <FiChevronRight className="text-lg" />
+                    </motion.div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* CTA Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <div className="bg-linear-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 rounded-2xl p-12 backdrop-blur-sm max-w-4xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Ready to Experience These Features?
+              </h2>
+              <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Join thousands of users who are already creating their own
+                sentient AI avatars with RAVX OS.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25 cursor-pointer"
+                >
+                  <FiPlay className="text-lg" />
+                  <span>Start Free Trial</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 font-semibold px-8 py-4 rounded-lg transition-all duration-300 cursor-pointer"
+                >
+                  Schedule Demo
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
