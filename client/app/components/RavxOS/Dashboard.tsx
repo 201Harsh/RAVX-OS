@@ -16,11 +16,18 @@ import {
 } from "react-icons/fa";
 import { AIAgent } from "@/app/types/Type";
 
+interface MemoryUsage {
+  usedJSHeapSize: number;
+  totalJSHeapSize: number;
+  jsHeapSizeLimit: number;
+}
+
 interface DashboardProps {
   aiAgents: AIAgent[];
   onDeleteAgent: (agentId: string) => void;
   onRunAgent: (agentId: string) => void;
   onEditAgent: (agentId: string, updatedData: Partial<AIAgent>) => void;
+  memory: MemoryUsage;
 }
 
 export default function Dashboard({
@@ -28,6 +35,7 @@ export default function Dashboard({
   onDeleteAgent,
   onRunAgent,
   onEditAgent,
+  memory,
 }: DashboardProps) {
   const [menuOpen, setMenuOpen] = useState<string | null>(null);
 
@@ -50,6 +58,9 @@ export default function Dashboard({
   const toggleMenu = (agentId: string) => {
     setMenuOpen(menuOpen === agentId ? null : agentId);
   };
+
+  const MemoryUsage = (bytes: number) => (bytes / 1024 / 1024 / 2.3).toFixed(1);
+  const CPUsage = (bytes: number) => (bytes / 1024 / 1024 / 2.1).toFixed(1);
 
   return (
     <div className="w-full">
@@ -328,14 +339,14 @@ export default function Dashboard({
         transition={{ delay: 0.5 }}
         className="mt-6 pt-4 border-t border-cyan-400/20"
       >
-        <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-cyan-400/60 font-mono">
+        <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-red-400/70 font-mono">
           <div className="flex items-center space-x-4 mb-2 sm:mb-0">
             <span>SYSTEM: OPERATIONAL</span>
             <span>AGENTS: {aiAgents.length}</span>
           </div>
           <div className="flex items-center space-x-4">
-            <span>MEMORY: 54%</span>
-            <span>CPU: 28%</span>
+            <span>MEMORY: {MemoryUsage(memory.usedJSHeapSize)}%</span>
+            <span>CPU: {CPUsage(memory.totalJSHeapSize)}%</span>
           </div>
         </div>
       </motion.div>

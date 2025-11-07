@@ -31,6 +31,12 @@ interface UserDataType {
   createdAt: string;
 }
 
+interface MemoryUsage {
+  usedJSHeapSize: number;
+  totalJSHeapSize: number;
+  jsHeapSizeLimit: number;
+}
+
 export default function RavxArcLab() {
   const [activeTab, setActiveTab] = useState<
     "create" | "dashboard" | "settings" | "profile"
@@ -42,7 +48,7 @@ export default function RavxArcLab() {
   const [terminalOutput, setTerminalOutput] = useState<string[]>([]);
   const [isBooting, setIsBooting] = useState(true);
   const [UserData, setUserData] = useState<UserDataType[]>([]);
-  const [memory, setMemory] = useState({
+  const [memory, setMemory] = useState<MemoryUsage>({
     usedJSHeapSize: 0,
     totalJSHeapSize: 0,
     jsHeapSizeLimit: 0,
@@ -748,9 +754,9 @@ export default function RavxArcLab() {
                     className="w-full max-w-md mx-auto block bg-linear-to-r from-cyan-600 via-blue-600 to-purple-600 hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-cyan-500/25 transition-all duration-300 group relative overflow-hidden cursor-pointer font-mono"
                   >
                     <div className="absolute inset-0 bg-linear-to-r from-cyan-400/0 via-blue-400/10 to-purple-400/0 group-hover:from-cyan-400/10 group-hover:via-blue-400/20 group-hover:to-purple-400/10 transition-all duration-500" />
-                    <div className="relative z-10 flex items-center justify-center space-x-3">
+                    <div className="relative z-10 flex items-center justify-center space-x-3 uppercase">
                       <FaRobot className="text-xl group-hover:scale-110 transition-transform duration-300" />
-                      <span className="text-lg">INITIALIZE AI AGENT</span>
+                      <span className="text-lg">CREte AI AGENT</span>
                     </div>
                   </motion.button>
 
@@ -778,6 +784,7 @@ export default function RavxArcLab() {
                     onDeleteAgent={handleDeleteAgent}
                     onRunAgent={handleRunAgent}
                     onEditAgent={handleEditAgent}
+                    memory={memory}
                   />
                 </motion.div>
               )}

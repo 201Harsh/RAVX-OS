@@ -394,8 +394,8 @@ export default function CreateAIAgentModal({
                   <FaTerminal className="text-white text-sm" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-cyan-400 font-mono">
-                    CREATE AI AGENT
+                  <h2 className="text-lg font-bold text-cyan-400 font-mono text-center uppercase">
+                    CREATE AI AGENT SetUp Wizard
                   </h2>
                   <p className="text-xs text-cyan-400/70 font-mono">
                     Step {currentStep} of 4 - {steps[currentStep - 1]?.title}
@@ -430,7 +430,7 @@ export default function CreateAIAgentModal({
                         )}
                       </div>
                       <span
-                        className={`text-xs mt-1 transition-colors duration-300 ${
+                        className={`text-xs mt-1 transition-colors duration-300 whitespace-nowrap ${
                           currentStep >= step.number
                             ? "text-cyan-400"
                             : "text-gray-500"
@@ -581,9 +581,7 @@ export default function CreateAIAgentModal({
                               formData.personality === option.id
                                 ? "border-cyan-500 bg-cyan-500/10 shadow-lg shadow-cyan-500/25"
                                 : "border-gray-600 bg-gray-800/50 hover:border-cyan-400/50"
-                            } ${
-                              option.recommended ? "ring-1 ring-cyan-400" : ""
-                            }`}
+                            } `}
                             onClick={() =>
                               setFormData((prev) => ({
                                 ...prev,
@@ -856,11 +854,7 @@ export default function CreateAIAgentModal({
                                 formData.tone === option.id
                                   ? "border-purple-500 bg-purple-500/10 shadow-lg shadow-purple-500/25"
                                   : "border-gray-600 bg-gray-800/50 hover:border-purple-400/50"
-                              } ${
-                                option.recommended
-                                  ? "ring-1 ring-purple-400"
-                                  : ""
-                              }`}
+                              } `}
                               onClick={() =>
                                 setFormData((prev) => ({
                                   ...prev,
