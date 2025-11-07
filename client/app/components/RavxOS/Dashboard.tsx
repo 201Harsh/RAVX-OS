@@ -13,6 +13,7 @@ import {
   FaCog,
   FaBolt,
   FaRocketchat,
+  FaCheck,
 } from "react-icons/fa";
 import { AIAgent } from "@/app/types/Type";
 
@@ -28,6 +29,8 @@ interface DashboardProps {
   onRunAgent: (agentId: string) => void;
   onEditAgent: (agentId: string, updatedData: Partial<AIAgent>) => void;
   memory: MemoryUsage;
+  ShareAgent: (id: string) => void;
+  isCopied: boolean;
 }
 
 export default function Dashboard({
@@ -36,6 +39,8 @@ export default function Dashboard({
   onRunAgent,
   onEditAgent,
   memory,
+  ShareAgent,
+  isCopied,
 }: DashboardProps) {
   const [menuOpen, setMenuOpen] = useState<string | null>(null);
 
@@ -321,9 +326,22 @@ export default function Dashboard({
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex-1 flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-cyan-300 py-2 px-3 rounded-lg transition-colors duration-300 font-medium text-xs font-mono border border-cyan-400/20"
+                    onClick={() => {
+                      ShareAgent(agent._id);
+                    }}
+                    className={`flex-1 flex items-center justify-center gap-2 ${
+                      isCopied
+                        ? "bg-green-600 hover:bg-green-500 text-white"
+                        : "bg-gray-700 hover:bg-gray-600 text-cyan-300"
+                    } py-2 px-3 rounded-lg transition-colors duration-300 font-medium text-xs font-mono border border-cyan-400/20`}
                   >
-                    <FaRocketchat className="text-xs" /> SHARE AGENT
+                    {isCopied ? (
+                      <FaCheck className="text-xs" />
+                    ) : (
+                      <>
+                        <FaRocketchat className="text-xs" /> SHARE AGENT
+                      </>
+                    )}
                   </motion.button>
                 </div>
               </motion.div>

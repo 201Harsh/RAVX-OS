@@ -48,6 +48,7 @@ export default function RavxArcLab() {
   const [terminalOutput, setTerminalOutput] = useState<string[]>([]);
   const [isBooting, setIsBooting] = useState(true);
   const [UserData, setUserData] = useState<UserDataType[]>([]);
+  const [isCopied, setIsCopied] = useState(false);
   const [memory, setMemory] = useState<MemoryUsage>({
     usedJSHeapSize: 0,
     totalJSHeapSize: 0,
@@ -366,6 +367,31 @@ export default function RavxArcLab() {
   }, []);
 
   const mb = (bytes: number) => (bytes / 1024 / 1024).toFixed(2);
+
+  const ShareAgent = async (id: string) => {
+    try {
+      navigator.clipboard.writeText(`
+    ${window.location.origin}/agent/${id}
+    `);
+      toast.success("Copied to clipboard", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
+      setIsCopied(true);
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 2000);
+    } catch (error) {
+      toast.error("Failed to copy to clipboard");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-900 via-black to-cyan-900/20 text-white p-4">
@@ -785,6 +811,8 @@ export default function RavxArcLab() {
                     onRunAgent={handleRunAgent}
                     onEditAgent={handleEditAgent}
                     memory={memory}
+                    ShareAgent={ShareAgent}
+                    isCopied={isCopied}
                   />
                 </motion.div>
               )}

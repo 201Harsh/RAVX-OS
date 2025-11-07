@@ -143,8 +143,8 @@ export default function ProfileSettings({ userData, aiAgents }: PropsType) {
             <div className="space-y-4">
               <div className="flex justify-between items-center text-sm overflow-hidden">
                 <span className="text-gray-400 font-mono">USER_ID: </span>
-                <span className="text-cyan-300 font-mono text-center">
-                  {userData._id}
+                <span className="text-cyan-300 font-mono text-center ml-2">
+                  {userData._id.slice(8)}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm">
