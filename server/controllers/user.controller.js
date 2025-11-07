@@ -311,10 +311,45 @@ module.exports.UpdateNewPassword = async (req, res) => {
 
 module.exports.Logoutuser = async (req, res) => {
   try {
-    res.clearCookie("token",);
+    res.clearCookie("token");
 
     res.status(200).json({
       message: "Logout Successful",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports.GetUserProfile = async (req, res) => {
+  try {
+    const UserId = req.user._id;
+
+    if (!UserId) {
+      return res.status(400).json({
+        message: "Invalid User ID.",
+      });
+    }
+
+    if (typeof UserId !== "string") {
+      return res.status(406).json({
+        message: "Invalid request parameters passed Only Strings Allowed!",
+      });
+    }
+
+    const User = await UserModel.findById(UserId);
+
+    if (!User) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    res.status(200).json({
+      message: "User Profile Fetched Successfully!",
+      User,
     });
   } catch (error) {
     res.status(500).json({

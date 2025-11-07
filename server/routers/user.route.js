@@ -102,4 +102,6 @@ router.post(
 
 router.post("/logout", AuthMiddleware.authUser, UserController.Logoutuser);
 
+router.get('/profile', AuthMiddleware.authUser, UserController.GetUserProfile);
+
 module.exports = router;
