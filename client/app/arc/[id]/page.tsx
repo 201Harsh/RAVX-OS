@@ -17,6 +17,7 @@ import Dashboard from "@/app/components/RavxOS/Dashboard";
 import AxiosInstance from "@/config/Axios";
 import { useParams, useRouter } from "next/navigation";
 import AxiosProxyInstance from "@/config/AxiosProxy";
+import SystemSettings from "@/app/components/RavxOS/SytemSettings";
 
 interface UserDataType {
   id: string;
@@ -29,7 +30,9 @@ interface UserDataType {
 }
 
 export default function RavxArcLab() {
-  const [activeTab, setActiveTab] = useState<"create" | "dashboard">("create");
+  const [activeTab, setActiveTab] = useState<
+    "create" | "dashboard" | "settings" | "profile"
+  >("create");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [aiAgents, setAIAgents] = useState<AIAgent[]>([]);
   const [clearFormData, setclearFormData] = useState<boolean>(false);
@@ -183,10 +186,10 @@ export default function RavxArcLab() {
 
   const handleRunAgent = async (agentId: string) => {
     try {
-      router.push(`/agent/${agentId}`);
+      window.open(`/agent/${agentId}`, "_blank");
       toast.success("Agent is running");
-    } catch (error) {
-      toast.error("Something went wrong");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to run agent");
     }
   };
 
@@ -259,6 +262,11 @@ export default function RavxArcLab() {
   const handleMenuItemClick = (action: string) => {
     if (action === "agents") {
       setActiveTab("dashboard");
+      setIsUserMenuOpen(false);
+    }
+
+    if (action === "settings") {
+      setActiveTab("settings");
       setIsUserMenuOpen(false);
     }
   };
@@ -698,6 +706,17 @@ export default function RavxArcLab() {
                     onRunAgent={handleRunAgent}
                     onEditAgent={handleEditAgent}
                   />
+                </motion.div>
+              )}
+              {activeTab === "settings" && (
+                <motion.div
+                  key="settings"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <SystemSettings />
                 </motion.div>
               )}
             </AnimatePresence>
