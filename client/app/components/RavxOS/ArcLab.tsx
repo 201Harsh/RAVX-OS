@@ -20,6 +20,7 @@ const ArcLab = ({
   formatTimeAgo,
   handleopenLab,
   handleLogout,
+  UserData,
 }: any) => {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [labToDelete, setLabToDelete] = useState<any>(null);
@@ -28,7 +29,6 @@ const ArcLab = ({
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const userMenuRef = useRef<HTMLDivElement>(null);
-
 
   const handleDeleteClick = (lab: any) => {
     setLabToDelete(lab);
@@ -136,12 +136,12 @@ const ArcLab = ({
                   <div className="w-8 h-8 bg-linear-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center border border-cyan-400/30">
                     <FiUser className="text-white text-sm" />
                   </div>
-                  <div className="text-left">
+                  <div className="text-left md:block hidden">
                     <div className="text-cyan-300 text-sm font-mono font-semibold">
-                      USER
+                      {UserData.name || "user"}
                     </div>
                     <div className="text-cyan-400/70 text-xs font-mono">
-                      admin@ravx
+                      {UserData.email || "user@ravx"}
                     </div>
                   </div>
                   <motion.div
@@ -183,10 +183,10 @@ const ArcLab = ({
                           </div>
                           <div>
                             <div className="text-cyan-300 font-mono font-semibold text-sm">
-                              ADMIN USER
+                              {UserData.name || "User"}
                             </div>
                             <div className="text-cyan-400/70 font-mono text-xs">
-                              admin@ravx-os.com
+                              {UserData.email || "User@ravx"}
                             </div>
                           </div>
                         </div>

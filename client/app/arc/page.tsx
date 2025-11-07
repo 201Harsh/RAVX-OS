@@ -8,10 +8,21 @@ import AxiosInstance from "@/config/Axios";
 import { useRouter } from "next/navigation";
 import AxiosProxyInstance from "@/config/AxiosProxy";
 
+interface UserDataType {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  LabTokens: number;
+  AIAgentTokens: number;
+  createdAt: string;
+}
+
 const RavxArc = () => {
   const [arcLabs, setArcLabs] = useState<any[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [newLabName, setNewLabName] = useState("");
+  const [UserData, setUserData] = useState<UserDataType[]>([]);
 
   const router = useRouter();
 
@@ -184,8 +195,31 @@ const RavxArc = () => {
     }
   };
 
+  const fetchUserData = async () => {
+    try {
+      const res = await AxiosInstance.get("/users/profile");
+      if (res.status === 200) {
+        setUserData(res.data.User);
+      }
+    } catch (error: any) {
+      console.log(error)
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Flip,
+      });
+    }
+  };
+
   useEffect(() => {
     fetchArcLabs();
+    fetchUserData();
   }, []);
 
   const handleLogout = async () => {
@@ -261,6 +295,7 @@ const RavxArc = () => {
         formatTimeAgo={formatTimeAgo}
         handleopenLab={handleopenLab}
         handleLogout={handleLogout}
+        UserData={UserData}
       />
 
       {/* Create Lab Modal*/}
