@@ -155,7 +155,7 @@ export default function AIChatBotPage() {
       if (res.status === 200) {
         setAIAgentData(res.data.AIAgent);
         setTimeout(() => {
-          document.title = `${res.data.AIAgent.name} - Arc Lab`;
+          document.title = `${res.data.AIAgent.name} - RAVX OS`;
         }, 100);
         console.log(document.title);
       }
