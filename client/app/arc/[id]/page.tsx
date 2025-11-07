@@ -10,6 +10,7 @@ import {
   FaVolumeUp,
   FaTerminal,
   FaCog,
+  FaArrowLeft,
 } from "react-icons/fa";
 import { AIAgent } from "@/app/types/Type";
 import CreateAIAgentModal from "@/app/components/RavxOS/CreateAIAgent";
@@ -302,6 +303,9 @@ export default function RavxArcLab() {
     } else if (action === "profile") {
       setActiveTab("profile");
       setIsUserMenuOpen(false);
+    } else if (action === "back") {
+      router.push("/arc");
+      setIsUserMenuOpen(false);
     } else {
       setActiveTab("create");
       setIsUserMenuOpen(false);
@@ -455,6 +459,17 @@ export default function RavxArcLab() {
                         whileHover={{
                           backgroundColor: "rgba(34, 211, 238, 0.1)",
                         }}
+                        onClick={() => handleMenuItemClick("back")}
+                        className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
+                      >
+                        <FaArrowLeft className="text-cyan-400 text-sm" />
+                        <span>Back to Arc</span>
+                      </motion.button>
+
+                      <motion.button
+                        whileHover={{
+                          backgroundColor: "rgba(34, 211, 238, 0.1)",
+                        }}
                         onClick={() => handleMenuItemClick("profile")}
                         className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
                       >
@@ -530,7 +545,7 @@ export default function RavxArcLab() {
       </motion.div>
 
       {/* Main Content Grid */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="max-w-7xl 2xl:max-w-full mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Terminal Panel */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -579,7 +594,7 @@ export default function RavxArcLab() {
           >
             <div className="flex items-center space-x-2 text-cyan-400 mb-3">
               <FaTerminal className="text-sm" />
-              <span className="font-mono text-sm">SYSTEM STATS</span>
+              <span className="font-mono text-sm">SYSTEM STATS - Ravx-OS</span>
             </div>
             <div className="space-y-2 text-xs text-gray-300">
               <div className="flex justify-between">
@@ -591,13 +606,13 @@ export default function RavxArcLab() {
                 <span className="text-cyan-400">ONLINE</span>
               </div>
               <div className="flex justify-between text-red-400">
-                <span>Live Memory Usage:</span>
+                <span>Memory Usage:</span>
                 <span className="text-green-400">
                   {mb(memory.usedJSHeapSize)} MB
                 </span>
               </div>
               <div className="flex justify-between">
-                <span>Total Memory Usage:</span>
+                <span>Total Memory Used:</span>
                 <span className="text-cyan-400">
                   {mb(memory.totalJSHeapSize)} MB
                 </span>
