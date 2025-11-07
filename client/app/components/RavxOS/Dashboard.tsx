@@ -10,6 +10,9 @@ import {
   FaRobot,
   FaGlobe,
   FaCalendar,
+  FaTerminal,
+  FaCog,
+  FaBolt,
 } from "react-icons/fa";
 import { AIAgent } from "@/app/types/Type";
 
@@ -49,39 +52,41 @@ export default function Dashboard({
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="w-full">
       {/* Header */}
-      <div className="text-center mb-8">
+      <div className="mb-6">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="inline-block px-6 py-2 bg-cyan-500/20 border border-cyan-400/30 rounded-full text-cyan-400 text-sm mb-6"
+          className="inline-block px-4 py-1 bg-cyan-500/20 border border-cyan-400/30 rounded-full text-cyan-400 text-xs font-mono mb-4"
         >
-          POWERED BY RAVX OS
+          AI AGENT MANAGEMENT
         </motion.div>
-        <h2 className="text-4xl font-bold mb-4 bg-linear-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
-          AI Agents Dashboard
+        <h2 className="text-2xl md:text-3xl font-bold mb-2 bg-linear-to-r from-cyan-400 to-green-500 bg-clip-text text-transparent font-mono">
+          AGENT DASHBOARD
         </h2>
-        <p className="text-gray-400 text-lg">
-          Manage and interact with your AI Agents
+        <p className="text-gray-400 text-sm font-mono">
+          Manage and deploy your AI agents
         </p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700"
+          className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-cyan-400/20"
         >
-          <div className="flex items-center space-x-4">
-            <div className="bg-blue-500/20 p-3 rounded-xl">
-              <FaRobot className="text-2xl text-blue-400" />
+          <div className="flex items-center space-x-3">
+            <div className="bg-cyan-500/20 p-2 rounded-lg">
+              <FaRobot className="text-lg text-cyan-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{aiAgents.length}</p>
-              <p className="text-gray-400">Total Agents</p>
+              <p className="text-xl font-bold text-white font-mono">
+                {aiAgents.length}
+              </p>
+              <p className="text-gray-400 text-xs font-mono">TOTAL AGENTS</p>
             </div>
           </div>
         </motion.div>
@@ -90,15 +95,17 @@ export default function Dashboard({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700"
+          className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-green-400/20"
         >
-          <div className="flex items-center space-x-4">
-            <div className="bg-green-500/20 p-3 rounded-xl">
-              <FaPlay className="text-2xl text-green-400" />
+          <div className="flex items-center space-x-3">
+            <div className="bg-green-500/20 p-2 rounded-lg">
+              <FaPlay className="text-lg text-green-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{aiAgents.length}</p>
-              <p className="text-gray-400">Active Agents</p>
+              <p className="text-xl font-bold text-white font-mono">
+                {aiAgents.length}
+              </p>
+              <p className="text-gray-400 text-xs font-mono">ACTIVE AGENTS</p>
             </div>
           </div>
         </motion.div>
@@ -107,19 +114,19 @@ export default function Dashboard({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700"
+          className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-purple-400/20"
         >
-          <div className="flex items-center space-x-4">
-            <div className="bg-purple-500/20 p-3 rounded-xl">
-              <FaCalendar className="text-2xl text-purple-400" />
+          <div className="flex items-center space-x-3">
+            <div className="bg-purple-500/20 p-2 rounded-lg">
+              <FaCalendar className="text-lg text-purple-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">
+              <p className="text-xl font-bold text-white font-mono">
                 {aiAgents.length > 0
                   ? formatDate(aiAgents[0].LastUsed).split(",")[0]
                   : "N/A"}
               </p>
-              <p className="text-gray-400">Last Used</p>
+              <p className="text-gray-400 text-xs font-mono">LAST DEPLOYED</p>
             </div>
           </div>
         </motion.div>
@@ -130,18 +137,20 @@ export default function Dashboard({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center py-16 bg-gray-800/30 rounded-2xl border border-gray-700"
+          className="text-center py-12 bg-gray-800/30 backdrop-blur-sm rounded-xl border-2 border-cyan-400/20"
         >
-          <FaRobot className="text-6xl text-gray-600 mx-auto mb-4" />
-          <h3 className="text-2xl font-bold text-gray-400 mb-2">
-            No AI Agents Created
+          <div className="w-16 h-16 bg-cyan-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-cyan-400/30">
+            <FaRobot className="text-2xl text-cyan-400" />
+          </div>
+          <h3 className="text-lg font-bold text-gray-400 mb-2 font-mono">
+            NO AI AGENTS DEPLOYED
           </h3>
-          <p className="text-gray-500">
-            Create your first AI Agent to get started
+          <p className="text-gray-500 text-sm font-mono">
+            Initialize your first AI agent to begin
           </p>
         </motion.div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           <AnimatePresence>
             {aiAgents.map((agent, index) => (
               <motion.div
@@ -150,15 +159,15 @@ export default function Dashboard({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700 hover:border-gray-600 transition-all duration-300 group relative"
+                className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-4 border-2 border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-300 group relative hover:bg-gray-800/50"
               >
                 {/* Three-dot Menu */}
-                <div className="absolute top-4 right-4">
+                <div className="absolute top-3 right-3">
                   <button
                     onClick={() => toggleMenu(agent._id)}
-                    className="text-gray-400 hover:text-white transition-colors duration-200 p-2 rounded-lg hover:bg-gray-700/50"
+                    className="text-gray-400 hover:text-cyan-300 transition-colors duration-200 p-1 rounded-lg hover:bg-cyan-500/10"
                   >
-                    <FaEllipsisV />
+                    <FaEllipsisV className="text-sm" />
                   </button>
 
                   <AnimatePresence>
@@ -167,126 +176,143 @@ export default function Dashboard({
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
-                        className="absolute right-0 top-10 bg-gray-700 border border-gray-600 rounded-xl shadow-2xl z-10 min-w-[150px]"
+                        className="absolute right-0 top-8 bg-gray-800/95 backdrop-blur-sm border border-cyan-400/30 rounded-lg shadow-2xl z-10 min-w-[140px]"
                       >
                         <button
                           onClick={() => {
                             onRunAgent(agent._id);
                             setMenuOpen(null);
                           }}
-                          className="w-full text-left px-4 py-3 text-sm text-white hover:bg-gray-600 rounded-t-xl flex items-center space-x-2"
+                          className="w-full text-left px-3 py-2 text-xs text-cyan-300 hover:bg-cyan-500/10 rounded-t-lg flex items-center space-x-2 font-mono"
                         >
-                          <FaPlay className="text-green-400" />
-                          <span>Run</span>
+                          <FaPlay className="text-green-400 text-xs" />
+                          <span>RUN</span>
                         </button>
                         <button
                           onClick={() => {
                             // Implement edit functionality
                             setMenuOpen(null);
                           }}
-                          className="w-full text-left px-4 py-3 text-sm text-white hover:bg-gray-600 flex items-center space-x-2"
+                          className="w-full text-left px-3 py-2 text-xs text-cyan-300 hover:bg-cyan-500/10 flex items-center space-x-2 font-mono"
                         >
-                          <FaEdit className="text-blue-400" />
-                          <span>Edit/Customize</span>
+                          <FaEdit className="text-blue-400 text-xs" />
+                          <span>CONFIGURE</span>
                         </button>
                         <button
                           onClick={() => {
                             onDeleteAgent(agent._id);
                             setMenuOpen(null);
                           }}
-                          className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-gray-600 rounded-b-xl flex items-center space-x-2"
+                          className="w-full text-left px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-b-lg flex items-center space-x-2 font-mono"
                         >
-                          <FaTrash />
-                          <span>Delete</span>
+                          <FaTrash className="text-xs" />
+                          <span>TERMINATE</span>
                         </button>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
 
-                {/* Agent Icon */}
-                <div className="bg-linear-to-br from-blue-500 to-purple-600 p-3 rounded-xl w-12 h-12 flex items-center justify-center mb-4">
-                  <FaRobot className="text-white text-lg" />
+                {/* Agent Header */}
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center space-x-2">
+                    <div className="bg-linear-to-br from-cyan-400 to-blue-500 p-2 rounded-lg flex items-center justify-center">
+                      <FaRobot className="text-white text-sm" />
+                    </div>
+                    <div>
+                      <h3 className="text-md font-bold text-white group-hover:text-cyan-400 transition-colors duration-300 font-mono">
+                        {agent.name}
+                      </h3>
+                      <div className="flex items-center space-x-1 text-cyan-400/70 text-xs font-mono">
+                        <FaTerminal className="text-xs" />
+                        <span>AGENT_ID: {agent._id.slice(-8)}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Agent Name */}
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-300">
-                  {agent.name}
-                </h3>
-
                 {/* Personality and Tone */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full text-xs font-medium">
+                <div className="flex flex-wrap gap-1 mb-3">
+                  <span className="bg-cyan-500/20 text-cyan-400 px-2 py-1 rounded text-xs font-mono">
                     {agent.personality}
                   </span>
-                  <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded-full text-xs font-medium">
+                  <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs font-mono">
                     {agent.tone}
                   </span>
                 </div>
 
-                {/* URL */}
-                {/* <div className="flex items-center space-x-2 text-gray-400 mb-3">
-                  <FaGlobe className="text-sm" />
-                  <span className="text-sm truncate">{agent.url}</span>
-                </div> */}
-
                 {/* Created Time */}
-                <div className="flex items-center space-x-2 text-gray-400 mb-4">
-                  <FaCalendar className="text-sm" />
-                  <span className="text-sm">{formatDate(agent.LastUsed)}</span>
+                <div className="flex items-center space-x-2 text-gray-400 mb-3 text-xs">
+                  <FaCalendar className="text-xs" />
+                  <span className="font-mono">
+                    DEPLOYED: {formatDate(agent.LastUsed)}
+                  </span>
                 </div>
 
                 {/* Behaviors and Skills Preview */}
                 <div className="space-y-2 mb-4">
-                  <div className="flex flex-wrap gap-1">
-                    {agent.behaviors.slice(0, 2).map((behavior) => (
-                      <span
-                        key={behavior}
-                        className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded-full text-xs"
-                      >
-                        {behavior}
-                      </span>
-                    ))}
-                    {agent.behaviors.length > 2 && (
-                      <span className="bg-gray-700 text-gray-400 px-2 py-1 rounded-full text-xs">
-                        +{agent.behaviors.length - 2}
-                      </span>
-                    )}
+                  <div>
+                    <div className="flex items-center space-x-1 text-gray-400 text-xs mb-1 font-mono">
+                      <FaBolt className="text-xs" />
+                      <span>BEHAVIORS</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {agent.behaviors.slice(0, 2).map((behavior) => (
+                        <span
+                          key={behavior}
+                          className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded text-xs font-mono"
+                        >
+                          {behavior}
+                        </span>
+                      ))}
+                      {agent.behaviors.length > 2 && (
+                        <span className="bg-gray-700 text-gray-400 px-2 py-1 rounded text-xs font-mono">
+                          +{agent.behaviors.length - 2}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex flex-wrap gap-1">
-                    {agent.skills.slice(0, 2).map((skill) => (
-                      <span
-                        key={skill}
-                        className="bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full text-xs"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                    {agent.skills.length > 2 && (
-                      <span className="bg-gray-700 text-gray-400 px-2 py-1 rounded-full text-xs">
-                        +{agent.skills.length - 2}
-                      </span>
-                    )}
+
+                  <div>
+                    <div className="flex items-center space-x-1 text-gray-400 text-xs mb-1 font-mono">
+                      <FaCog className="text-xs" />
+                      <span>SKILLS</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {agent.skills.slice(0, 2).map((skill) => (
+                        <span
+                          key={skill}
+                          className="bg-orange-500/20 text-orange-400 px-2 py-1 rounded text-xs font-mono"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                      {agent.skills.length > 2 && (
+                        <span className="bg-gray-700 text-gray-400 px-2 py-1 rounded text-xs font-mono">
+                          +{agent.skills.length - 2}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-3">
+                <div className="flex gap-2">
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => onRunAgent(agent._id)}
-                    className="flex-1 bg-linear-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white py-2 px-4 rounded-xl transition-all duration-300 font-medium flex items-center justify-center space-x-2"
+                    className="flex-1 bg-linear-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white py-2 px-3 rounded-lg transition-all duration-300 font-medium flex items-center justify-center space-x-2 text-xs font-mono"
                   >
-                    <FaPlay className="text-sm" />
-                    <span>Run</span>
+                    <FaPlay className="text-xs" />
+                    <span>DEPLOY</span>
                   </motion.button>
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex-1 bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-xl transition-colors duration-300 font-medium"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex-1 bg-gray-700 hover:bg-gray-600 text-cyan-300 py-2 px-3 rounded-lg transition-colors duration-300 font-medium text-xs font-mono border border-cyan-400/20"
                   >
-                    Customize
+                    CONFIG
                   </motion.button>
                 </div>
               </motion.div>
@@ -294,6 +320,25 @@ export default function Dashboard({
           </AnimatePresence>
         </div>
       )}
+
+      {/* System Status Footer */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        className="mt-6 pt-4 border-t border-cyan-400/20"
+      >
+        <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-cyan-400/60 font-mono">
+          <div className="flex items-center space-x-4 mb-2 sm:mb-0">
+            <span>SYSTEM: OPERATIONAL</span>
+            <span>AGENTS: {aiAgents.length}</span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <span>MEMORY: 54%</span>
+            <span>CPU: 28%</span>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }
