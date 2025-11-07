@@ -245,6 +245,9 @@ module.exports.AIAgent = async (req, res) => {
       user,
     });
 
+    AIAgent.LastUsed = Date.now();
+    await AIAgent.save();
+
     res.status(200).json({
       message: "AI-Agent Responded Successfully!",
       response,

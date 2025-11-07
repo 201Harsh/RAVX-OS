@@ -8,11 +8,11 @@ import {
   FaEdit,
   FaTrash,
   FaRobot,
-  FaGlobe,
   FaCalendar,
   FaTerminal,
   FaCog,
   FaBolt,
+  FaRocketchat,
 } from "react-icons/fa";
 import { AIAgent } from "@/app/types/Type";
 
@@ -126,7 +126,7 @@ export default function Dashboard({
                   ? formatDate(aiAgents[0].LastUsed).split(",")[0]
                   : "N/A"}
               </p>
-              <p className="text-gray-400 text-xs font-mono">LAST DEPLOYED</p>
+              <p className="text-gray-400 text-xs font-mono">LAST USED</p>
             </div>
           </div>
         </motion.div>
@@ -245,7 +245,7 @@ export default function Dashboard({
                 <div className="flex items-center space-x-2 text-gray-400 mb-3 text-xs">
                   <FaCalendar className="text-xs" />
                   <span className="font-mono">
-                    DEPLOYED: {formatDate(agent.LastUsed)}
+                    Last Used: {formatDate(agent.LastUsed)}
                   </span>
                 </div>
 
@@ -305,14 +305,14 @@ export default function Dashboard({
                     className="flex-1 bg-linear-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white py-2 px-3 rounded-lg transition-all duration-300 font-medium flex items-center justify-center space-x-2 text-xs font-mono"
                   >
                     <FaPlay className="text-xs" />
-                    <span>DEPLOY</span>
+                    <span>USE</span>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex-1 bg-gray-700 hover:bg-gray-600 text-cyan-300 py-2 px-3 rounded-lg transition-colors duration-300 font-medium text-xs font-mono border border-cyan-400/20"
+                    className="flex-1 flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-cyan-300 py-2 px-3 rounded-lg transition-colors duration-300 font-medium text-xs font-mono border border-cyan-400/20"
                   >
-                    CONFIG
+                    <FaRocketchat className="text-xs" /> SHARE AGENT
                   </motion.button>
                 </div>
               </motion.div>
