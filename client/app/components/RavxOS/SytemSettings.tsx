@@ -15,15 +15,10 @@ import {
   FaSun,
   FaSave,
   FaUndo,
-  FaTerminal,
   FaMicrochip,
   FaMemory,
   FaHdd,
-  FaWifi,
-  FaGlobe,
   FaKey,
-  FaEye,
-  FaEyeSlash,
 } from "react-icons/fa";
 
 export default function SystemSettings() {
