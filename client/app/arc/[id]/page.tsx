@@ -247,9 +247,36 @@ export default function RavxArcLab() {
     }
   };
 
+  const GetLabDetails = async () => {
+    try {
+      const res = await AxiosInstance.get(`/arc/get/${id}`);
+
+      if (res.status === 200) {
+        const LabData = res.data.ArcLab;
+        setTimeout(() => {
+          document.title = `${LabData.name}- Arc Lab`;
+        }, 120);
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Flip,
+      });
+    }
+  };
+
   useEffect(() => {
     handleGetAIAgents();
     fetchUserData();
+    GetLabDetails();
   }, []);
 
   const handleOpenModal = () => {
