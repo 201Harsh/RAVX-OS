@@ -9,57 +9,51 @@ import {
   FaRobot,
   FaFlask,
   FaCrown,
-  FaIdCard,
-  FaServer,
-  FaBrain,
 } from "react-icons/fa";
 import { FaShield } from "react-icons/fa6";
+import { AIAgent } from "@/app/types/Type";
 
-export default function ProfileSettings() {
-  const [userData] = useState({
-    name: "ADMIN USER",
-    email: "admin@ravx-os.com",
-    joinDate: "2024-01-15",
-    membership: "PREMIUM",
-    labsCreated: 12,
-    agentsCreated: 47,
-    activeSessions: 3,
-    storageUsed: "2.4 GB",
-    apiCalls: "12.7K",
-    lastActive: "2 hours ago",
-  });
+interface UserDataType {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  LabTokens: number;
+  AIAgentTokens: number;
+  createdAt: string;
+}
+
+interface PropsType {
+  aiAgents: AIAgent[];
+  userData: UserDataType[];
+}
+
+export default function ProfileSettings({ userData, aiAgents }: PropsType) {
+  const AccountAge =
+    userData.createdAt &&
+    Math.floor(
+      (new Date() - new Date(userData.createdAt)) / (1000 * 60 * 60 * 24)
+    );
 
   const stats = [
     {
       icon: <FaFlask className="text-2xl text-cyan-400" />,
       label: "LABS CREATED",
-      value: userData.labsCreated,
+      value: userData.LabTokens + 1,
       color: "from-cyan-500 to-blue-500",
     },
     {
       icon: <FaRobot className="text-2xl text-green-400" />,
       label: "AGENTS CREATED",
-      value: userData.agentsCreated,
+      value: aiAgents.length,
       color: "from-green-500 to-emerald-500",
-    },
-    {
-      icon: <FaServer className="text-2xl text-purple-400" />,
-      label: "ACTIVE SESSIONS",
-      value: userData.activeSessions,
-      color: "from-purple-500 to-pink-500",
-    },
-    {
-      icon: <FaBrain className="text-2xl text-orange-400" />,
-      label: "API CALLS",
-      value: userData.apiCalls,
-      color: "from-orange-500 to-red-500",
     },
   ];
 
   const profileDetails = [
     {
       icon: <FaUser className="text-cyan-400" />,
-      label: "DISPLAY NAME",
+      label: "FULL NAME",
       value: userData.name,
     },
     {
@@ -70,7 +64,7 @@ export default function ProfileSettings() {
     {
       icon: <FaCalendar className="text-green-400" />,
       label: "MEMBER SINCE",
-      value: new Date(userData.joinDate).toLocaleDateString("en-US", {
+      value: new Date(userData.createdAt).toLocaleDateString("en-IN", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -79,17 +73,16 @@ export default function ProfileSettings() {
     {
       icon: <FaCrown className="text-yellow-400" />,
       label: "MEMBERSHIP TIER",
-      value: userData.membership,
+      value: userData.membership || "FREE",
     },
     {
       icon: <FaShield className="text-purple-400" />,
       label: "LAST ACTIVE",
-      value: userData.lastActive,
-    },
-    {
-      icon: <FaIdCard className="text-red-400" />,
-      label: "STORAGE USED",
-      value: userData.storageUsed,
+      value: new Date(Date.now()).toLocaleDateString("en-IN", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
     },
   ];
 
@@ -142,16 +135,16 @@ export default function ProfileSettings() {
               </h2>
               <div className="inline-flex items-center gap-2 bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs font-mono mt-2 border border-yellow-500/30">
                 <FaCrown className="text-xs" />
-                {userData.membership}
+                {userData.membership || "FREE"}
               </div>
             </div>
 
             {/* Quick Stats */}
             <div className="space-y-4">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400 font-mono">USER_ID:</span>
-                <span className="text-cyan-300 font-mono">
-                  RAVX-{userData.name.split(" ").join("").toUpperCase()}-001
+              <div className="flex justify-between items-center text-sm overflow-hidden">
+                <span className="text-gray-400 font-mono">USER_ID: </span>
+                <span className="text-cyan-300 font-mono text-center">
+                  {userData._id}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm">
@@ -173,7 +166,7 @@ export default function ProfileSettings() {
                 </div>
                 <div className="flex justify-between">
                   <span>ACCOUNT_AGE:</span>
-                  <span>45 days</span>
+                  <span>{AccountAge} Days</span>
                 </div>
                 <div className="flex justify-between">
                   <span>SECURITY_SCORE:</span>
@@ -207,7 +200,11 @@ export default function ProfileSettings() {
                   LAST ACTIVE
                 </div>
                 <div className="text-xs text-gray-400 font-mono">
-                  {userData.lastActive}
+                  {new Date(Date.now()).toLocaleDateString("en-IN", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
                 </div>
               </div>
             </div>
@@ -289,7 +286,7 @@ export default function ProfileSettings() {
                     Total Labs:
                   </span>
                   <span className="text-cyan-300 font-mono">
-                    {userData.labsCreated}
+                    {userData.LabTokens + 1}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -297,21 +294,7 @@ export default function ProfileSettings() {
                     Active Labs:
                   </span>
                   <span className="text-green-400 font-mono">
-                    {userData.labsCreated - 2}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 text-sm font-mono">
-                    Archived Labs:
-                  </span>
-                  <span className="text-yellow-400 font-mono">2</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 text-sm font-mono">
-                    Storage Used:
-                  </span>
-                  <span className="text-cyan-300 font-mono">
-                    {userData.storageUsed}
+                    {userData.LabTokens + 1}
                   </span>
                 </div>
               </div>
@@ -335,7 +318,7 @@ export default function ProfileSettings() {
                     Total Agents:
                   </span>
                   <span className="text-green-300 font-mono">
-                    {userData.agentsCreated}
+                    {aiAgents.length}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -343,21 +326,7 @@ export default function ProfileSettings() {
                     Active Agents:
                   </span>
                   <span className="text-green-400 font-mono">
-                    {userData.agentsCreated - 5}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 text-sm font-mono">
-                    Inactive Agents:
-                  </span>
-                  <span className="text-yellow-400 font-mono">5</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 text-sm font-mono">
-                    API Calls (30d):
-                  </span>
-                  <span className="text-green-300 font-mono">
-                    {userData.apiCalls}
+                    {aiAgents.length}
                   </span>
                 </div>
               </div>

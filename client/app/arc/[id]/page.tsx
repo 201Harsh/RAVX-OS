@@ -807,7 +807,7 @@ export default function RavxArcLab() {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <ProfileSettings />
+                  <ProfileSettings userData={UserData} aiAgents={aiAgents} />
                 </motion.div>
               )}
             </AnimatePresence>
