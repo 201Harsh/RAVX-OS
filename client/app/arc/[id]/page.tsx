@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Flip, toast, Zoom } from "react-toastify";
 import {
@@ -10,23 +10,84 @@ import {
   FaTachometerAlt,
   FaUser,
   FaVolumeUp,
+  FaTerminal,
+  FaCog,
+  FaCode,
 } from "react-icons/fa";
 import { AIAgent } from "@/app/types/Type";
 import CreateAIAgentModal from "@/app/components/RavxOS/CreateAIAgent";
 import Dashboard from "@/app/components/RavxOS/Dashboard";
 import AxiosInstance from "@/config/Axios";
 import { useParams, useRouter } from "next/navigation";
+import { FaShield } from "react-icons/fa6";
 
 export default function RavxArcLab() {
   const [activeTab, setActiveTab] = useState<"create" | "dashboard">("create");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [aiAgents, setAIAgents] = useState<AIAgent[]>([]);
   const [clearFormData, setclearFormData] = useState<boolean>(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [terminalOutput, setTerminalOutput] = useState<string[]>([]);
+  const [isBooting, setIsBooting] = useState(true);
+
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   const parms = useParams();
   const id = parms.id;
 
   const router = useRouter();
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Simulate terminal boot sequence
+  useEffect(() => {
+    const bootSequence = [
+      "> Booting RAVX Web-OS v4.2.1...",
+      "> Initializing AI Core Framework...",
+      "> Loading Neural Network Protocols...",
+      "> Mounting Virtual AI Environments...",
+      "> Starting ARC Lab Interface...",
+      "> Security Protocols: ACTIVE",
+      "> Encryption: QUANTUM-512",
+      "> Connection: SECURE",
+      " ",
+      "> Welcome to RAVX AI Operating System",
+      "> AI Agent Management System: ONLINE",
+      " ",
+      "root@ravx-aios:~/# system status --agents",
+    ];
+
+    let currentLine = 0;
+    const output: string[] = [];
+
+    const bootInterval = setInterval(() => {
+      if (currentLine < bootSequence.length) {
+        output.push(bootSequence[currentLine]);
+        setTerminalOutput([...output]);
+        currentLine++;
+      } else {
+        clearInterval(bootInterval);
+        setTimeout(() => setIsBooting(false), 1000);
+      }
+    }, 80);
+
+    return () => clearInterval(bootInterval);
+  }, []);
 
   const handleCreateAgent = async (agentData: Omit<AIAgent, "url">) => {
     try {
@@ -160,181 +221,429 @@ export default function RavxArcLab() {
     setIsModalOpen(true);
   };
 
+  const handleUserMenuToggle = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  };
+
+  const handleMenuItemClick = (action: string) => {
+    console.log(`Menu item clicked: ${action}`);
+    setIsUserMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    console.log("Logging out...");
+    setIsUserMenuOpen(false);
+  };
+
   return (
-    <div className="min-h-screen bg-linear-to-br bg-black from-black via-black to-cyan-300/10 text-white">
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        {/* Bottom Navigation */}
-        <nav className="fixed bottom-2 left-1/2 transform -translate-x-1/2 backdrop-blur-lg rounded-2xl px-4 py-2 shadow-2xl z-50 w-full max-w-full">
-          <div className="flex space-x-2 w-full">
-            <button
-              onClick={() => setActiveTab("create")}
-              className={`flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 flex-1 cursor-pointer ${
-                activeTab === "create"
-                  ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25"
-                  : "text-gray-300 hover:text-white hover:bg-gray-700/50 bg-gray-800"
-              }`}
-            >
-              <FaRobot className="text-lg" />
-              <span className="font-medium">Create AI</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("dashboard")}
-              className={`flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 flex-1 cursor-pointer ${
-                activeTab === "dashboard"
-                  ? "bg-green-600 text-white shadow-lg shadow-green-600/25"
-                  : "text-gray-300 hover:text-white hover:bg-gray-700/50 bg-gray-800"
-              }`}
-            >
-              <FaTachometerAlt className="text-lg" />
-              <span className="font-medium">Dashboard</span>
-            </button>
-          </div>
-        </nav>
+    <div className="min-h-screen bg-linear-to-br from-gray-900 via-black to-cyan-900/20 text-white p-4">
+      {/* Terminal-style Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-7xl mx-auto mb-6 relative z-50"
+      >
+        <div className="bg-gray-800/50 border border-cyan-400/30 rounded-xl p-4 backdrop-blur-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="flex space-x-2">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+              <div className="font-mono text-cyan-400 text-sm">
+                root@ravx-aios:~/# ai-agent --management
+              </div>
+            </div>
 
-        {/* Content Area */}
-        <div className="pb-12">
-          <AnimatePresence mode="wait">
-            {activeTab === "create" && (
-              <motion.div
-                key="create"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="max-w-6xl mx-auto"
+            {/* User Profile with Dropdown */}
+            <div className="relative" ref={userMenuRef}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleUserMenuToggle}
+                className="flex items-center space-x-3 p-2 rounded-lg bg-cyan-500/10 border border-cyan-400/20 hover:bg-cyan-500/20 hover:border-cyan-400/30 transition-all duration-300 cursor-pointer group"
               >
-                <div className="text-center mb-16">
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="inline-block px-6 py-2 bg-cyan-500/20 border border-cyan-400/30 rounded-full text-cyan-400 text-sm mb-6"
-                  >
-                    POWERED BY RAVX OS
-                  </motion.div>
-                  <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-linear-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-                    Create Stunning AI Agents
-                  </h2>
-                  <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                    Design intelligent agents with unique personalities, voices,
-                    and capabilities.
-                    <span className="text-cyan-400"> No coding required.</span>
-                  </p>
+                <div className="w-8 h-8 bg-linear-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center border border-cyan-400/30">
+                  <FaUser className="text-white text-sm" />
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="text-center p-6"
-                  >
-                    <div className="w-16 h-16 bg-cyan-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <FaUser className="text-2xl text-cyan-400" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-white mb-2">
-                      Custom Personalities
-                    </h3>
-                    <p className="text-gray-400 text-sm">
-                      Create unique AI personalities with specific traits and
-                      behaviors
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="text-center p-6"
-                  >
-                    <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <FaVolumeUp className="text-2xl text-blue-400" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-white mb-2">
-                      Multiple Voices
-                    </h3>
-                    <p className="text-gray-400 text-sm">
-                      Choose from various male and female voice options
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="text-center p-6"
-                  >
-                    <div className="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <FaBolt className="text-2xl text-purple-400" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-white mb-2">
-                      Advanced Skills
-                    </h3>
-                    <p className="text-gray-400 text-sm">
-                      Equip your agent with specialized capabilities and
-                      behaviors
-                    </p>
-                  </motion.div>
-                </div>
-
-                <motion.button
-                  onClick={() => handleOpenModal()}
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: "0 0 40px rgba(34, 211, 238, 0.4)",
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full max-w-md mx-auto block bg-linear-to-r from-cyan-600 via-blue-600 to-purple-600 hover:from-cyan-800 hover:via-blue-800 hover:to-purple-800 text-white font-bold py-8 px-12 rounded-3xl shadow-2xl shadow-cyan-700/25 transition-all duration-300 group relative overflow-hidden cursor-pointer"
-                >
-                  {/* Animated background effect */}
-                  <div className="absolute inset-0 bg-linear-to-r from-cyan-400/0 via-blue-400/10 to-purple-400/0 group-hover:from-cyan-400/10 group-hover:via-blue-400/20 group-hover:to-purple-400/10 transition-all duration-500" />
-
-                  <div className="relative z-10 flex items-center justify-center space-x-4">
-                    <div className="relative">
-                      <FaRobot className="text-3xl group-hover:scale-110 transition-transform duration-300" />
-                      <motion.div
-                        className="absolute -top-1 -right-1 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center"
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      >
-                        <FaPlus className="text-xs text-black" />
-                      </motion.div>
-                    </div>
-                    <span className="text-2xl">Create New AI Agent</span>
+                <div className="text-left hidden sm:block">
+                  <div className="text-cyan-300 text-sm font-mono font-semibold">
+                    AI_OPERATOR
                   </div>
-                </motion.button>
-
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
-                  className="text-center text-gray-500 mt-6 text-sm"
+                  <div className="text-cyan-400/70 text-xs font-mono">
+                    system@ravx
+                  </div>
+                </div>
+                <motion.div
+                  animate={{ rotate: isUserMenuOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-cyan-400/60 group-hover:text-cyan-300"
                 >
-                  Instant setup • Free to start • No coding required
-                </motion.p>
-              </motion.div>
-            )}
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </motion.div>
+              </motion.button>
 
-            {activeTab === "dashboard" && (
-              <motion.div
-                key="dashboard"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Dashboard
-                  aiAgents={aiAgents}
-                  onDeleteAgent={handleDeleteAgent}
-                  onRunAgent={handleRunAgent}
-                  onEditAgent={handleEditAgent}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+              {/* Dropdown Menu */}
+              <AnimatePresence>
+                {isUserMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    className="absolute right-0 top-12 w-64 bg-gray-800/95 backdrop-blur-sm border border-cyan-400/30 rounded-xl shadow-2xl shadow-cyan-500/20 z-50 overflow-hidden"
+                  >
+                    {/* User Info Section */}
+                    <div className="p-4 border-b border-cyan-400/20">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-linear-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center border border-cyan-400/30">
+                          <FaUser className="text-white text-base" />
+                        </div>
+                        <div>
+                          <div className="text-cyan-300 font-mono font-semibold text-sm">
+                            AI OPERATOR
+                          </div>
+                          <div className="text-cyan-400/70 font-mono text-xs">
+                            system@ravx-aios.com
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Menu Items */}
+                    <div className="p-2">
+                      <motion.button
+                        whileHover={{
+                          backgroundColor: "rgba(34, 211, 238, 0.1)",
+                        }}
+                        onClick={() => handleMenuItemClick("profile")}
+                        className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
+                      >
+                        <FaUser className="text-cyan-400 text-sm" />
+                        <span>Profile Settings</span>
+                      </motion.button>
+
+                      <motion.button
+                        whileHover={{
+                          backgroundColor: "rgba(34, 211, 238, 0.1)",
+                        }}
+                        onClick={() => handleMenuItemClick("agents")}
+                        className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
+                      >
+                        <FaRobot className="text-green-400 text-sm" />
+                        <span>My AI Agents</span>
+                      </motion.button>
+
+                      <motion.button
+                        whileHover={{
+                          backgroundColor: "rgba(34, 211, 238, 0.1)",
+                        }}
+                        onClick={() => handleMenuItemClick("settings")}
+                        className="w-full flex items-center space-x-3 p-3 rounded-lg text-cyan-300 hover:text-cyan-200 transition-all duration-200 cursor-pointer text-sm font-mono"
+                      >
+                        <FaCog className="text-yellow-400 text-sm" />
+                        <span>System Settings</span>
+                      </motion.button>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="border-t border-cyan-400/20"></div>
+
+                    {/* Bottom Actions */}
+                    <div className="p-2">
+                      <motion.button
+                        whileHover={{
+                          backgroundColor: "rgba(239, 68, 68, 0.1)",
+                        }}
+                        onClick={handleLogout}
+                        className="w-full flex items-center space-x-3 p-3 rounded-lg text-red-400 hover:text-red-300 transition-all duration-200 cursor-pointer text-sm font-mono"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                          />
+                        </svg>
+                        <span>Logout</span>
+                      </motion.button>
+                    </div>
+
+                    {/* System Status Footer */}
+                    <div className="bg-cyan-500/10 border-t border-cyan-400/20 p-3">
+                      <div className="flex justify-between items-center text-xs text-cyan-400/70 font-mono">
+                        <span>STATUS: ONLINE</span>
+                        <span>v2.2.1</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
-      </main>
+      </motion.div>
+
+      {/* Main Content Grid */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Terminal Panel */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+          className="lg:col-span-1"
+        >
+          <div className="bg-black/80 border-2 border-cyan-400/40 rounded-xl p-4 h-96 font-mono text-sm">
+            <div className="text-cyan-300 border-b border-cyan-400/20 pb-2 mb-3">
+              SYSTEM TERMINAL
+            </div>
+            <div className="h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-cyan-500/30 scrollbar-hide">
+              {terminalOutput.map((line, index) => (
+                <div
+                  key={index}
+                  className={`mb-1 ${
+                    line.startsWith(">") ? "text-cyan-100" : "text-gray-400"
+                  } ${line === " " ? "h-3" : ""}`}
+                >
+                  {line}
+                  {index === terminalOutput.length - 1 && isBooting && (
+                    <motion.span
+                      animate={{ opacity: [1, 0, 1] }}
+                      transition={{ duration: 0.8, repeat: Infinity }}
+                      className="ml-1 text-cyan-400"
+                    >
+                      █
+                    </motion.span>
+                  )}
+                </div>
+              ))}
+              {!isBooting && (
+                <div className="text-green-400 mt-2">
+                  $ System ready. {aiAgents.length} AI agent(s) deployed.
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* System Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-gray-800/50 border border-cyan-400/20 rounded-xl p-4 mt-4"
+          >
+            <div className="flex items-center space-x-2 text-cyan-400 mb-3">
+              <FaTerminal className="text-sm" />
+              <span className="font-mono text-sm">SYSTEM STATS</span>
+            </div>
+            <div className="space-y-2 text-xs text-gray-300">
+              <div className="flex justify-between">
+                <span>Active Agents:</span>
+                <span className="text-cyan-400">{aiAgents.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>System Status:</span>
+                <span className="text-green-400">OPERATIONAL</span>
+              </div>
+              <div className="flex justify-between">
+                <span>AI Core:</span>
+                <span className="text-cyan-400">ONLINE</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Memory Usage:</span>
+                <span className="text-cyan-400">42%</span>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Main Content Area */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="lg:col-span-3"
+        >
+          {/* Navigation Tabs */}
+          <div className="bg-gray-800/50 border border-cyan-400/30 rounded-xl p-4 mb-6 backdrop-blur-sm">
+            <div className="flex space-x-2">
+              <button
+                onClick={() => setActiveTab("create")}
+                className={`flex items-center justify-center space-x-2 px-4 py-3 rounded-lg transition-all duration-300 flex-1 cursor-pointer font-mono text-sm ${
+                  activeTab === "create"
+                    ? "bg-cyan-600 text-white shadow-lg shadow-cyan-600/25"
+                    : "text-gray-300 hover:text-white hover:bg-gray-700/50 bg-gray-800"
+                }`}
+              >
+                <FaRobot className="text-sm" />
+                <span>CREATE AI</span>
+              </button>
+              <button
+                onClick={() => setActiveTab("dashboard")}
+                className={`flex items-center justify-center space-x-2 px-4 py-3 rounded-lg transition-all duration-300 flex-1 cursor-pointer font-mono text-sm ${
+                  activeTab === "dashboard"
+                    ? "bg-green-600 text-white shadow-lg shadow-green-600/25"
+                    : "text-gray-300 hover:text-white hover:bg-gray-700/50 bg-gray-800"
+                }`}
+              >
+                <FaTachometerAlt className="text-sm" />
+                <span>DASHBOARD</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Content Area */}
+          <div className="min-h-[500px]">
+            <AnimatePresence mode="wait">
+              {activeTab === "create" && (
+                <motion.div
+                  key="create"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-gray-800/30 backdrop-blur-sm border-2 border-cyan-400/20 rounded-xl p-6"
+                >
+                  <div className="text-center mb-8">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="inline-block px-4 py-1 bg-cyan-500/20 border border-cyan-400/30 rounded-full text-cyan-400 text-xs font-mono mb-4"
+                    >
+                      RAVX AI OPERATING SYSTEM
+                    </motion.div>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-linear-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent font-mono">
+                      CREATE AI AGENTS
+                    </h2>
+                    <p className="text-gray-300 max-w-2xl mx-auto leading-relaxed text-sm">
+                      Design intelligent agents with unique personalities and
+                      capabilities.
+                      <span className="text-cyan-400 font-mono">
+                        {" "}
+                        No coding required.
+                      </span>
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="text-center p-4 bg-gray-700/30 rounded-lg border border-cyan-400/10"
+                    >
+                      <div className="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                        <FaUser className="text-lg text-cyan-400" />
+                      </div>
+                      <h3 className="text-md font-semibold text-white mb-2 font-mono">
+                        PERSONALITIES
+                      </h3>
+                      <p className="text-gray-400 text-xs">
+                        Create unique AI personalities with specific traits
+                      </p>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-center p-4 bg-gray-700/30 rounded-lg border border-cyan-400/10"
+                    >
+                      <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                        <FaVolumeUp className="text-lg text-blue-400" />
+                      </div>
+                      <h3 className="text-md font-semibold text-white mb-2 font-mono">
+                        VOICES
+                      </h3>
+                      <p className="text-gray-400 text-xs">
+                        Multiple voice options available
+                      </p>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      className="text-center p-4 bg-gray-700/30 rounded-lg border border-cyan-400/10"
+                    >
+                      <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                        <FaBolt className="text-lg text-purple-400" />
+                      </div>
+                      <h3 className="text-md font-semibold text-white mb-2 font-mono">
+                        SKILLS
+                      </h3>
+                      <p className="text-gray-400 text-xs">
+                        Advanced capabilities and behaviors
+                      </p>
+                    </motion.div>
+                  </div>
+
+                  <motion.button
+                    onClick={handleOpenModal}
+                    whileHover={{
+                      scale: 1.02,
+                      boxShadow: "0 0 30px rgba(34, 211, 238, 0.3)",
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full max-w-md mx-auto block bg-linear-to-r from-cyan-600 via-blue-600 to-purple-600 hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-cyan-500/25 transition-all duration-300 group relative overflow-hidden cursor-pointer font-mono"
+                  >
+                    <div className="absolute inset-0 bg-linear-to-r from-cyan-400/0 via-blue-400/10 to-purple-400/0 group-hover:from-cyan-400/10 group-hover:via-blue-400/20 group-hover:to-purple-400/10 transition-all duration-500" />
+                    <div className="relative z-10 flex items-center justify-center space-x-3">
+                      <FaRobot className="text-xl group-hover:scale-110 transition-transform duration-300" />
+                      <span className="text-lg">INITIALIZE AI AGENT</span>
+                    </div>
+                  </motion.button>
+
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.8 }}
+                    className="text-center text-gray-500 mt-4 text-xs font-mono"
+                  >
+                    Instant setup • Free to start • No coding required
+                  </motion.p>
+                </motion.div>
+              )}
+
+              {activeTab === "dashboard" && (
+                <motion.div
+                  key="dashboard"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Dashboard
+                    aiAgents={aiAgents}
+                    onDeleteAgent={handleDeleteAgent}
+                    onRunAgent={handleRunAgent}
+                    onEditAgent={handleEditAgent}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Modals */}
       <CreateAIAgentModal

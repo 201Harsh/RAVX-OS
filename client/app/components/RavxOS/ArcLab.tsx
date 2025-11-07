@@ -227,7 +227,7 @@ const ArcLab = ({
                       <div className="bg-cyan-500/10 border-t border-cyan-400/20 p-3">
                         <div className="flex justify-between items-center text-xs text-cyan-400/70 font-mono">
                           <span>STATUS: ONLINE</span>
-                          <span>v3.1.4</span>
+                          <span>v2.1.4</span>
                         </div>
                       </div>
                     </motion.div>
