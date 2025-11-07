@@ -315,7 +315,7 @@ export default function RavxArcLab() {
   };
   const handleLogout = async () => {
     try {
-      const res = await AxiosProxyInstance.post("/api/logout");
+      const res = await AxiosInstance.post("/users/logout");
       if (res.status === 200) {
         router.push("/");
         toast.success("Logged out successfully!", {
