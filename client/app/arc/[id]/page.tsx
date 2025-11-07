@@ -587,12 +587,14 @@ export default function RavxArcLab() {
                 <span className="text-cyan-400">{aiAgents.length}</span>
               </div>
               <div className="flex justify-between">
-                <span>System Status:</span>
-                <span className="text-green-400">OPERATIONAL</span>
-              </div>
-              <div className="flex justify-between">
                 <span>AI Core:</span>
                 <span className="text-cyan-400">ONLINE</span>
+              </div>
+              <div className="flex justify-between text-red-400">
+                <span>Live Memory Usage:</span>
+                <span className="text-green-400">
+                  {mb(memory.usedJSHeapSize)} MB
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Total Memory Usage:</span>
