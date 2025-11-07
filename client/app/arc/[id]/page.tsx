@@ -18,6 +18,7 @@ import AxiosInstance from "@/config/Axios";
 import { useParams, useRouter } from "next/navigation";
 import AxiosProxyInstance from "@/config/AxiosProxy";
 import SystemSettings from "@/app/components/RavxOS/SytemSettings";
+import ProfileSettings from "@/app/components/RavxOS/ProfilePage";
 
 interface UserDataType {
   id: string;
@@ -263,10 +264,14 @@ export default function RavxArcLab() {
     if (action === "agents") {
       setActiveTab("dashboard");
       setIsUserMenuOpen(false);
-    }
-
-    if (action === "settings") {
+    } else if (action === "settings") {
       setActiveTab("settings");
+      setIsUserMenuOpen(false);
+    } else if (action === "profile") {
+      setActiveTab("profile");
+      setIsUserMenuOpen(false);
+    } else {
+      setActiveTab("create");
       setIsUserMenuOpen(false);
     }
   };
@@ -717,6 +722,17 @@ export default function RavxArcLab() {
                   transition={{ duration: 0.3 }}
                 >
                   <SystemSettings />
+                </motion.div>
+              )}
+              {activeTab === "profile" && (
+                <motion.div
+                  key="profile"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ProfileSettings />
                 </motion.div>
               )}
             </AnimatePresence>
