@@ -328,10 +328,10 @@ export default function RavxArcLab() {
                 </div>
                 <div className="text-left hidden sm:block">
                   <div className="text-cyan-300 text-sm font-mono font-semibold">
-                    AI_OPERATOR
+                    {UserData.name}
                   </div>
                   <div className="text-cyan-400/70 text-xs font-mono">
-                    system@ravx
+                    {UserData.email}
                   </div>
                 </div>
                 <motion.div
@@ -372,10 +372,10 @@ export default function RavxArcLab() {
                         </div>
                         <div>
                           <div className="text-cyan-300 font-mono font-semibold text-sm">
-                            AI OPERATOR
+                            {UserData.name}
                           </div>
                           <div className="text-cyan-400/70 font-mono text-xs">
-                            system@ravx-aios.com
+                            {UserData.email}
                           </div>
                         </div>
                       </div>
