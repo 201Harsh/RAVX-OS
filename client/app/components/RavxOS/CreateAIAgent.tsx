@@ -265,7 +265,7 @@ export default function CreateAIAgentModal({
     if (clearFormData) {
       setFormData({
         name: "",
-        gender: "male",
+        gender: "",
         personality: "",
         description: "",
         behaviors: [],
