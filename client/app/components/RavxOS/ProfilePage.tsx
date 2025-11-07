@@ -166,7 +166,7 @@ export default function ProfileSettings({ userData, aiAgents }: PropsType) {
                 </div>
                 <div className="flex justify-between">
                   <span>ACCOUNT_AGE:</span>
-                  <span>{AccountAge} Days</span>
+                  <span>{AccountAge}+ Days</span>
                 </div>
                 <div className="flex justify-between">
                   <span>SECURITY_SCORE:</span>
