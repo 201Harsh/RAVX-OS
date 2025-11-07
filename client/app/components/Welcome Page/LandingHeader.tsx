@@ -47,7 +47,7 @@ const LandingHeader = ({ itemVariants }: LandingHeaderProps) => {
     <>
       <motion.header
         variants={itemVariants}
-        className="flex justify-between items-center mb-20 fixed top-0 left-0 right-0 z-50 md:px-20 px-10 py-12 backdrop-blur-xs bg-black/10"
+        className="flex justify-between items-center mb-20 fixed top-0 left-0 right-0 z-50 md:px-20 px-10 py-12 backdrop-blur-xl bg-black/10"
       >
         <motion.div whileHover={{ scale: 1.05 }}>
           <Link href="/" className="flex items-center space-x-2 cursor-pointer">

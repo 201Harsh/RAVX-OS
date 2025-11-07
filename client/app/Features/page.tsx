@@ -5,13 +5,11 @@ import {
   FiCpu,
   FiZap,
   FiUser,
-  FiCode,
   FiServer,
   FiShield,
   FiMessageSquare,
   FiCloud,
   FiGitBranch,
-  FiAward,
   FiPlay,
   FiChevronRight,
   FiArrowLeft,
@@ -21,6 +19,7 @@ import {
 import { useRouter } from "next/navigation";
 import { FaBrain } from "react-icons/fa";
 import LandingHeader from "../components/Welcome Page/LandingHeader";
+import Link from "next/link";
 
 // Type definitions
 interface FeatureCategory {
@@ -433,14 +432,7 @@ const RAVXOSFeatures: React.FC = () => {
         <div className="relative z-10 container mx-auto px-4 py-8">
           {/* Header */}
           <LandingHeader itemVariants={itemVariants} />
-          <motion.header className="flex items-center justify-between mb-12">
-            <button
-              onClick={() => navigate.push("/")}
-              className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
-            >
-              <FiArrowLeft className="text-lg" />
-              <span>Back to Home</span>
-            </button>
+          <motion.header className="flex items-center justify-center mb-12 mt-24">
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
                 RAVX OS Features
@@ -544,21 +536,25 @@ const RAVXOSFeatures: React.FC = () => {
                 sentient AI avatars with RAVX OS.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25 cursor-pointer"
-                >
-                  <FiPlay className="text-lg" />
-                  <span>Start Free Trial</span>
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 font-semibold px-8 py-4 rounded-lg transition-all duration-300 cursor-pointer"
-                >
-                  Schedule Demo
-                </motion.button>
+                <Link href="/register">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25 cursor-pointer"
+                  >
+                    <FiPlay className="text-lg" />
+                    <span>Start Free Trial</span>
+                  </motion.button>
+                </Link>
+                <Link href="/demo">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 font-semibold px-8 py-4 rounded-lg transition-all duration-300 cursor-pointer"
+                  >
+                    Schedule Demo
+                  </motion.button>
+                </Link>
               </div>
             </div>
           </motion.div>
