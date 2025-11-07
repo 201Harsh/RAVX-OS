@@ -17,12 +17,11 @@ import CreateAIAgentModal from "@/app/components/RavxOS/CreateAIAgent";
 import Dashboard from "@/app/components/RavxOS/Dashboard";
 import AxiosInstance from "@/config/Axios";
 import { useParams, useRouter } from "next/navigation";
-import AxiosProxyInstance from "@/config/AxiosProxy";
 import SystemSettings from "@/app/components/RavxOS/SytemSettings";
 import ProfileSettings from "@/app/components/RavxOS/ProfilePage";
 
 interface UserDataType {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -47,7 +46,7 @@ export default function RavxArcLab() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [terminalOutput, setTerminalOutput] = useState<string[]>([]);
   const [isBooting, setIsBooting] = useState(true);
-  const [UserData, setUserData] = useState<UserDataType[]>([]);
+  const [UserData, setUserData] = useState<UserDataType | null>(null);
   const [isCopied, setIsCopied] = useState(false);
   const [memory, setMemory] = useState<MemoryUsage>({
     usedJSHeapSize: 0,
@@ -266,7 +265,7 @@ export default function RavxArcLab() {
         }, 120);
       }
     } catch (error: any) {
-      console.log(error);
+      router.push("/arc");
       toast.error(error.response?.data?.message, {
         position: "top-right",
         autoClose: 5000,
@@ -427,10 +426,10 @@ export default function RavxArcLab() {
                 </div>
                 <div className="text-left hidden sm:block">
                   <div className="text-cyan-300 text-sm font-mono font-semibold">
-                    {UserData.name}
+                    {UserData?.name}
                   </div>
                   <div className="text-cyan-400/70 text-xs font-mono">
-                    {UserData.email}
+                    {UserData?.email}
                   </div>
                 </div>
                 <motion.div
@@ -471,10 +470,10 @@ export default function RavxArcLab() {
                         </div>
                         <div>
                           <div className="text-cyan-300 font-mono font-semibold text-sm">
-                            {UserData.name}
+                            {UserData?.name}
                           </div>
                           <div className="text-cyan-400/70 font-mono text-xs">
-                            {UserData.email}
+                            {UserData?.email}
                           </div>
                         </div>
                       </div>

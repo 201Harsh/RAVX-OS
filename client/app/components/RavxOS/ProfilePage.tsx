@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   FaUser,
@@ -14,7 +13,7 @@ import { FaShield } from "react-icons/fa6";
 import { AIAgent } from "@/app/types/Type";
 
 interface UserDataType {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -25,21 +24,22 @@ interface UserDataType {
 
 interface PropsType {
   aiAgents: AIAgent[];
-  userData: UserDataType[];
+  userData: UserDataType | null;
 }
 
 export default function ProfileSettings({ userData, aiAgents }: PropsType) {
-  const AccountAge =
-    userData.createdAt &&
-    Math.floor(
-      (new Date() - new Date(userData.createdAt)) / (1000 * 60 * 60 * 24)
-    );
+  const AccountAge: number | null = userData?.createdAt
+    ? Math.floor(
+        (new Date().getTime() - new Date(userData.createdAt).getTime()) /
+          (1000 * 60 * 60 * 24)
+      )
+    : null;
 
   const stats = [
     {
       icon: <FaFlask className="text-2xl text-cyan-400" />,
       label: "LABS CREATED",
-      value: userData.LabTokens + 1,
+      value: 1,
       color: "from-cyan-500 to-blue-500",
     },
     {
@@ -54,17 +54,17 @@ export default function ProfileSettings({ userData, aiAgents }: PropsType) {
     {
       icon: <FaUser className="text-cyan-400" />,
       label: "FULL NAME",
-      value: userData.name,
+      value: userData?.name,
     },
     {
       icon: <FaEnvelope className="text-blue-400" />,
       label: "EMAIL ADDRESS",
-      value: userData.email,
+      value: userData?.email,
     },
     {
       icon: <FaCalendar className="text-green-400" />,
       label: "MEMBER SINCE",
-      value: new Date(userData.createdAt).toLocaleDateString("en-IN", {
+      value: new Date(userData?.createdAt ?? "").toLocaleDateString("en-IN", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -73,7 +73,7 @@ export default function ProfileSettings({ userData, aiAgents }: PropsType) {
     {
       icon: <FaCrown className="text-yellow-400" />,
       label: "MEMBERSHIP TIER",
-      value: userData.membership || "FREE",
+      value: "FREE",
     },
     {
       icon: <FaShield className="text-purple-400" />,
@@ -131,11 +131,11 @@ export default function ProfileSettings({ userData, aiAgents }: PropsType) {
                 <FaUser className="text-white text-3xl" />
               </div>
               <h2 className="text-xl font-bold text-cyan-400 font-mono">
-                {userData.name}
+                {userData?.name}
               </h2>
               <div className="inline-flex items-center gap-2 bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs font-mono mt-2 border border-yellow-500/30">
                 <FaCrown className="text-xs" />
-                {userData.membership || "FREE"}
+                FREE
               </div>
             </div>
 
@@ -144,7 +144,7 @@ export default function ProfileSettings({ userData, aiAgents }: PropsType) {
               <div className="flex justify-between items-center text-sm overflow-hidden">
                 <span className="text-gray-400 font-mono">USER_ID: </span>
                 <span className="text-cyan-300 font-mono text-center ml-2">
-                  {userData._id.slice(8)}
+                  {userData?._id.slice(8)}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm">
@@ -285,17 +285,13 @@ export default function ProfileSettings({ userData, aiAgents }: PropsType) {
                   <span className="text-gray-400 text-sm font-mono">
                     Total Labs:
                   </span>
-                  <span className="text-cyan-300 font-mono">
-                    {userData.LabTokens + 1}
-                  </span>
+                  <span className="text-cyan-300 font-mono">1</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400 text-sm font-mono">
                     Active Labs:
                   </span>
-                  <span className="text-green-400 font-mono">
-                    {userData.LabTokens + 1}
-                  </span>
+                  <span className="text-green-400 font-mono">1</span>
                 </div>
               </div>
             </motion.div>
