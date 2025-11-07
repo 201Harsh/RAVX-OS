@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { FaRocket } from "react-icons/fa";
 import Image from "next/image";
 import LandingHeader from "../components/Welcome Page/LandingHeader";
+import Link from "next/link";
 
 // Type definitions
 interface TechStack {
@@ -501,15 +502,17 @@ const AboutRAVXOS: React.FC = () => {
               and where every person can have their own digital companion that
               grows with them.
             </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate.push("/features")}
-              className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25 mx-auto"
-            >
-              <FaRocket className="text-lg" />
-              <span>Explore RAVX OS Features</span>
-            </motion.button>
+            <Link href="/features">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate.push("/features")}
+                className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-lg shadow-cyan-500/25 mx-auto cursor-pointer"
+              >
+                <FaRocket className="text-lg" />
+                <span>Explore RAVX OS Features</span>
+              </motion.button>
+            </Link>
           </div>
         </motion.section>
 
