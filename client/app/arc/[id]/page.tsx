@@ -201,12 +201,7 @@ export default function RavxArcLab() {
   };
 
   const handleEditAgent = (agentId: string, updatedData: Partial<AIAgent>) => {
-    setAIAgents((prev) =>
-      prev.map((agent) =>
-        agent._id === agentId ? { ...agent, ...updatedData } : agent
-      )
-    );
-    toast.success("AI Agent updated successfully!");
+    toast.info("Edit agent feature coming soon!");
   };
 
   const handleGetAIAgents = async () => {
@@ -594,7 +589,7 @@ export default function RavxArcLab() {
           >
             <div className="flex items-center space-x-2 text-cyan-400 mb-3">
               <FaTerminal className="text-sm" />
-              <span className="font-mono text-sm">SYSTEM STATS - Ravx-OS</span>
+              <span className="font-mono text-sm">SYSTEM STATS - RAVX-OS</span>
             </div>
             <div className="space-y-2 text-xs text-gray-300">
               <div className="flex justify-between">

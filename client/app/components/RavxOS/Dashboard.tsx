@@ -190,7 +190,7 @@ export default function Dashboard({
                         </button>
                         <button
                           onClick={() => {
-                            // Implement edit functionality
+                            onEditAgent(agent._id, {});
                             setMenuOpen(null);
                           }}
                           className="w-full text-left px-3 py-2 text-xs text-cyan-300 hover:bg-cyan-500/10 flex items-center space-x-2 font-mono"

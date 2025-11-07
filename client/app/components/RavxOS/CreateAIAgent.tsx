@@ -218,7 +218,7 @@ export default function CreateAIAgentModal({
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
-    gender: "male",
+    gender: "",
     personality: "",
     description: "",
     behaviors: [] as string[],
@@ -819,52 +819,6 @@ export default function CreateAIAgentModal({
                         </div>
                       </div>
                     </div>
-
-                    {/* Selection Summary */}
-                    {(formData.behaviors.length > 0 ||
-                      formData.skills.length > 0) && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="bg-gray-800/30 rounded-lg p-4 border-2 border-cyan-500/20"
-                      >
-                        <h4 className="font-semibold text-cyan-300 mb-3 font-mono text-sm">
-                          SELECTION SUMMARY
-                        </h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                          <div>
-                            <span className="text-cyan-400 font-mono">
-                              BEHAVIORS:
-                            </span>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {formData.behaviors.map((behavior, index) => (
-                                <span
-                                  key={index}
-                                  className="bg-cyan-500/20 text-cyan-300 px-2 py-1 rounded font-mono"
-                                >
-                                  {behavior.split(" ")[0]}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                          <div>
-                            <span className="text-blue-400 font-mono">
-                              SKILLS:
-                            </span>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {formData.skills.map((skill, index) => (
-                                <span
-                                  key={index}
-                                  className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded font-mono"
-                                >
-                                  {skill.split(" ")[0]}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
                   </motion.div>
                 )}
 
