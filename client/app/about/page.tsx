@@ -8,13 +8,11 @@ import {
   FiZap,
   FiHeart,
   FiTarget,
-  FiAward,
   FiGithub,
-  FiTwitter,
   FiLinkedin,
   FiMail,
-  FiGlobe,
   FiBookOpen,
+  FiInstagram,
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { FaRocket } from "react-icons/fa";
@@ -169,7 +167,7 @@ const AboutRAVXOS: React.FC = () => {
         <motion.header
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-center mt-24 mb-10"
+          className="flex items-center justify-center mt-32 mb-12"
         >
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
@@ -252,14 +250,31 @@ const AboutRAVXOS: React.FC = () => {
 
                   <div className="flex space-x-4">
                     {[
-                      { icon: FiGithub, href: "#", label: "GitHub" },
-                      { icon: FiTwitter, href: "#", label: "Twitter" },
-                      { icon: FiLinkedin, href: "#", label: "LinkedIn" },
-                      { icon: FiMail, href: "#", label: "Email" },
+                      {
+                        icon: FiGithub,
+                        href: "https://github.com/201Harsh",
+                        label: "GitHub",
+                      },
+                      {
+                        icon: FiInstagram,
+                        href: "https://www.instagram.com/harsh.devx",
+                        label: "Instagram",
+                      },
+                      {
+                        icon: FiLinkedin,
+                        href: "https://www.linkedin.com/in/201harsh/",
+                        label: "LinkedIn",
+                      },
+                      {
+                        icon: FiMail,
+                        href: "mailto:gamerpandeyharsh@gmail.com",
+                        label: "Email",
+                      },
                     ].map((social, index) => (
                       <motion.a
                         key={index}
                         href={social.href}
+                        target="_blank"
                         whileHover={{ scale: 1.1, y: -2 }}
                         className="p-3 border border-cyan-400/30 text-cyan-400 rounded-lg hover:bg-cyan-400/10 transition-all duration-300"
                       >
