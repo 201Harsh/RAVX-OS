@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { FaPaperPlane, FaRobot, FaUser } from "react-icons/fa";
+import { FaPaperPlane, FaUser } from "react-icons/fa";
 
 const ChatContainer = ({
   messages,

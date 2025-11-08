@@ -278,7 +278,7 @@ export default function Dashboard({
                           key={behavior}
                           className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded text-xs font-mono"
                         >
-                          {behavior}
+                          {behavior.slice(0, 32)}...
                         </span>
                       ))}
                       {agent.behaviors.length > 2 && (
@@ -300,7 +300,7 @@ export default function Dashboard({
                           key={skill}
                           className="bg-orange-500/20 text-orange-400 px-2 py-1 rounded text-xs font-mono"
                         >
-                          {skill}
+                          {skill.slice(0, 32)}...
                         </span>
                       ))}
                       {agent.skills.length > 2 && (

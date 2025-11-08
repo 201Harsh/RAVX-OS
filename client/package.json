@@ -22,7 +22,8 @@
     "react-icons": "^5.5.0",
     "react-prismjs": "^1.0.4",
     "react-syntax-highlighter": "^16.1.0",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "wav": "^1.0.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -34,6 +35,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "@types/wav": "^1.0.4",
     "eslint": "^9",
     "eslint-config-next": "15.5.6",
     "tailwindcss": "^4",

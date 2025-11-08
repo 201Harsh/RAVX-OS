@@ -15,7 +15,11 @@ async function saveWaveFile(
       bitDepth: sampleWidth * 8,
     });
 
-    return writer
+    writer.on("finish", resolve);
+    writer.on("error", reject);
+
+    writer.write(pcmData);
+    writer.end();
   });
 }
 
@@ -40,10 +44,10 @@ async function main({ text, aiVoice }) {
       response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
     const audioBuffer = Buffer.from(data, "base64");
 
-    await saveWaveFile("output.wav", audioBuffer);
+    const fileName = "out.wav";
+    await saveWaveFile(fileName, audioBuffer);
 
-    return "output.wav";
-
+    return audioBuffer;
   } catch (error) {
     console.error(error);
     return error;
