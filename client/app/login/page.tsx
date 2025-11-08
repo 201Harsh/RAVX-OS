@@ -187,7 +187,7 @@ const LoginPage: React.FC = () => {
                     className={`w-full bg-gray-700/50 border-2 ${
                       errors.email ? "border-red-500" : "border-cyan-500/30"
                     } rounded-lg px-4 py-3 text-white font-mono focus:outline-none focus:border-cyan-400 transition-all duration-300`}
-                    placeholder="user@domain.com"
+                    placeholder="ENTER_EMAIL_ADDRESS"
                   />
                   {errors.email && (
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -227,7 +227,7 @@ const LoginPage: React.FC = () => {
                     className={`w-full bg-gray-700/50 border-2 ${
                       errors.password ? "border-red-500" : "border-cyan-500/30"
                     } rounded-lg px-4 py-3 text-white font-mono focus:outline-none focus:border-cyan-400 transition-all duration-300 pr-12`}
-                    placeholder="••••••••"
+                    placeholder="ENTER_PASSWORD"
                   />
                   <button
                     type="button"
