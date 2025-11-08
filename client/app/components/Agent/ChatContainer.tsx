@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { FaPaperPlane, FaRobot, FaUser } from "react-icons/fa";
 
@@ -14,6 +14,16 @@ const ChatContainer = ({
   formatTimestamp,
   FormattedMessage,
 }: any) => {
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + "px";
+    }
+  }, [inputMessage]);
+
   return (
     <>
       <motion.div
@@ -171,29 +181,38 @@ const ChatContainer = ({
           </div>
 
           {/* Input Area */}
-          <div className="border-t border-cyan-500/20 p-3 sm:p-4">
-            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+          <div className="p-3 sm:p-4">
+            <div className="flex items-end space-x-3">
+              {/* Textarea Container */}
               <div className="flex-1">
                 <textarea
+                  ref={textareaRef}
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Type your message... (Press Enter to send)"
+                  placeholder="Type your message here..."
                   className="w-full bg-gray-700/50 border-2 border-cyan-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300 resize-none scrollbar-small"
                   rows={2}
                   disabled={isLoading}
+                  style={{
+                    minHeight: "50px",
+                    maxHeight: "200px",
+                  }}
                 />
               </div>
+
+              {/* Send Button - Fixed Height */}
               <motion.button
                 onClick={handleSendMessage}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 disabled={!inputMessage.trim() || isLoading}
-                className={`px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 ${
+                className={`px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 h-18 min-h-18 ${
                   inputMessage.trim() && !isLoading
                     ? "bg-cyan-600 text-white shadow-lg shadow-cyan-500/25 hover:bg-cyan-500 cursor-pointer"
                     : "bg-gray-700 text-gray-400 cursor-not-allowed"
                 }`}
+                style={{ height: "50px" }}
               >
                 <FaPaperPlane className="text-sm" />
                 <span className="hidden sm:inline">Send</span>
