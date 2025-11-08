@@ -248,6 +248,7 @@ module.exports.AIAgent = async (req, res) => {
 
     const Voice = await VoiceService({
       voice: response,
+      aiVoice: AIAgent.voice,
     });
 
     AIAgent.LastUsed = Date.now();

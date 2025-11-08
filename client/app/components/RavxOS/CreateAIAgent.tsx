@@ -147,37 +147,67 @@ const skillOptions = [
 
 const maleVoices = [
   {
-    id: "male-1",
-    label: "🎙️ Deep Command",
-    description: "Authoritative and clear - perfect for leadership roles",
+    id: "Charon",
+    label: "🎙️ Titan Voice",
+    description:
+      "Deep, commanding, and powerful — perfect for confident narration or leadership tones.",
   },
   {
-    id: "male-2",
-    label: "👨‍🏫 Warm Mentor",
-    description: "Friendly and guiding - like a trusted teacher",
+    id: "Umbriel",
+    label: "👨‍🏫 Gentle Guide",
+    description:
+      "Warm, wise, and encouraging — ideal for mentorship, storytelling, or tutorials.",
   },
   {
-    id: "male-3",
-    label: "💻 Tech Analyst",
-    description: "Precise and professional - ideal for technical topics",
+    id: "Alnilom",
+    label: "💻 Logic Core",
+    description:
+      "Analytical and composed — suited for tech explainers, data insights, or calm delivery.",
+  },
+  {
+    id: "Sadachbia",
+    label: "⚡ Energetic Pulse",
+    description:
+      "Fast-paced and lively — brings enthusiasm and clarity to interactive conversations.",
+  },
+  {
+    id: "Schedar",
+    label: "🧠 Balanced Thinker",
+    description:
+      "Smooth and steady — maintains a professional yet natural tone for general contexts.",
   },
 ];
 
 const femaleVoices = [
   {
-    id: "female-1",
-    label: "💎 Crystal Clear",
-    description: "Warm and articulate - perfect for clear communication",
+    id: "Zephyr",
+    label: "💎 Crystal Aura",
+    description:
+      "Elegant, calm, and articulate — ideal for narrations, assistants, or guided meditations.",
   },
   {
-    id: "female-2",
-    label: "🤖 Tech Assistant",
-    description: "Efficient and helpful - ideal for productivity tasks",
+    id: "Aoede",
+    label: "🤖 Digital Muse",
+    description:
+      "Crisp, efficient, and modern — perfect for AI assistants and productivity voices.",
   },
   {
-    id: "female-3",
-    label: "🌈 Neon Guide",
-    description: "Energetic and friendly - great for creative projects",
+    id: "Gacrux",
+    label: "🌟 Creative Spark",
+    description:
+      "Vibrant and expressive — great for storytelling, creative intros, or dynamic content.",
+  },
+  {
+    id: "Sulafat",
+    label: "🔥 Bold Performer",
+    description:
+      "Confident and energetic — adds charisma and flair to entertainment or promo content.",
+  },
+  {
+    id: "Leda",
+    label: "🌸 Soft Vision",
+    description:
+      "Gentle, kind, and soothing — perfect for emotional tone, empathy, or calm narration.",
   },
 ];
 

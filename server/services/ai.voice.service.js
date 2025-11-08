@@ -23,7 +23,7 @@ async function saveWaveFile(
   });
 }
 
-async function main({ text }) {
+async function main({ text, aiVoice }) {
   const ai = new GoogleGenAI({ apiKey: process.env.RAVXOS_AI_API_KEY });
 
   const response = await ai.models.generateContent({
@@ -33,7 +33,7 @@ async function main({ text }) {
       responseModalities: ["AUDIO"],
       speechConfig: {
         voiceConfig: {
-          prebuiltVoiceConfig: { voiceName: "Kore" },
+          prebuiltVoiceConfig: { voiceName: aiVoice },
         },
       },
     },
