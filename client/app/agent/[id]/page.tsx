@@ -10,32 +10,9 @@ import ChatContainer from "@/app/components/Agent/ChatContainer";
 import MCPAgent from "@/app/components/Agent/MCPAgent";
 import { AIAgent } from "@/app/types/Type";
 
-// Prism.js imports
-import Prism from "prismjs";
-import "prismjs/themes/prism-tomorrow.css";
-
-// Import all required Prism components
-import "prismjs/components/prism-javascript";
-import "prismjs/components/prism-typescript";
-import "prismjs/components/prism-jsx";
-import "prismjs/components/prism-tsx";
-import "prismjs/components/prism-python";
-import "prismjs/components/prism-java";
-import "prismjs/components/prism-c";
-import "prismjs/components/prism-cpp";
-import "prismjs/components/prism-csharp";
-import "prismjs/components/prism-php";
-import "prismjs/components/prism-ruby";
-import "prismjs/components/prism-go";
-import "prismjs/components/prism-rust";
-import "prismjs/components/prism-sql";
-import "prismjs/components/prism-json";
-import "prismjs/components/prism-markdown";
-import "prismjs/components/prism-yaml";
-import "prismjs/components/prism-bash";
-import "prismjs/components/prism-css";
-import "prismjs/components/prism-scss";
-import "prismjs/components/prism-markup";
+// React Syntax Highlighter imports
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface Message {
   id: string;
@@ -137,23 +114,10 @@ const StickyCodeHeader = ({
   );
 };
 
-// Component to render formatted message content with Prism.js
+// Component to render formatted message content with SyntaxHighlighter
 const FormattedMessage = ({ content }: { content: string }) => {
   const codeBlockRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [stickyBlocks, setStickyBlocks] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    // Highlight all code blocks after render
-    const timer = setTimeout(() => {
-      try {
-        Prism.highlightAll();
-      } catch (err) {
-        console.warn("Prism highlight error:", err);
-      }
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [content]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -183,107 +147,145 @@ const FormattedMessage = ({ content }: { content: string }) => {
       return <div className="text-gray-400 italic">No content</div>;
     }
 
-    const parts = text.split(/(```[\s\S]*?```)/g);
-    return parts.map((part, index) => {
-      if (part.startsWith("```") && part.endsWith("```")) {
-        const codeMatch = part.match(/```(\w+)?\n?([\s\S]*?)```/);
-        if (codeMatch) {
-          const [, language = "text", code] = codeMatch;
-          const blockId = `code-${index}-${Date.now()}`;
-          const cleanCode = code.trim();
-          const isSticky = stickyBlocks.has(blockId);
+    // Improved regex to handle code blocks more reliably
+    const codeBlockRegex = /```(\w+)?\s*\n([\s\S]*?)```/g;
+    const parts: any[] = [];
+    let lastIndex = 0;
+    let match;
 
-          return (
-            <div
-              key={blockId}
-              className="my-4 relative bg-gray-950 rounded-lg overflow-hidden"
-              ref={(el) => {
-                if (el) {
-                  codeBlockRefs.current.set(blockId, el);
-                } else {
-                  codeBlockRefs.current.delete(blockId);
-                }
-              }}
-            >
-              {/* Sticky Code Header */}
-              <div className="code-header">
-                <StickyCodeHeader
-                  language={language}
-                  code={cleanCode}
-                  blockId={blockId}
-                  isSticky={isSticky}
-                />
-              </div>
+    // Process all code blocks first
+    while ((match = codeBlockRegex.exec(text)) !== null) {
+      const [fullMatch, language = "text", code] = match;
+      const textBefore = text.slice(lastIndex, match.index);
 
-              {/* Code block */}
-              <pre className="bg-gray-900 text-cyan-100 p-4 overflow-x-auto text-sm font-mono m-0">
-                <code className={`language-${language}`}>{cleanCode}</code>
-              </pre>
-            </div>
-          );
-        }
+      // Add text before code block
+      if (textBefore) {
+        parts.push(
+          <TextContent key={`text-${lastIndex}`} content={textBefore} />
+        );
       }
 
-      // Process markdown and other formatting
-      const formattedText = part
-        // Bold text with ** **
-        .replace(
-          /\*\*(.*?)\*\*/g,
-          '<strong class="font-bold text-cyan-400">$1</strong>'
-        )
-        // Italic text with * *
-        .replace(/\*(.*?)\*/g, '<em class="italic text-pink-300">$1</em>')
-        // Bold text with __ __
-        .replace(
-          /__(.*?)__/g,
-          '<strong class="font-bold text-white">$1</strong>'
-        )
-        // Inline code with ` `
-        .replace(
-          /`(.*?)`/g,
-          '<code class="bg-gray-950 px-1.5 py-0.5 rounded text-sm font-mono text-cyan-400 border border-gray-700">$1</code>'
-        )
-        // Headers (###, ##, #)
-        .replace(
-          /^### (.*$)/gim,
-          '<h3 class="text-lg font-bold text-emerald-400 mt-4 mb-2">$1</h3>'
-        )
-        .replace(
-          /^## (.*$)/gim,
-          '<h2 class="text-xl font-bold text-purple-400 mt-4 mb-2">$1</h2>'
-        )
-        .replace(
-          /^# (.*$)/gim,
-          '<h1 class="text-2xl font-bold text-white mt-4 mb-3">$1</h1>'
-        )
-        // Lists
-        .replace(
-          /^- (.*$)/gim,
-          '<li class="ml-4 list-disc text-gray-300">$1</li>'
-        )
-        .replace(
-          /^\* (.*$)/gim,
-          '<li class="ml-4 list-disc text-gray-300">$1</li>'
-        )
-        // Blockquotes
-        .replace(
-          /^> (.*$)/gim,
-          '<blockquote class="border-l-4 border-cyan-500 pl-4 my-2 text-gray-300 italic">$1</blockquote>'
-        )
-        // Line breaks
-        .replace(/\n/g, "<br />");
+      // Add code block with SyntaxHighlighter
+      const blockId = `code-${match.index}-${Date.now()}`;
+      const cleanCode = code.trim();
+      const isSticky = stickyBlocks.has(blockId);
 
-      return (
+      parts.push(
         <div
-          key={`text-${index}`}
-          className="whitespace-pre-wrap wrap-break-word text-gray-300 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: formattedText }}
-        />
+          key={blockId}
+          className="my-4 relative rounded-lg overflow-hidden border border-gray-700"
+          ref={(el) => {
+            if (el) {
+              codeBlockRefs.current.set(blockId, el);
+            } else {
+              codeBlockRefs.current.delete(blockId);
+            }
+          }}
+        >
+          <div className="code-header">
+            <StickyCodeHeader
+              language={language}
+              code={cleanCode}
+              blockId={blockId}
+              isSticky={isSticky}
+            />
+          </div>
+
+          {/* Using SyntaxHighlighter instead of Prism directly */}
+          <SyntaxHighlighter
+            language={language}
+            style={vscDarkPlus}
+            customStyle={{
+              margin: 0,
+              padding: "1rem",
+              borderRadius: "0 0 0.5rem 0.5rem",
+              fontSize: "0.875rem",
+              lineHeight: "1.25rem",
+              background: "#1a1a1a",
+            }}
+            codeTagProps={{
+              style: {
+                fontFamily:
+                  'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+              },
+            }}
+            showLineNumbers={false}
+            wrapLongLines={true}
+          >
+            {cleanCode}
+          </SyntaxHighlighter>
+        </div>
       );
-    });
+
+      lastIndex = match.index + fullMatch.length;
+    }
+
+    // Add remaining text after last code block
+    const remainingText = text.slice(lastIndex);
+    if (remainingText) {
+      parts.push(
+        <TextContent key={`text-${lastIndex}`} content={remainingText} />
+      );
+    }
+
+    // If no code blocks were found, render the entire text
+    if (parts.length === 0) {
+      return <TextContent content={text} />;
+    }
+
+    return <>{parts}</>;
   };
 
   return <div className="message-content">{formatContent(content)}</div>;
+};
+
+// Separate component for text content
+const TextContent = ({ content }: { content: string }) => {
+  const formattedText = content
+    // Bold text with ** **
+    .replace(
+      /\*\*(.*?)\*\*/g,
+      '<strong class="font-bold text-cyan-400">$1</strong>'
+    )
+    // Italic text with * *
+    .replace(/\*(.*?)\*/g, '<em class="italic text-pink-300">$1</em>')
+    // Bold text with __ __
+    .replace(/__(.*?)__/g, '<strong class="font-bold text-white">$1</strong>')
+    // Inline code with ` `
+    .replace(
+      /`(.*?)`/g,
+      '<code class="bg-gray-800 px-1.5 py-0.5 rounded text-sm font-mono text-cyan-300 border border-gray-700">$1</code>'
+    )
+    // Headers (###, ##, #)
+    .replace(
+      /^### (.*$)/gim,
+      '<h3 class="text-lg font-bold text-emerald-400 mt-4 mb-2">$1</h3>'
+    )
+    .replace(
+      /^## (.*$)/gim,
+      '<h2 class="text-xl font-bold text-purple-400 mt-4 mb-2">$1</h2>'
+    )
+    .replace(
+      /^# (.*$)/gim,
+      '<h1 class="text-2xl font-bold text-white mt-4 mb-3">$1</h1>'
+    )
+    // Lists
+    .replace(/^- (.*$)/gim, '<li class="ml-4 list-disc text-gray-300">$1</li>')
+    .replace(/^\* (.*$)/gim, '<li class="ml-4 list-disc text-gray-300">$1</li>')
+    // Blockquotes
+    .replace(
+      /^> (.*$)/gim,
+      '<blockquote class="border-l-4 border-cyan-500 pl-4 my-2 text-gray-300 italic">$1</blockquote>'
+    )
+    // Line breaks
+    .replace(/\n/g, "<br />");
+
+  return (
+    <div
+      className="whitespace-pre-wrap wrap-break-word text-gray-300 leading-relaxed"
+      dangerouslySetInnerHTML={{ __html: formattedText }}
+    />
+  );
 };
 
 export default function AIChatBotPage() {
