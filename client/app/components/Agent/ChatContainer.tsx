@@ -95,88 +95,44 @@ const ChatContainer = ({
                 </div>
               </motion.div>
             ))}
-            {isLoading && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex justify-start"
-              >
-                <div className="max-w-[90%] sm:max-w-[80%] bg-gray-700/50 border border-gray-600/30 rounded-2xl p-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-6 h-6 rounded-full bg-linear-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
-                      <FaRobot className="text-xs text-white" />
-                    </div>
-                    <div className="flex flex-col space-y-2">
-                      <div className="flex space-x-1">
-                        <motion.div
-                          className="w-2 h-2 bg-cyan-400 rounded-full"
-                          animate={{
-                            scale: [1, 1.2, 1],
-                            opacity: [0.7, 1, 0.7],
-                          }}
-                          transition={{
-                            duration: 1.5,
-                            repeat: Infinity,
-                            repeatType: "reverse",
-                          }}
-                        />
-                        <motion.div
-                          className="w-2 h-2 bg-cyan-400 rounded-full"
-                          animate={{
-                            scale: [1, 1.2, 1],
-                            opacity: [0.7, 1, 0.7],
-                          }}
-                          transition={{
-                            duration: 1.5,
-                            repeat: Infinity,
-                            repeatType: "reverse",
-                            delay: 0.2,
-                          }}
-                        />
-                        <motion.div
-                          className="w-2 h-2 bg-cyan-400 rounded-full"
-                          animate={{
-                            scale: [1, 1.2, 1],
-                            opacity: [0.7, 1, 0.7],
-                          }}
-                          transition={{
-                            duration: 1.5,
-                            repeat: Infinity,
-                            repeatType: "reverse",
-                            delay: 0.4,
-                          }}
-                        />
-                      </div>
-                      <motion.p
-                        className="text-xs text-cyan-300 font-medium"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                      >
-                        {AIAgentData.name} is thinking...
-                      </motion.p>
-                    </div>
-                  </div>
-                  <motion.div
-                    className="mt-3 flex space-x-1"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.8 }}
-                  >
-                    <motion.div
-                      className="h-1 bg-linear-to-r from-cyan-500 to-blue-500 rounded-full"
-                      initial={{ width: 0 }}
-                      animate={{ width: "100%" }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                      }}
-                    />
-                  </motion.div>
-                </div>
-              </motion.div>
-            )}
+           {isLoading && (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="flex justify-start"
+  >
+    <div className="max-w-[90%] sm:max-w-[80%] bg-gray-700/50 border border-gray-600/30 rounded-2xl p-4">
+      <div className="flex items-center space-x-3 mb-4">
+        <div className="w-6 h-6 rounded-full bg-cyan-600 flex items-center justify-center">
+          <span className="text-white text-xs font-semibold">
+            {AIAgentData.name?.charAt(0).toUpperCase()}
+          </span>
+        </div>
+        <span className="text-sm font-bold text-cyan-500">
+          {AIAgentData.name}
+        </span>
+      </div>
+      
+      {/* Simple text skeleton */}
+      <div className="space-y-3">
+        <div className="h-3 bg-gray-600 rounded-full animate-pulse"></div>
+        <div className="h-3 bg-gray-600 rounded-full w-5/6 animate-pulse"></div>
+        <div className="h-3 bg-gray-600 rounded-full w-4/6 animate-pulse"></div>
+      </div>
+
+      <div className="flex items-center space-x-2 mt-4">
+        <div className="flex space-x-1">
+          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+        </div>
+        <p className="text-xs text-cyan-300 font-medium">
+          {AIAgentData.name} is thinking...
+        </p>
+      </div>
+    </div>
+  </motion.div>
+)}
             <div ref={messagesEndRef} />
           </div>
 
