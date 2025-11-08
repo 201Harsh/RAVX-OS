@@ -2,13 +2,17 @@
 
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
-import { FaRobot, FaCode } from "react-icons/fa";
+import { FaRobot, FaCode, FaCopy, FaDownload } from "react-icons/fa";
 import { Flip, toast } from "react-toastify";
 import AxiosInstance from "@/config/Axios";
 import { useParams, useRouter } from "next/navigation";
 import ChatContainer from "@/app/components/Agent/ChatContainer";
 import MCPAgent from "@/app/components/Agent/MCPAgent";
 import { AIAgent } from "@/app/types/Type";
+
+import Prism from "prismjs";
+import "prismjs/themes/prism-tomorrow.css";
+import "../../utils/PrismLang";
 
 interface Message {
   id: string;
@@ -25,29 +29,122 @@ interface FileItem {
   lastModified: Date;
 }
 
-// Component to render formatted message content
+// Component to render formatted message content with Prism.js
 const FormattedMessage = ({ content }: { content: string }) => {
+  const [copiedCodeBlocks, setCopiedCodeBlocks] = useState<Set<string>>(
+    new Set()
+  );
+
+  const copyToClipboard = async (text: string, blockId: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedCodeBlocks((prev) => new Set(prev).add(blockId));
+      toast.success("Code copied to clipboard!", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+
+      setTimeout(() => {
+        setCopiedCodeBlocks((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(blockId);
+          return newSet;
+        });
+      }, 2000);
+    } catch (err) {
+      toast.error("Failed to copy code", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
+  };
+
+  const downloadCode = (code: string, language: string = "txt") => {
+    const blob = new Blob([code], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `code.${language}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    toast.success("Code downloaded!", {
+      position: "top-right",
+      autoClose: 2000,
+    });
+  };
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const timer = setTimeout(() => {
+      try {
+        Prism.highlightAll();
+      } catch (err) {
+        console.warn("Prism highlight error:", err);
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [content]);
+
   const formatContent = (text: string) => {
+    if (!text || typeof text !== "string") {
+      return <div className="text-gray-400 italic">No content</div>;
+    }
     const parts = text.split(/(```[\s\S]*?```)/g);
     return parts.map((part, index) => {
       if (part.startsWith("```") && part.endsWith("```")) {
         const codeMatch = part.match(/```(\w+)?\n?([\s\S]*?)```/);
         if (codeMatch) {
-          const [, language, code] = codeMatch;
+          const [, language = "text", code] = codeMatch;
+          const blockId = `code-${index}-${Date.now()}`;
+          const cleanCode = code.trim();
+
           return (
-            <div key={index} className="my-3">
-              {language && (
-                <div className="bg-gray-800 text-gray-300 px-3 py-1 text-xs font-mono rounded-t-lg border-b border-gray-600">
+            <div key={index} className="my-4 group relative">
+              {/* Code header with language and buttons */}
+              <div className="flex justify-between items-center bg-gray-800 text-gray-300 px-4 py-2 text-sm font-mono rounded-t-lg border-b border-gray-600">
+                <span className="text-xs uppercase tracking-wide">
                   {language}
+                </span>
+                <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <button
+                    onClick={() => copyToClipboard(cleanCode, blockId)}
+                    className={`p-1 rounded transition-colors duration-200 ${
+                      copiedCodeBlocks.has(blockId)
+                        ? "text-green-400 hover:text-green-300"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                    title="Copy code"
+                  >
+                    <FaCopy size={14} />
+                  </button>
+                  <button
+                    onClick={() => downloadCode(cleanCode, language)}
+                    className="text-gray-400 hover:text-white p-1 rounded transition-colors duration-200"
+                    title="Download code"
+                  >
+                    <FaDownload size={14} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Code block */}
+              <pre
+                className={`bg-gray-900 text-gray-100 p-4 rounded-b-lg overflow-x-auto text-sm font-mono m-0`}
+              >
+                <code className={`language-${language}`}>{cleanCode}</code>
+              </pre>
+
+              {/* Copy feedback */}
+              {copiedCodeBlocks.has(blockId) && (
+                <div className="absolute top-2 right-12 bg-green-600 text-white px-2 py-1 rounded text-xs animate-pulse">
+                  Copied!
                 </div>
               )}
-              <pre
-                className={`bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm font-mono ${
-                  language ? "rounded-tl-none" : "rounded-lg"
-                }`}
-              >
-                <code>{code.trim()}</code>
-              </pre>
             </div>
           );
         }
@@ -69,7 +166,7 @@ const FormattedMessage = ({ content }: { content: string }) => {
         // Inline code with ` `
         .replace(
           /`(.*?)`/g,
-          '<code class="bg-gray-950 px-1 py-0.5 rounded text-sm font-mono text-cyan-300">$1</code>'
+          '<code class="bg-gray-800 px-1.5 py-0.5 rounded text-sm font-mono text-cyan-300 border border-gray-700">$1</code>'
         )
         // Headers (###, ##, #)
         .replace(
@@ -85,15 +182,26 @@ const FormattedMessage = ({ content }: { content: string }) => {
           '<h1 class="text-2xl font-bold text-white mt-4 mb-3">$1</h1>'
         )
         // Lists
-        .replace(/^- (.*$)/gim, '<li class="ml-4 list-disc">$1</li>')
-        .replace(/^\* (.*$)/gim, '<li class="ml-4 list-disc">$1</li>')
+        .replace(
+          /^- (.*$)/gim,
+          '<li class="ml-4 list-disc text-gray-300">$1</li>'
+        )
+        .replace(
+          /^\* (.*$)/gim,
+          '<li class="ml-4 list-disc text-gray-300">$1</li>'
+        )
+        // Blockquotes
+        .replace(
+          /^> (.*$)/gim,
+          '<blockquote class="border-l-4 border-cyan-500 pl-4 my-2 text-gray-300 italic">$1</blockquote>'
+        )
         // Line breaks
         .replace(/\n/g, "<br />");
 
       return (
         <div
           key={index}
-          className="whitespace-pre-wrap wrap-break-word"
+          className="whitespace-pre-wrap wrap-break-word text-gray-300 leading-relaxed"
           dangerouslySetInnerHTML={{ __html: formattedText }}
         />
       );
