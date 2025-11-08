@@ -8,6 +8,9 @@ import {
   FiEye,
   FiEyeOff,
   FiAlertCircle,
+  FiTerminal,
+  FiUser,
+  FiShield,
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { Bounce, Slide, toast } from "react-toastify";
@@ -33,13 +36,13 @@ const LoginPage: React.FC = () => {
     const newErrors: Partial<LoginForm> = {};
 
     if (!formData.email) {
-      newErrors.email = "Email is required";
+      newErrors.email = "EMAIL_REQUIRED";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+      newErrors.email = "INVALID_EMAIL_FORMAT";
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = "PASSWORD_REQUIRED";
     }
 
     setErrors(newErrors);
@@ -100,7 +103,7 @@ const LoginPage: React.FC = () => {
           setLoginError((prev) => (prev ? prev + " " + e.msg : e.msg));
         });
       } else if (typeof apiErrors === "string") {
-        setLoginError(apiErrors || "Login failed. Please try again.");
+        setLoginError(apiErrors || "AUTHENTICATION_FAILED");
       }
     } finally {
       setIsLoading(false);
@@ -112,90 +115,89 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, -50, 0],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"
-          animate={{
-            x: [0, -100, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-4 py-8">
-        {/* Header */}
-        <motion.header
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between mb-8"
-        >
-          <button
-            onClick={() => router.push("/")}
-            className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 transition-colors"
-          >
-            <FiArrowLeft className="text-lg" />
-            <span>Back to Home</span>
-          </button>
-
-          <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
-              Welcome Back
-            </h1>
-            <p className="text-gray-400 mt-2">
-              Sign in to your RAVX OS account
-            </p>
+    <div className="min-h-screen bg-linear-to-br from-black via-black to-cyan-900/20 text-white relative overflow-hidden">
+      {/* Terminal Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-4xl mx-auto mb-8 pt-8"
+      >
+        <div className="bg-gray-800/50 border border-cyan-400/30 rounded-xl p-4 backdrop-blur-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="flex space-x-2">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+              <div className="font-mono text-cyan-400 text-sm">
+                root@ravx-os:~/# system --login
+              </div>
+            </div>
+            <div className="flex items-center space-x-4 text-cyan-300/60 text-sm">
+              <div className="flex items-center space-x-1">
+                <FiShield className="text-xs" />
+                <span>SECURE_LOGIN</span>
+              </div>
+            </div>
           </div>
+        </div>
+      </motion.div>
 
-          <div className="w-24"></div>
-        </motion.header>
+      {/* Main Content Grid */}
+      <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6 px-4">
+        {/* Login Form Area */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="lg:col-span-3"
+        >
+          <div className="bg-gray-800/30 backdrop-blur-sm border-2 border-cyan-400/20 rounded-xl p-6">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="inline-block px-4 py-1 bg-cyan-500/20 border border-cyan-400/30 rounded-full text-cyan-400 text-xs font-mono mb-4"
+              >
+                ACCESS_REQUIRED
+              </motion.div>
+              <h1 className="text-3xl font-bold text-cyan-400 mb-2 font-mono">
+                SYSTEM_LOGIN
+              </h1>
+              <p className="text-gray-400 text-sm font-mono">
+                AUTHENTICATE TO ACCESS RAVX OS
+              </p>
+            </div>
 
-        {/* Login Form */}
-        <div className="max-w-md mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8"
-          >
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Field */}
               <div>
-                <label className="flex items-center space-x-2 text-gray-400 text-sm mb-2">
+                <label className="flex items-center space-x-2 text-cyan-300 text-sm mb-3 font-mono">
                   <FiMail className="text-lg" />
-                  <span>Email Address</span>
+                  <span>EMAIL_ADDRESS *</span>
                 </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className={`w-full bg-gray-800 border ${
-                    errors.email ? "border-red-400" : "border-gray-600"
-                  } rounded-lg px-4 py-3 text-white focus:border-cyan-400 focus:outline-none transition-colors`}
-                  placeholder="Enter your email"
-                />
+                <div className="relative">
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className={`w-full bg-gray-700/50 border-2 ${
+                      errors.email ? "border-red-500" : "border-cyan-500/30"
+                    } rounded-lg px-4 py-3 text-white font-mono focus:outline-none focus:border-cyan-400 transition-all duration-300`}
+                    placeholder="user@domain.com"
+                  />
+                  {errors.email && (
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                      <FiAlertCircle className="text-red-400 text-lg" />
+                    </div>
+                  )}
+                </div>
                 {errors.email && (
-                  <p className="text-red-400 text-sm mt-1 flex items-center space-x-1">
-                    <FiAlertCircle className="text-xs" />
+                  <p className="text-red-400 text-sm mt-2 flex items-center space-x-2 font-mono">
+                    <span>ERROR:</span>
                     <span>{errors.email}</span>
                   </p>
                 )}
@@ -203,17 +205,17 @@ const LoginPage: React.FC = () => {
 
               {/* Password Field */}
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="flex items-center space-x-2 text-gray-400 text-sm">
+                <div className="flex items-center justify-between mb-3">
+                  <label className="flex items-center space-x-2 text-cyan-300 text-sm font-mono">
                     <FiLock className="text-lg" />
-                    <span>Password</span>
+                    <span>PASSWORD *</span>
                   </label>
                   <button
                     type="button"
                     onClick={handleForgotPassword}
-                    className="text-cyan-400 hover:text-cyan-300 text-sm transition-colors cursor-pointer"
+                    className="text-cyan-400 hover:text-cyan-300 text-xs font-mono transition-colors cursor-pointer uppercase"
                   >
-                    Forgot Password?
+                    FORGOT PASSWORd?
                   </button>
                 </div>
                 <div className="relative">
@@ -222,22 +224,26 @@ const LoginPage: React.FC = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className={`w-full bg-gray-800 border ${
-                      errors.password ? "border-red-400" : "border-gray-600"
-                    } rounded-lg px-4 py-3 text-white focus:border-cyan-400 focus:outline-none transition-colors pr-12`}
-                    placeholder="Enter your password"
+                    className={`w-full bg-gray-700/50 border-2 ${
+                      errors.password ? "border-red-500" : "border-cyan-500/30"
+                    } rounded-lg px-4 py-3 text-white font-mono focus:outline-none focus:border-cyan-400 transition-all duration-300 pr-12`}
+                    placeholder="••••••••"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-cyan-400 hover:text-cyan-300 transition-colors"
                   >
-                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                    {showPassword ? (
+                      <FiEyeOff className="text-lg" />
+                    ) : (
+                      <FiEye className="text-lg" />
+                    )}
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-red-400 text-sm mt-1 flex items-center space-x-1">
-                    <FiAlertCircle className="text-xs" />
+                  <p className="text-red-400 text-sm mt-2 flex items-center space-x-2 font-mono">
+                    <span>ERROR:</span>
                     <span>{errors.password}</span>
                   </p>
                 )}
@@ -248,11 +254,11 @@ const LoginPage: React.FC = () => {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-red-500/10 border border-red-400/30 rounded-lg p-3"
+                  className="bg-red-500/10 border-2 border-red-500/30 rounded-lg p-4"
                 >
-                  <div className="flex items-center space-x-2 text-red-400">
-                    <FiAlertCircle className="text-sm" />
-                    <span className="text-sm">{loginError}</span>
+                  <div className="flex items-center space-x-3 text-red-400 font-mono text-sm">
+                    <FiAlertCircle className="text-lg" />
+                    <span>AUTH_ERROR: {loginError}</span>
                   </div>
                 </motion.div>
               )}
@@ -263,49 +269,149 @@ const LoginPage: React.FC = () => {
                 disabled={isLoading}
                 whileHover={{ scale: isLoading ? 1 : 1.02 }}
                 whileTap={{ scale: isLoading ? 1 : 0.98 }}
-                className="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold py-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 cursor-pointer"
+                className={`w-full py-4 rounded-lg border-2 font-mono font-semibold transition-all duration-300 flex items-center justify-center space-x-3 ${
+                  isLoading
+                    ? "bg-gray-700 text-gray-400 border-gray-600 cursor-not-allowed"
+                    : "bg-cyan-600 text-white border-cyan-500 hover:bg-cyan-500 cursor-pointer"
+                }`}
               >
                 {isLoading ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                    <span>Logging In...</span>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>AUTHENTICATING...</span>
                   </>
                 ) : (
                   <>
                     <FiLock className="text-lg" />
-                    <span>LogIn</span>
+                    <span>EXECUTE_LOGIN</span>
                   </>
                 )}
               </motion.button>
             </form>
 
             {/* Register Link */}
-            <div className="text-center mt-6">
-              <p className="text-gray-400">
-                Don't have an account?{" "}
+            <div className="text-center mt-8 pt-6 border-t border-cyan-400/20">
+              <p className="text-gray-400 text-sm font-mono">
+                NO_ACCOUNT?{" "}
                 <button
                   onClick={() => router.push("/register")}
-                  className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors cursor-pointer"
+                  className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors cursor-pointer font-mono"
                 >
-                  Create Account
+                  CREATE ONE
                 </button>
               </p>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Security Notice */}
+          {/* System Footer */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-center mt-6"
+            className="mt-6 bg-gray-800/30 rounded-xl p-4 border border-cyan-400/20"
           >
-            <div className="flex items-center justify-center space-x-2 text-gray-500 text-sm">
-              <FiLock className="text-xs" />
-              <span>Your data is securely encrypted and protected</span>
+            <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-cyan-400/70 font-mono">
+              <div className="flex items-center space-x-4 mb-2 sm:mb-0">
+                <span>ENCRYPTION: AES-256</span>
+                <span>PROTOCOL: HTTPS/2.5</span>
+              </div>
+              <div className="flex items-center space-x-4">
+                <span>SESSION: SECURE</span>
+                <span>TIMESTAMP: {new Date().toLocaleTimeString()}</span>
+              </div>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
+        {/* Sidebar - System Info */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="lg:col-span-1"
+        >
+          <div className="bg-gray-800/50 border-2 border-cyan-400/20 rounded-xl p-4 backdrop-blur-sm h-full">
+            <div className="text-cyan-300 border-b border-cyan-400/20 pb-3 mb-4 font-mono text-sm">
+              SYSTEM_STATUS
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-cyan-400 text-sm font-mono">ONLINE</span>
+              </div>
+
+              <div className="space-y-3 text-xs text-cyan-400/70 font-mono">
+                <div className="flex justify-between">
+                  <span>USERS:</span>
+                  <span>1,247</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>UPTIME:</span>
+                  <span>99.8%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>SECURITY:</span>
+                  <span className="text-green-400">ACTIVE</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>VERSION:</span>
+                  <span>v2.2.1</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Security Features */}
+            <div className="mt-6 pt-4 border-t border-cyan-400/20">
+              <div className="space-y-2 text-xs text-cyan-400/70 font-mono">
+                <div className="flex items-center space-x-2">
+                  <FiShield className="text-cyan-400 text-xs" />
+                  <span>AES-256 ENCRYPTION</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FiUser className="text-cyan-400 text-xs" />
+                  <span>2FA READY</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FiTerminal className="text-cyan-400 text-xs" />
+                  <span>SECURE_SOCKET</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Back Button */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+        onClick={() => router.push("/")}
+        className="fixed bottom-6 left-6 bg-gray-800/50 border border-cyan-400/30 rounded-lg p-3 text-cyan-400 hover:text-cyan-300 transition-all duration-300 backdrop-blur-sm cursor-pointer"
+      >
+        <FiArrowLeft className="text-lg" />
+      </motion.button>
+
+      {/* Animated Background Elements */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-cyan-400/20 rounded-full"
+            initial={{
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
       </div>
     </div>
   );
