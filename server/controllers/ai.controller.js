@@ -3,6 +3,7 @@ const AIAgentModel = require("../models/AIAgent.model");
 const AIAgentServices = require("../services/ai.service");
 const ArcLabModel = require("../models/ArcLab.model");
 const AIAgentSerciceAi = require("../services/aiagent.service");
+const VoiceService = require("../services/ai.voice.service");
 
 module.exports.CreateAIAgent = async (req, res) => {
   try {
@@ -245,12 +246,17 @@ module.exports.AIAgent = async (req, res) => {
       user,
     });
 
+    const Voice = await VoiceService({
+      voice: response,
+    });
+
     AIAgent.LastUsed = Date.now();
     await AIAgent.save();
 
     res.status(200).json({
       message: "AI-Agent Responded Successfully!",
       response,
+      Voice,
     });
   } catch (error) {
     console.log(error);
