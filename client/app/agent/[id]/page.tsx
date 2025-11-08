@@ -201,7 +201,7 @@ const FormattedMessage = ({ content }: { content: string }) => {
               borderRadius: "0 0 0.5rem 0.5rem",
               fontSize: "0.875rem",
               lineHeight: "1.25rem",
-              background: "#1a1a1a",
+              background: "#000",
             }}
             codeTagProps={{
               style: {
