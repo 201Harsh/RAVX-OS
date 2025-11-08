@@ -101,7 +101,7 @@ const ChatContainer = ({
                 animate={{ opacity: 1, y: 0 }}
                 className="flex justify-start"
               >
-                <div className="max-w-[90%] sm:max-w-[80%] bg-gray-700/50 border border-gray-600/30 rounded-2xl p-4">
+                <div className="max-w-[90%] min-w-[70%] sm:max-w-[80%] bg-gray-700/50 border border-gray-600/30 rounded-2xl p-4">
                   <div className="flex items-center space-x-3 mb-4">
                     <div className="w-6 h-6 rounded-full bg-cyan-600 flex items-center justify-center">
                       <span className="text-white text-xs font-semibold">
