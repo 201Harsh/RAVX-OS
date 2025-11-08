@@ -448,7 +448,7 @@ module.exports.RegisterUser = async (req, res) => {
                 <div class="info-title">🔒 Security Notice</div>
                 <div class="info-content">
                     • This OTP is for your RAVX OS account verification<br>
-                    • The code will expire in 10 minutes for security<br>
+                    • The code will expire in 5 minutes for security<br>
                     • If you didn't request this, please ignore this email<br>
                     • Contact support immediately if you suspect foul play
                 </div>
@@ -916,7 +916,7 @@ module.exports.ResendOTP = async (req, res) => {
                 <div class="info-title">🔒 Security Notice</div>
                 <div class="info-content">
                     • This OTP is for your RAVX OS account verification<br>
-                    • The code will expire in 10 minutes for security<br>
+                    • The code will expire in 5 minutes for security<br>
                     • If you didn't request this, please ignore this email<br>
                     • Contact support immediately if you suspect foul play
                 </div>
@@ -1503,7 +1503,7 @@ module.exports.ForgotPassword = async (req, res) => {
                 <div class="info-title">🔒 Security Notice</div>
                 <div class="info-content">
                     • This OTP is for your RAVX OS account verification<br>
-                    • The code will expire in 10 minutes for security<br>
+                    • The code will expire in 5 minutes for security<br>
                     • If you didn't request this, please ignore this email<br>
                     • Contact support immediately if you suspect foul play
                 </div>
