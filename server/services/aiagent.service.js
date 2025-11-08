@@ -208,7 +208,6 @@ I am not a generic AI - I am a unique digital entity with my own identity, here 
       config: {
         systemInstruction: systemInstruction,
         temperature: getTemperatureByTone(AIAgent.tone),
-        maxOutputTokens: getMaxTokensByEngine(AIAgent.engineModel),
       },
     });
 
@@ -248,12 +247,12 @@ function getTemperatureByTone(tone) {
   return toneTemperatures[tone] || 0.7;
 }
 
-function getMaxTokensByEngine(engineModel) {
+function getCandidateCountByEngine(engineModel) {
   const engineTokens = {
-    "ravx-ultra": 4096,
-    "ravx-pro": 2048,
-    "ravx-neo": 1024,
-    "ravx-lite": 512,
+    "ravx-ultra": 2,
+    "ravx-pro": 1,
+    "ravx-neo": 2,
+    "ravx-lite": 1,
   };
   return engineTokens[engineModel] || 2048;
 }
