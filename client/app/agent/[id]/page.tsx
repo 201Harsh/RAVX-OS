@@ -10,9 +10,32 @@ import ChatContainer from "@/app/components/Agent/ChatContainer";
 import MCPAgent from "@/app/components/Agent/MCPAgent";
 import { AIAgent } from "@/app/types/Type";
 
+// Prism.js imports
 import Prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
-import "../../utils/PrismLang";
+
+// Import all required Prism components
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-tsx";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-java";
+import "prismjs/components/prism-c";
+import "prismjs/components/prism-cpp";
+import "prismjs/components/prism-csharp";
+import "prismjs/components/prism-php";
+import "prismjs/components/prism-ruby";
+import "prismjs/components/prism-go";
+import "prismjs/components/prism-rust";
+import "prismjs/components/prism-sql";
+import "prismjs/components/prism-json";
+import "prismjs/components/prism-markdown";
+import "prismjs/components/prism-yaml";
+import "prismjs/components/prism-bash";
+import "prismjs/components/prism-css";
+import "prismjs/components/prism-scss";
+import "prismjs/components/prism-markup";
 
 interface Message {
   id: string;
@@ -29,28 +52,30 @@ interface FileItem {
   lastModified: Date;
 }
 
-// Component to render formatted message content with Prism.js
-const FormattedMessage = ({ content }: { content: string }) => {
-  const [copiedCodeBlocks, setCopiedCodeBlocks] = useState<Set<string>>(
-    new Set()
-  );
+// Sticky Code Header Component
+const StickyCodeHeader = ({
+  language,
+  code,
+  blockId,
+  isSticky,
+}: {
+  language: string;
+  code: string;
+  blockId: string;
+  isSticky: boolean;
+}) => {
+  const [copied, setCopied] = useState(false);
 
-  const copyToClipboard = async (text: string, blockId: string) => {
+  const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(text);
-      setCopiedCodeBlocks((prev) => new Set(prev).add(blockId));
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
       toast.success("Code copied to clipboard!", {
         position: "top-right",
         autoClose: 2000,
       });
 
-      setTimeout(() => {
-        setCopiedCodeBlocks((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(blockId);
-          return newSet;
-        });
-      }, 2000);
+      setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       toast.error("Failed to copy code", {
         position: "top-right",
@@ -59,12 +84,12 @@ const FormattedMessage = ({ content }: { content: string }) => {
     }
   };
 
-  const downloadCode = (code: string, language: string = "txt") => {
+  const downloadCode = () => {
     const blob = new Blob([code], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `code.${language}`;
+    a.download = `code.${language === "text" ? "txt" : language}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -76,24 +101,88 @@ const FormattedMessage = ({ content }: { content: string }) => {
     });
   };
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  return (
+    <div
+      className={`flex justify-between items-center bg-gray-800 text-gray-300 px-4 py-2 text-sm font-mono border-b border-gray-600 transition-all duration-300 ${
+        isSticky ? "sticky top-0 z-10 rounded-t-lg shadow-lg" : "rounded-t-lg"
+      }`}
+    >
+      <span className="text-xs uppercase tracking-wide">{language}</span>
+      <div className="flex space-x-2 opacity-100 transition-opacity duration-200">
+        <button
+          onClick={copyToClipboard}
+          className={`p-1.5 rounded transition-colors duration-200 ${
+            copied
+              ? "text-green-400 hover:text-green-300"
+              : "text-gray-400 hover:text-white"
+          }`}
+          title="Copy code"
+        >
+          <FaCopy size={14} />
+        </button>
+        <button
+          onClick={downloadCode}
+          className="text-gray-400 hover:text-white p-1.5 rounded transition-colors duration-200"
+          title="Download code"
+        >
+          <FaDownload size={14} />
+        </button>
+      </div>
+      {copied && (
+        <div className="absolute top-2 right-12 bg-green-600 text-white px-2 py-1 rounded text-xs animate-pulse">
+          Copied!
+        </div>
+      )}
+    </div>
+  );
+};
 
+// Component to render formatted message content with Prism.js
+const FormattedMessage = ({ content }: { content: string }) => {
+  const codeBlockRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const [stickyBlocks, setStickyBlocks] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    // Highlight all code blocks after render
     const timer = setTimeout(() => {
       try {
         Prism.highlightAll();
       } catch (err) {
         console.warn("Prism highlight error:", err);
       }
-    }, 0);
+    }, 100);
 
     return () => clearTimeout(timer);
+  }, [content]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const newStickyBlocks = new Set<string>();
+
+      codeBlockRefs.current.forEach((element, blockId) => {
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const header = element.querySelector(".code-header");
+          if (header && rect.top <= 0 && rect.bottom > header.clientHeight) {
+            newStickyBlocks.add(blockId);
+          }
+        }
+      });
+
+      setStickyBlocks(newStickyBlocks);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [content]);
 
   const formatContent = (text: string) => {
     if (!text || typeof text !== "string") {
       return <div className="text-gray-400 italic">No content</div>;
     }
+
     const parts = text.split(/(```[\s\S]*?```)/g);
     return parts.map((part, index) => {
       if (part.startsWith("```") && part.endsWith("```")) {
@@ -102,54 +191,40 @@ const FormattedMessage = ({ content }: { content: string }) => {
           const [, language = "text", code] = codeMatch;
           const blockId = `code-${index}-${Date.now()}`;
           const cleanCode = code.trim();
+          const isSticky = stickyBlocks.has(blockId);
 
           return (
-            <div key={index} className="my-4 group relative">
-              {/* Code header with language and buttons */}
-              <div className="flex justify-between items-center bg-gray-800 text-gray-300 px-4 py-2 text-sm font-mono rounded-t-lg border-b border-gray-600">
-                <span className="text-xs uppercase tracking-wide">
-                  {language}
-                </span>
-                <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <button
-                    onClick={() => copyToClipboard(cleanCode, blockId)}
-                    className={`p-1 rounded transition-colors duration-200 ${
-                      copiedCodeBlocks.has(blockId)
-                        ? "text-green-400 hover:text-green-300"
-                        : "text-gray-400 hover:text-white"
-                    }`}
-                    title="Copy code"
-                  >
-                    <FaCopy size={14} />
-                  </button>
-                  <button
-                    onClick={() => downloadCode(cleanCode, language)}
-                    className="text-gray-400 hover:text-white p-1 rounded transition-colors duration-200"
-                    title="Download code"
-                  >
-                    <FaDownload size={14} />
-                  </button>
-                </div>
+            <div
+              key={blockId}
+              className="my-4 relative bg-gray-950 rounded-lg overflow-hidden"
+              ref={(el) => {
+                if (el) {
+                  codeBlockRefs.current.set(blockId, el);
+                } else {
+                  codeBlockRefs.current.delete(blockId);
+                }
+              }}
+            >
+              {/* Sticky Code Header */}
+              <div className="code-header">
+                <StickyCodeHeader
+                  language={language}
+                  code={cleanCode}
+                  blockId={blockId}
+                  isSticky={isSticky}
+                />
               </div>
 
               {/* Code block */}
-              <pre
-                className={`bg-gray-900 text-gray-100 p-4 rounded-b-lg overflow-x-auto text-sm font-mono m-0`}
-              >
+              <pre className="bg-gray-900 text-cyan-100 p-4 overflow-x-auto text-sm font-mono m-0">
                 <code className={`language-${language}`}>{cleanCode}</code>
               </pre>
-
-              {/* Copy feedback */}
-              {copiedCodeBlocks.has(blockId) && (
-                <div className="absolute top-2 right-12 bg-green-600 text-white px-2 py-1 rounded text-xs animate-pulse">
-                  Copied!
-                </div>
-              )}
             </div>
           );
         }
       }
 
+      // Process markdown and other formatting
       const formattedText = part
         // Bold text with ** **
         .replace(
@@ -166,7 +241,7 @@ const FormattedMessage = ({ content }: { content: string }) => {
         // Inline code with ` `
         .replace(
           /`(.*?)`/g,
-          '<code class="bg-gray-800 px-1.5 py-0.5 rounded text-sm font-mono text-cyan-300 border border-gray-700">$1</code>'
+          '<code class="bg-gray-950 px-1.5 py-0.5 rounded text-sm font-mono text-cyan-400 border border-gray-700">$1</code>'
         )
         // Headers (###, ##, #)
         .replace(
@@ -200,7 +275,7 @@ const FormattedMessage = ({ content }: { content: string }) => {
 
       return (
         <div
-          key={index}
+          key={`text-${index}`}
           className="whitespace-pre-wrap wrap-break-word text-gray-300 leading-relaxed"
           dangerouslySetInnerHTML={{ __html: formattedText }}
         />
@@ -265,7 +340,6 @@ export default function AIChatBotPage() {
         setTimeout(() => {
           document.title = `${res.data.AIAgent.name} - RAVX OS`;
         }, 100);
-        console.log(document.title);
       }
     } catch (error: any) {
       router.push("/arc");
@@ -308,7 +382,7 @@ export default function AIChatBotPage() {
 
       if (res.status === 200) {
         const aiMessage: Message = {
-          id: Date.now().toString(),
+          id: (Date.now() + 1).toString(),
           content: res.data.response,
           sender: "ai",
           timestamp: new Date(),
@@ -438,43 +512,39 @@ export default function AIChatBotPage() {
       <main className="w-full min-h-screen pt-24 px-2 sm:px-4">
         <AnimatePresence mode="wait">
           {activeTab === "chat" && (
-            <>
-              <ChatContainer
-                messages={messages}
-                inputMessage={inputMessage}
-                setInputMessage={setInputMessage}
-                handleSendMessage={handleSendMessage}
-                handleKeyPress={handleKeyPress}
-                isLoading={isLoading}
-                messagesEndRef={messagesEndRef}
-                AIAgentData={AIAgentData}
-                formatTimestamp={formatTimestamp}
-                FormattedMessage={FormattedMessage}
-              />
-            </>
+            <ChatContainer
+              messages={messages}
+              inputMessage={inputMessage}
+              setInputMessage={setInputMessage}
+              handleSendMessage={handleSendMessage}
+              handleKeyPress={handleKeyPress}
+              isLoading={isLoading}
+              messagesEndRef={messagesEndRef}
+              AIAgentData={AIAgentData}
+              formatTimestamp={formatTimestamp}
+              FormattedMessage={FormattedMessage}
+            />
           )}
 
           {activeTab === "mcp" && (
-            <>
-              <MCPAgent
-                isCreatingFile={isCreatingFile}
-                setIsCreatingFile={setIsCreatingFile}
-                newFileName={newFileName}
-                setNewFileName={setNewFileName}
-                createNewFile={createNewFile}
-                files={files}
-                selectedFile={selectedFile}
-                fileContent={fileContent}
-                setFileContent={setFileContent}
-                saveFile={saveFile}
-                deleteFile={deleteFile}
-                handleFileSelect={handleFileSelect}
-                fileContentRef={fileContentRef}
-              />
-            </>
+            <MCPAgent
+              isCreatingFile={isCreatingFile}
+              setIsCreatingFile={setIsCreatingFile}
+              newFileName={newFileName}
+              setNewFileName={setNewFileName}
+              createNewFile={createNewFile}
+              files={files}
+              selectedFile={selectedFile}
+              fileContent={fileContent}
+              setFileContent={setFileContent}
+              saveFile={saveFile}
+              deleteFile={deleteFile}
+              handleFileSelect={handleFileSelect}
+              fileContentRef={fileContentRef}
+            />
           )}
         </AnimatePresence>
-      </main>
+      </main> 
     </div>
   );
 }
