@@ -247,7 +247,7 @@ module.exports.AIAgent = async (req, res) => {
     });
 
     const Voice = await VoiceService({
-      voice: response,
+      text: response,
       aiVoice: AIAgent.voice,
     });
 

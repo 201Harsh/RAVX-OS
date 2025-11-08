@@ -26,24 +26,30 @@ async function saveWaveFile(
 async function main({ text, aiVoice }) {
   const ai = new GoogleGenAI({ apiKey: process.env.RAVXOS_AI_API_KEY });
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash-preview-tts",
-    contents: [{ parts: [{ text: text }] }],
-    config: {
-      responseModalities: ["AUDIO"],
-      speechConfig: {
-        voiceConfig: {
-          prebuiltVoiceConfig: { voiceName: aiVoice },
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash-preview-tts",
+      contents: [{ parts: [{ text: text }] }],
+      config: {
+        responseModalities: ["AUDIO"],
+        speechConfig: {
+          voiceConfig: {
+            prebuiltVoiceConfig: { voiceName: aiVoice },
+          },
         },
       },
-    },
-  });
+    });
 
-  const data = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-  const audioBuffer = Buffer.from(data, "base64");
+    const data =
+      response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+    const audioBuffer = Buffer.from(data, "base64");
 
-  const fileName = "out.wav";
-  await saveWaveFile(fileName, audioBuffer);
+    const fileName = "out.wav";
+    await saveWaveFile(fileName, audioBuffer);
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
 }
 
 module.exports = main;
