@@ -95,44 +95,50 @@ const ChatContainer = ({
                 </div>
               </motion.div>
             ))}
-           {isLoading && (
-  <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    className="flex justify-start"
-  >
-    <div className="max-w-[90%] sm:max-w-[80%] bg-gray-700/50 border border-gray-600/30 rounded-2xl p-4">
-      <div className="flex items-center space-x-3 mb-4">
-        <div className="w-6 h-6 rounded-full bg-cyan-600 flex items-center justify-center">
-          <span className="text-white text-xs font-semibold">
-            {AIAgentData.name?.charAt(0).toUpperCase()}
-          </span>
-        </div>
-        <span className="text-sm font-bold text-cyan-500">
-          {AIAgentData.name}
-        </span>
-      </div>
-      
-      {/* Simple text skeleton */}
-      <div className="space-y-3">
-        <div className="h-3 bg-gray-600 rounded-full animate-pulse"></div>
-        <div className="h-3 bg-gray-600 rounded-full w-5/6 animate-pulse"></div>
-        <div className="h-3 bg-gray-600 rounded-full w-4/6 animate-pulse"></div>
-      </div>
+            {isLoading && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex justify-start"
+              >
+                <div className="max-w-[90%] sm:max-w-[80%] bg-gray-700/50 border border-gray-600/30 rounded-2xl p-4">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-6 h-6 rounded-full bg-cyan-600 flex items-center justify-center">
+                      <span className="text-white text-xs font-semibold">
+                        {AIAgentData.name?.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <span className="text-sm font-bold text-cyan-500">
+                      {AIAgentData.name}
+                    </span>
+                  </div>
 
-      <div className="flex items-center space-x-2 mt-4">
-        <div className="flex space-x-1">
-          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
-          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
-        </div>
-        <p className="text-xs text-cyan-300 font-medium">
-          {AIAgentData.name} is thinking...
-        </p>
-      </div>
-    </div>
-  </motion.div>
-)}
+                  {/* Simple text skeleton */}
+                  <div className="space-y-3">
+                    <div className="h-3 bg-gray-600 rounded-full animate-pulse"></div>
+                    <div className="h-3 bg-gray-600 rounded-full w-5/6 animate-pulse"></div>
+                    <div className="h-3 bg-gray-600 rounded-full w-4/6 animate-pulse"></div>
+                  </div>
+
+                  <div className="flex items-center space-x-2 mt-4">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                      <div
+                        className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"
+                        style={{ animationDelay: "0.2s" }}
+                      ></div>
+                      <div
+                        className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"
+                        style={{ animationDelay: "0.4s" }}
+                      ></div>
+                    </div>
+                    <p className="text-xs text-cyan-300 font-medium">
+                      {AIAgentData.name} is thinking...
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
