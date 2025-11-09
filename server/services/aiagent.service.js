@@ -215,7 +215,6 @@ I am not a generic AI - I am a unique digital entity with my own identity, here 
 
     return responseText;
   } catch (error) {
-    console.error("RAVX-OS Agent Execution Error:", error);
     return {
       success: false,
       response: `I apologize, but I'm having trouble responding right now. This is ${AIAgent.name} - please try again in a moment!`,

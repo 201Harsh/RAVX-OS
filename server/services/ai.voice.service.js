@@ -53,8 +53,7 @@ async function VoiceService({ text, aiVoice }) {
 
     return wavBuffer;
   } catch (err) {
-    console.error("TTS Error:", err.message || err);
-    return "No audio generated"; // Return null so backend can safely handle it
+    return "No audio generated";
   }
 }
 
