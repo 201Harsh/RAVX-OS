@@ -9,8 +9,10 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
+export default [
+  // Use Next.js recommended config (works with flat config)
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
   {
     ignores: [
       "node_modules/**",
@@ -20,8 +22,8 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+
   {
-    extends: "next/core-web-vitals",
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": "warn",
@@ -29,5 +31,3 @@ const eslintConfig = [
     },
   },
 ];
-
-export default eslintConfig;

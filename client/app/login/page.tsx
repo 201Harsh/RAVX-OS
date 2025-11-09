@@ -13,7 +13,7 @@ import {
   FiShield,
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
-import { Bounce, Slide, toast } from "react-toastify";
+import { Slide, toast } from "react-toastify";
 import AxiosProxyInstance from "@/config/AxiosProxy";
 
 interface LoginForm {
@@ -393,25 +393,26 @@ const LoginPage: React.FC = () => {
 
       {/* Animated Background Elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-cyan-400/20 rounded-full"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
+        {typeof window !== "undefined" &&
+          [...Array(15)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-cyan-400/20 rounded-full"
+              initial={{
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+              }}
+            />
+          ))}
       </div>
     </div>
   );
