@@ -421,6 +421,7 @@ const RegisterPage: React.FC = () => {
         otp,
       });
 
+      localStorage.setItem("token", res.data.token);
       if (res.status === 200) {
         toast.success(res.data.message, {
           position: "top-right",
@@ -433,9 +434,8 @@ const RegisterPage: React.FC = () => {
           theme: "dark",
           transition: Slide,
         });
-        localStorage.setItem("token", res.data.token);
-        setShowOTP(false);
         router.push("/arc");
+        setShowOTP(false);
       }
     } catch (error: any) {
       const apiErrors = error.response?.data?.errors;
