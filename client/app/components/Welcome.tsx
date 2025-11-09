@@ -453,10 +453,10 @@ const RAVXOSLanding = () => {
                       </span>
                     </motion.div>
 
-                    <h3 className="text-4xl lg:text-5xl font-bold mb-2 bg-radial from-cyan-700 via-cyan-200 to-cyan-700 bg-clip-text text-transparent font-mono">
+                    <h3 className="text-4xl lg:text-5xl font-bold mb-2 bg-radial from-cyan-700 via-cyan-200 to-cyan-700 bg-clip-text text-transparent leading-16">
                       Forge Your Digital Companion
                     </h3>
-                    <p className="text-gray-300 text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed font-mono">
+                    <p className="text-gray-300 text-lg lg:text-xl max-w-3xl mx-auto">
                       Transform your vision into a fully functional AI avatar
                       with our intuitive creation pipeline. No code
                       required—just your imagination and our advanced neural
