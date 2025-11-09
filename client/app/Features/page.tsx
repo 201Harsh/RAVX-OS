@@ -42,7 +42,7 @@ interface Feature {
 
 const RAVXOSFeatures: React.FC = () => {
   const navigate = useRouter();
-  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [ActiveCategory, setActiveCategory] = useState<string>("all");
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
 
   const featureCategories: FeatureCategory[] = [
@@ -69,7 +69,7 @@ const RAVXOSFeatures: React.FC = () => {
         "Custom voice and appearance",
         "Real-time neural synthesis",
       ],
-      status: "active",
+      status: "Active",
       color: "cyan",
     },
     {
@@ -87,7 +87,7 @@ const RAVXOSFeatures: React.FC = () => {
         "Emotional intelligence growth",
         "Cross-session memory sync",
       ],
-      status: "active",
+      status: "Coming Soon",
       color: "purple",
     },
     {
@@ -105,7 +105,7 @@ const RAVXOSFeatures: React.FC = () => {
         "Real-time voice generation",
         "Custom voice profiles",
       ],
-      status: "active",
+      status: "Active",
       color: "cyan",
     },
     {
@@ -123,7 +123,7 @@ const RAVXOSFeatures: React.FC = () => {
         "Smart home control",
         "Custom API connections",
       ],
-      status: "active",
+      status: "Active",
       color: "green",
     },
     {
@@ -140,7 +140,7 @@ const RAVXOSFeatures: React.FC = () => {
         "Zero data retention",
         "Secure API endpoints",
       ],
-      status: "active",
+      status: "Active",
       color: "blue",
     },
     {
@@ -158,7 +158,7 @@ const RAVXOSFeatures: React.FC = () => {
         "Specialized skill sets",
         "Unified management",
       ],
-      status: "active",
+      status: "Active",
       color: "cyan",
     },
     {
@@ -175,7 +175,7 @@ const RAVXOSFeatures: React.FC = () => {
         "Preference learning",
         "Autonomous improvement",
       ],
-      status: "active",
+      status: "Active",
       color: "purple",
     },
     {
@@ -193,7 +193,7 @@ const RAVXOSFeatures: React.FC = () => {
         "Instant recovery",
         "Offline capability",
       ],
-      status: "active",
+      status: "Coming Soon",
       color: "green",
     },
     {
@@ -211,7 +211,7 @@ const RAVXOSFeatures: React.FC = () => {
         "Remixable AI architectures",
         "Creator monetization (future)",
       ],
-      status: "upcoming",
+      status: "Coming Soon",
       color: "pink",
     },
     {
@@ -228,15 +228,15 @@ const RAVXOSFeatures: React.FC = () => {
         "Smart failure recovery",
         "Human override system",
       ],
-      status: "active",
+      status: "Active",
       color: "yellow",
     },
   ];
 
   const filteredFeatures: Feature[] =
-    activeCategory === "all"
+    ActiveCategory === "all"
       ? features
-      : features.filter((feature) => feature.category === activeCategory);
+      : features.filter((feature) => feature.category === ActiveCategory);
 
   const getColorClass = (color: Feature["color"]): string => {
     const colors = {
@@ -314,8 +314,14 @@ const RAVXOSFeatures: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm border border-green-500/30">
-                  Active
+                <span
+                  className={`px-3 py-1 rounded-full text-sm border ${
+                    selectedFeature.status === "Active"
+                      ? "bg-green-500/20 text-green-400 border-green-500/30"
+                      : "bg-red-500/20 text-red-400 border-red-500/30"
+                  }`}
+                >
+                  {selectedFeature.status}
                 </span>
               </div>
 
@@ -362,7 +368,15 @@ const RAVXOSFeatures: React.FC = () => {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Status:</span>
-                        <span className="text-green-400">Active & Live</span>
+                        <span
+                          className={
+                            selectedFeature.status === "Active"
+                              ? "text-green-400"
+                              : "text-red-400"
+                          }
+                        >
+                          {selectedFeature.status}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Version:</span>
@@ -371,23 +385,27 @@ const RAVXOSFeatures: React.FC = () => {
                     </div>
                   </div>
 
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full bg-linear-to-r from-cyan-500 to-cyan-600 text-black font-semibold py-3 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300"
-                  >
-                    <FiPlay className="text-lg" />
-                    <span>Try This Feature</span>
-                  </motion.button>
+                  <Link href={"/register"}>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full bg-linear-to-r from-cyan-500 to-cyan-600 text-black font-semibold py-3 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300"
+                    >
+                      <FiPlay className="text-lg" />
+                      <span>Try This Feature</span>
+                    </motion.button>
+                  </Link>
 
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full border border-cyan-400/50 text-cyan-400 font-semibold py-3 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 backdrop-blur-sm"
-                  >
-                    <span>View Documentation</span>
-                    <FiChevronRight className="text-lg" />
-                  </motion.button>
+                  <Link href={"/docs"}>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full border border-cyan-400/50 text-cyan-400 font-semibold py-3 rounded-lg flex items-center justify-center mt-3 space-x-2 transition-all duration-300 backdrop-blur-sm"
+                    >
+                      <span>View Documentation</span>
+                      <FiChevronRight className="text-lg" />
+                    </motion.button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -455,7 +473,7 @@ const RAVXOSFeatures: React.FC = () => {
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
                 className={`flex items-center space-x-2 px-6 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300 ${
-                  activeCategory === category.id
+                  ActiveCategory === category.id
                     ? "border-cyan-400 bg-cyan-500/20 text-cyan-400 shadow-lg shadow-cyan-500/20"
                     : "border-gray-700 bg-gray-800/20 text-gray-400 hover:border-cyan-400/50 hover:text-cyan-400"
                 }`}
@@ -492,8 +510,14 @@ const RAVXOSFeatures: React.FC = () => {
                     >
                       {feature.icon}
                     </div>
-                    <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs border border-green-500/30">
-                      Active
+                    <span
+                      className={`px-2 py-1 rounded text-xs border ${
+                        feature.status === "Active"
+                          ? "bg-green-500/20 text-green-400 border-green-500/30"
+                          : "bg-red-500/20 text-red-400 border-red-500/30"
+                      }`}
+                    >
+                      {feature.status}
                     </span>
                   </div>
 
