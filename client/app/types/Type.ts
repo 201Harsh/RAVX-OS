@@ -9,6 +9,8 @@ export interface AIAgent {
   url: string;
   createdAt: Date;
   LastUsed: Date;
+  description: string;
+  gender: string;
 }
 
 export interface CreateAIAgentData {
