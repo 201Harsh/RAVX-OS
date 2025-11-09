@@ -99,7 +99,6 @@ const LoginPage: React.FC = () => {
         });
       }
     } catch (error: any) {
-      console.log(error);
       const apiErrors = error.response?.data?.error;
 
       if (Array.isArray(apiErrors)) {
