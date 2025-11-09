@@ -155,7 +155,7 @@ const RAVXOSLanding = () => {
               className="text-6xl md:text-8xl font-bold mb-8 tracking-tight"
             >
               <span
-                className="bg-clip-text text-transparent bg-linear-to-r from-cyan-500 via-cyan-400 to-cyan-500 
+                className="bg-clip-text text-transparent bg-radial from-cyan-700 via-cyan-200 to-cyan-700 
                    drop-shadow-[0_0_20px_rgba(34,211,238,0.9)] 
                    transition-all duration-300"
               >
