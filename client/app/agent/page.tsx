@@ -35,7 +35,6 @@ const HubPage: React.FC = () => {
         }
       }
     } catch (error: any) {
-      console.error("Error fetching AI agents:", error);
       toast.error(error.response?.data?.message || "Failed to load AI agents");
 
       // Update terminal with error

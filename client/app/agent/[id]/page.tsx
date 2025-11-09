@@ -402,7 +402,6 @@ export default function AIChatBotPage() {
           const audioUrl = URL.createObjectURL(blob);
           setAudioList((prev) => [...prev, { id: aiId, url: audioUrl }]);
         } catch (err) {
-          console.error("Error decoding audio:", err);
         }
 
         setMessages((prev) => [...prev, aiMessage]);

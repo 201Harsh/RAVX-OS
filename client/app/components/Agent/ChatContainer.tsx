@@ -34,7 +34,6 @@ const ChatContainer = ({
 
     const handleAudioEnd = () => setCurrentlyPlaying(null);
     const handleAudioError = () => {
-      console.error("Error playing audio");
       setCurrentlyPlaying(null);
     };
 
@@ -57,7 +56,6 @@ const ChatContainer = ({
 
     const audioItem = audioList?.find((item: any) => item.id === messageId);
     if (!audioItem) {
-      console.warn("No audio found for message:", messageId);
       return;
     }
 
@@ -76,7 +74,6 @@ const ChatContainer = ({
       .play()
       .then(() => setCurrentlyPlaying(messageId))
       .catch((err) => {
-        console.error("Error playing audio:", err);
         setCurrentlyPlaying(null);
       });
   };
