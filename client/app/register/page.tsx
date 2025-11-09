@@ -433,7 +433,9 @@ const RegisterPage: React.FC = () => {
           theme: "dark",
           transition: Slide,
         });
-        localStorage.setItem("token", res.data.token);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("token", res.data.token);
+        }
         router.push("/arc");
         setShowOTP(false);
       }
