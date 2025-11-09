@@ -111,15 +111,16 @@ When a user interacts with their avatar:
 
 ## 🧱 System Architecture
 
-| Layer              | Technologies Used                             |
-| ------------------ | --------------------------------------------- |
-| **Frontend**       | Next.js, Tailwind CSS, Framer Motion          |
-| **Backend**        | Next.js API Routes                            |
-| **Database**       | MongoDB                                       |
-| **AI Engine**      | Google Gemini API (Text + TTS)                |
-| **Agent Protocol** | Model Context Protocol (MCP)                  |
-| **Memory System**  | Contextual Chat + Task History                |
-| **UI/UX Theme**    | Neon-glow design with minimalistic aesthetics |
+| Layer              | Technologies Used                               |
+| ------------------ | ----------------------------------------------- |
+| **Frontend**       | Next.js 15+, Tailwind CSS, Framer Motion, Axios |
+| **Backend**        | Node.js, Express.js, Next.js API Routes         |
+| **Database**       | MongoDB (Atlas or Local)                        |
+| **AI Engine**      | Google Gemini API (Text + TTS)                  |
+| **Agent Protocol** | Model Context Protocol (MCP)                    |
+| **Memory System**  | Contextual Chat + Task History in MongoDB       |
+| **Deployment**     | Vercel (Frontend + Backend)                     |
+| **UI/UX Theme**    | Neon-glow design with minimalistic aesthetics   |
 
 ---
 
@@ -212,7 +213,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
 ## 📮 Contact
 
 - GitHub: [https://github.com/201Harsh](https://github.com/201Harsh)
-- Instagram: [https://www.instagram.com/harsh.devx/](https://www.instagram.com/201harshs/)
+- Instagram: [https://www.instagram.com/201harshs/](https://www.instagram.com/201harshs/)
 - Email: support@ravxai.tech
 
 ---
