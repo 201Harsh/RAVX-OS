@@ -219,7 +219,7 @@ const HubPage: React.FC = () => {
             </div>
             <div
               ref={terminalRef}
-              className="h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-cyan-500/30 scrollbar-track-transparent"
+              className="h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-cyan-500/30 scrollbar-track-transparent scrollbar-small"
             >
               {terminalOutput.map((line, index) => (
                 <div
