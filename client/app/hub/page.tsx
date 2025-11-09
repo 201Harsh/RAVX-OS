@@ -29,7 +29,7 @@ interface AIAvatar {
   demoPrompt: string;
 }
 
-const DemoPage: React.FC = () => {
+const HubPage: React.FC = () => {
   const router = useRouter();
   const [selectedAvatar, setSelectedAvatar] = useState<AIAvatar | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("all");
@@ -730,4 +730,4 @@ const DemoPage: React.FC = () => {
   );
 };
 
-export default DemoPage;
+export default HubPage;
