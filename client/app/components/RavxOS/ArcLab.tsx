@@ -11,7 +11,6 @@ import {
   FiCpu,
   FiLogOut,
 } from "react-icons/fi";
-import { useRouter } from "next/navigation";
 
 const ArcLab = ({
   arcLabs,

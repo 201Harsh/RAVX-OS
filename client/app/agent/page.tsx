@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiUser, FiStar, FiPlay, FiSearch, FiTerminal } from "react-icons/fi";
+import {  FiPlay, FiSearch, FiTerminal } from "react-icons/fi";
 import { useRouter } from "next/navigation";
-import { FaBrain, FaRobot, FaMemory, FaCode } from "react-icons/fa";
+import { FaRobot, FaCode } from "react-icons/fa";
 import { AIAgent } from "../types/Type";
 import { toast } from "react-toastify";
 import AxiosInstance from "@/config/Axios";

@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { FaRobot, FaCode, FaCopy, FaDownload } from "react-icons/fa";
@@ -401,8 +400,7 @@ export default function AIChatBotPage() {
           const blob = new Blob([byteArray], { type: "audio/wav" });
           const audioUrl = URL.createObjectURL(blob);
           setAudioList((prev) => [...prev, { id: aiId, url: audioUrl }]);
-        } catch (err) {
-        }
+        } catch (err) {}
 
         setMessages((prev) => [...prev, aiMessage]);
       }
