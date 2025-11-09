@@ -154,7 +154,11 @@ const RAVXOSLanding = () => {
               variants={itemVariants}
               className="text-6xl md:text-8xl font-bold mb-8 tracking-tight"
             >
-              <span className="bg-clip-text text-transparent bg-linear-to-r from-cyan-400 via-purple-400 to-cyan-400">
+              <span
+                className="bg-clip-text text-transparent bg-linear-to-r from-cyan-500 via-cyan-400 to-cyan-500 
+                   drop-shadow-[0_0_20px_rgba(34,211,238,0.9)] 
+                   transition-all duration-300"
+              >
                 RAVX OS
               </span>
             </motion.h1>
