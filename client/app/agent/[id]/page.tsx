@@ -320,6 +320,7 @@ export default function AIChatBotPage() {
   const [fileContent, setFileContent] = useState("");
   const [newFileName, setNewFileName] = useState("");
   const [isCreatingFile, setIsCreatingFile] = useState(false);
+  const [audioList, setAudioList] = useState<{ id: string; url: string }[]>([]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileContentRef = useRef<HTMLTextAreaElement>(null);
@@ -383,13 +384,28 @@ export default function AIChatBotPage() {
       });
 
       if (res.status === 200) {
-        console.log(res.data);
+        console.log(res.data)
+        const aiId = (Date.now() + 1).toString();
         const aiMessage: Message = {
-          id: (Date.now() + 1).toString(),
+          id: aiId,
           content: res.data.response,
           sender: "ai",
           timestamp: new Date(),
         };
+
+        // Convert base64 → binary → Blob → Object URL
+        try {
+          const audioData = res.data.audio;
+          const byteArray = Uint8Array.from(atob(audioData), (c) =>
+            c.charCodeAt(0)
+          );
+          const blob = new Blob([byteArray], { type: "audio/wav" });
+          const audioUrl = URL.createObjectURL(blob);
+          setAudioList((prev) => [...prev, { id: aiId, url: audioUrl }]);
+        } catch (err) {
+          console.error("Error decoding audio:", err);
+        }
+
         setMessages((prev) => [...prev, aiMessage]);
       }
     } catch (error: any) {
@@ -526,6 +542,7 @@ export default function AIChatBotPage() {
               AIAgentData={AIAgentData}
               formatTimestamp={formatTimestamp}
               FormattedMessage={FormattedMessage}
+              audioList={audioList}
             />
           )}
 

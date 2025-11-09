@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { FaPaperPlane, FaUser } from "react-icons/fa";
+import { FaPaperPlane, FaUser, FaStop, FaVolumeUp } from "react-icons/fa";
 
 const ChatContainer = ({
   messages,
@@ -13,9 +13,13 @@ const ChatContainer = ({
   AIAgentData,
   formatTimestamp,
   FormattedMessage,
+  audioList,
 }: any) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [currentlyPlaying, setCurrentlyPlaying] = useState<string | null>(null);
 
+  // Resize textarea automatically
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -23,6 +27,72 @@ const ChatContainer = ({
         textareaRef.current.scrollHeight + "px";
     }
   }, [inputMessage]);
+
+  // Initialize single audio player instance
+  useEffect(() => {
+    audioRef.current = new Audio();
+
+    const handleAudioEnd = () => setCurrentlyPlaying(null);
+    const handleAudioError = () => {
+      console.error("Error playing audio");
+      setCurrentlyPlaying(null);
+    };
+
+    audioRef.current.addEventListener("ended", handleAudioEnd);
+    audioRef.current.addEventListener("error", handleAudioError);
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.removeEventListener("ended", handleAudioEnd);
+        audioRef.current.removeEventListener("error", handleAudioError);
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  // Function to play or stop audio per message
+  const handlePlayAudio = (messageId: string) => {
+    if (!audioRef.current) return;
+
+    const audioItem = audioList?.find((item: any) => item.id === messageId);
+    if (!audioItem) {
+      console.warn("No audio found for message:", messageId);
+      return;
+    }
+
+    // If same message clicked again, toggle play/pause
+    if (currentlyPlaying === messageId) {
+      handleStopAudio();
+      return;
+    }
+
+    // Stop any playing audio
+    handleStopAudio();
+
+    // Play new one
+    audioRef.current.src = audioItem.url;
+    audioRef.current
+      .play()
+      .then(() => setCurrentlyPlaying(messageId))
+      .catch((err) => {
+        console.error("Error playing audio:", err);
+        setCurrentlyPlaying(null);
+      });
+  };
+
+  const handleStopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setCurrentlyPlaying(null);
+    }
+  };
+
+  // Stop audio when loading a new AI response
+  useEffect(() => {
+    if (isLoading) handleStopAudio();
+  }, [isLoading]);
 
   return (
     <>
@@ -36,7 +106,7 @@ const ChatContainer = ({
       >
         {/* Chat Container */}
         <div className="bg-black backdrop-blur-sm border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 h-[calc(100vh-100px)] flex flex-col w-full">
-          {/* Messages Area */}
+          {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 scrollbar-small">
             {messages.map((message: any) => (
               <motion.div
@@ -54,47 +124,93 @@ const ChatContainer = ({
                       : "bg-gray-950/50 border border-gray-600/30 text-gray-100"
                   }`}
                 >
-                  <div className="flex items-center space-x-2 mb-2">
-                    <div
-                      className={`w-28 h-5 sm:w-28 sm:h-7 rounded-full flex items-center justify-center ${
-                        message.sender === "user"
-                          ? "bg-transparent"
-                          : "bg-transparent"
-                      }`}
-                    >
+                  {/* Header (user or AI name) */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
                       {message.sender === "user" ? (
                         <div className="flex items-center space-x-2">
                           <FaUser className="text-xs text-white" />
                           <span className="text-sm whitespace-nowrap">You</span>
                         </div>
                       ) : (
-                        <>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-6 h-6 rounded-full bg-cyan-600 flex items-center justify-center">
-                              <span className="text-white text-xs font-semibold">
-                                {AIAgentData.name?.charAt(0).toUpperCase()}
-                              </span>
-                            </div>
-                            <span className="text-sm font-bold text-cyan-500 whitespace-nowrap">
-                              {AIAgentData.name}
+                        <div className="flex items-center space-x-2">
+                          <div className="w-6 h-6 rounded-full bg-cyan-600 flex items-center justify-center">
+                            <span className="text-white text-xs font-semibold">
+                              {AIAgentData.name?.charAt(0).toUpperCase()}
                             </span>
                           </div>
-                        </>
+                          <span className="text-sm font-bold text-cyan-500 whitespace-nowrap">
+                            {AIAgentData.name}
+                          </span>
+                        </div>
                       )}
                     </div>
+
+                    {/* Voice Button */}
+                    {message.sender !== "user" &&
+                      audioList?.some((a: any) => a.id === message.id) && (
+                        <motion.button
+                          onClick={() =>
+                            currentlyPlaying === message.id
+                              ? handleStopAudio()
+                              : handlePlayAudio(message.id)
+                          }
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 ${
+                            currentlyPlaying === message.id
+                              ? "bg-red-500 text-white"
+                              : "bg-cyan-500 text-white hover:bg-cyan-400"
+                          }`}
+                          title={
+                            currentlyPlaying === message.id
+                              ? "Stop audio"
+                              : "Play audio"
+                          }
+                        >
+                          {currentlyPlaying === message.id ? (
+                            <FaStop className="text-xs" />
+                          ) : (
+                            <FaVolumeUp className="text-xs" />
+                          )}
+                        </motion.button>
+                      )}
                   </div>
 
-                  {/* Use FormattedMessage component here */}
+                  {/* Message Content */}
                   <div className="text-sm leading-relaxed wrap-break-word mb-2">
                     <FormattedMessage content={message.content} />
                   </div>
 
-                  <span className="text-xs text-gray-400 absolute bottom-1 right-2">
-                    {formatTimestamp(message.timestamp)}
-                  </span>
+                  {/* Timestamp + Audio Indicator */}
+                  <div className="flex items-center justify-between mt-2">
+                    <span className="text-xs text-gray-400">
+                      {formatTimestamp(message.timestamp)}
+                    </span>
+
+                    {message.sender !== "user" &&
+                      currentlyPlaying === message.id && (
+                        <div className="flex items-center space-x-1">
+                          <div className="flex space-x-1">
+                            <div className="w-1 h-1 bg-cyan-400 rounded-full animate-pulse"></div>
+                            <div
+                              className="w-1 h-1 bg-cyan-400 rounded-full animate-pulse"
+                              style={{ animationDelay: "0.2s" }}
+                            ></div>
+                            <div
+                              className="w-1 h-1 bg-cyan-400 rounded-full animate-pulse"
+                              style={{ animationDelay: "0.4s" }}
+                            ></div>
+                          </div>
+                          <span className="text-xs text-cyan-400">Playing</span>
+                        </div>
+                      )}
+                  </div>
                 </div>
               </motion.div>
             ))}
+
+            {/* AI Typing Indicator */}
             {isLoading && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -113,7 +229,6 @@ const ChatContainer = ({
                     </span>
                   </div>
 
-                  {/* Simple text skeleton */}
                   <div className="space-y-3">
                     <div className="h-3 bg-gray-600 rounded-full animate-pulse"></div>
                     <div className="h-3 bg-gray-600 rounded-full w-5/6 animate-pulse"></div>
@@ -145,7 +260,6 @@ const ChatContainer = ({
           {/* Input Area */}
           <div className="p-3 sm:p-4">
             <div className="flex items-end space-x-3">
-              {/* Textarea Container */}
               <div className="flex-1">
                 <textarea
                   ref={textareaRef}
@@ -163,7 +277,7 @@ const ChatContainer = ({
                 />
               </div>
 
-              {/* Send Button - Fixed Height */}
+              {/* Send Button */}
               <motion.button
                 onClick={handleSendMessage}
                 whileHover={{ scale: 1.05 }}

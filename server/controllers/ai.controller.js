@@ -246,10 +246,12 @@ module.exports.AIAgent = async (req, res) => {
       user,
     });
 
-    const Voice = await VoiceService({
+    const voiceBuffer = await VoiceService({
       text: response,
       aiVoice: AIAgent.voice,
     });
+
+    const base64Audio = voiceBuffer.toString("base64");
 
     AIAgent.LastUsed = Date.now();
     await AIAgent.save();
@@ -257,7 +259,7 @@ module.exports.AIAgent = async (req, res) => {
     res.status(200).json({
       message: "AI-Agent Responded Successfully!",
       response,
-      Voice,
+      audio: base64Audio,
     });
   } catch (error) {
     console.log(error);
