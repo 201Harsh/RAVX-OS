@@ -371,9 +371,9 @@ const AboutRAVXOS: React.FC = () => {
                 We asked a bold question:
                 <br />
                 <span className="text-cyan-400 text-xl font-semibold">
-                  &quot;"What if anyone — even without a single line of code — could
+                  &quot;What if anyone — even without a single line of code — could
                   create their own intelligent AI agent, as easily as creating a
-                  playlist?"&quot;
+                  playlist?&quot;
                 </span>
               </p>
 
