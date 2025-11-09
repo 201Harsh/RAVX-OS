@@ -185,13 +185,13 @@ const RAVXOSLanding = () => {
                 </motion.button>
               </Link>
 
-              <Link href="/hub">
+              <Link href="/agent">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="border border-gray-600 hover:border-cyan-400 text-gray-300 hover:text-cyan-400 px-8 py-4 rounded-lg flex items-center space-x-2 transition-all duration-300 backdrop-blur-sm cursor-pointer"
                 >
-                  <span>Watch Demo</span>
+                  <span>View AI Agents</span>
                   <FiChevronRight className="text-lg" />
                 </motion.button>
               </Link>
@@ -420,7 +420,7 @@ const RAVXOSLanding = () => {
                 className="bg-gray-900/30 backdrop-blur-sm border border-cyan-400/20 rounded-3xl p-8 mb-16"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8}}
+                transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
               >
                 <div className="text-center mb-12">

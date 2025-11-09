@@ -19,7 +19,7 @@ const LandingHeader = ({ itemVariants }: LandingHeaderProps) => {
     },
     {
       name: "AI Hub",
-      link: "/hub",
+      link: "/agent",
     },
     {
       name: "Contact",
