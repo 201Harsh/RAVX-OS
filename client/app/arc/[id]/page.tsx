@@ -259,8 +259,8 @@ export default function RavxArcLab() {
       if (res.status === 200) {
         const LabData = res.data.ArcLab;
         setTimeout(() => {
-          document.title = `${LabData.name}- Arc Lab`;
-        }, 120);
+          document.title = `${LabData.name}- ARC LAB — Where AI Sparks to Life | Create Your Intelligent Avatar`;
+        }, 150);
       }
     } catch (error: any) {
       router.push("/arc");
