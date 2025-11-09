@@ -294,7 +294,7 @@ const RAVXOSLanding = () => {
                   transition={{ delay: 0.3 }}
                 >
                   Meet Your{" "}
-                  <span className="bg-linear-to-r from-cyan-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                  <span className="bg-radial from-cyan-700 via-cyan-200 to-cyan-800 bg-clip-text text-transparent">
                     Digital Self
                   </span>
                 </motion.h2>
@@ -340,7 +340,7 @@ const RAVXOSLanding = () => {
                     },
                     {
                       icon: (
-                        <FiMessageSquare className="text-purple-400 text-xl" />
+                        <FiMessageSquare className="text-pink-400 text-xl" />
                       ),
                       title: "Natural Voice Synthesis",
                       description:
@@ -419,72 +419,222 @@ const RAVXOSLanding = () => {
                 </motion.div>
               </div>
 
-              {/* Avatar Creation Process */}
+              {/* AI Avatar Creation Journey */}
               <motion.div
-                className="bg-gray-900/30 backdrop-blur-sm border border-cyan-400/20 rounded-3xl p-8 mb-16"
-                initial={{ opacity: 0, y: 30 }}
+                className="relative bg-linear-to-br from-gray-900/40 via-black to-cyan-900/20 backdrop-blur-xl border border-cyan-400/30 rounded-3xl p-8 lg:p-12 mb-16 overflow-hidden"
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
                 viewport={{ once: true }}
               >
-                <div className="text-center mb-12">
-                  <h3 className="text-3xl font-bold text-white mb-4">
-                    Create Your AI Avatar in 3 Steps
-                  </h3>
-                  <p className="text-gray-400 max-w-2xl mx-auto">
-                    Simple process, infinite possibilities
-                  </p>
-                </div>
+                {/* Background Elements */}
+                <div className="absolute top-0 left-0 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+                <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {[
-                    {
-                      step: "01",
-                      title: "Describe Personality",
-                      description:
-                        "Tell us about your desired AI companion - personality traits, communication style, and expertise areas",
-                      icon: "🎭",
-                    },
-                    {
-                      step: "02",
-                      title: "Customize Voice & Style",
-                      description:
-                        "Choose voice characteristics, tone, and interaction preferences for your unique AI avatar",
-                      icon: "🗣️",
-                    },
-                    {
-                      step: "03",
-                      title: "Activate & Interact",
-                      description:
-                        "Your AI avatar comes to life instantly, ready to learn, adapt, and grow with you",
-                      icon: "⚡",
-                    },
-                  ].map((step, index) => (
+                <div className="relative z-10">
+                  {/* Section Header */}
+                  <motion.div
+                    className="text-center mb-16"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    viewport={{ once: true }}
+                  >
                     <motion.div
-                      key={index}
-                      className="text-center p-6"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-400/30 rounded-full mb-6"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
                       viewport={{ once: true }}
                     >
-                      <motion.div
-                        className="w-20 h-20 bg-linear-to-br from-cyan-500 to-purple-500 rounded-full flex items-center justify-center text-2xl mb-4 mx-auto"
-                        whileHover={{ scale: 1.1, rotate: 360 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        {step.icon}
-                      </motion.div>
-                      <div className="text-cyan-400 text-sm font-semibold mb-2">
-                        {step.step}
-                      </div>
-                      <h4 className="text-xl font-semibold text-white mb-3">
-                        {step.title}
-                      </h4>
-                      <p className="text-gray-400 text-sm leading-relaxed">
-                        {step.description}
-                      </p>
+                      <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                      <span className="text-cyan-400 text-sm font-mono tracking-wider">
+                        AVATAR CREATION ENGINE
+                      </span>
                     </motion.div>
-                  ))}
+
+                    <h3 className="text-4xl lg:text-5xl font-bold mb-2 bg-radial from-cyan-700 via-cyan-200 to-cyan-700 bg-clip-text text-transparent font-mono">
+                      Forge Your Digital Companion
+                    </h3>
+                    <p className="text-gray-300 text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed font-mono">
+                      Transform your vision into a fully functional AI avatar
+                      with our intuitive creation pipeline. No code
+                      required—just your imagination and our advanced neural
+                      framework.
+                    </p>
+                  </motion.div>
+
+                  {/* Creation Process Timeline */}
+                  <div className="relative">
+                    {/* Connecting Line */}
+                    <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-linear-to-b from-cyan-500/20 via-cyan-400/40 to-cyan-500/20 transform -translate-x-1/2 hidden lg:block" />
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+                      {[
+                        {
+                          phase: "CONCEPTION",
+                          title: "Define Neural Identity",
+                          description:
+                            "Shape your avatar's core personality, expertise domains, and behavioral patterns through natural language. Our AI interprets your vision and constructs a unique digital consciousness.",
+                          features: [
+                            "Personality Matrix",
+                            "Knowledge Domains",
+                            "Communication Style",
+                            "Behavioral Patterns",
+                          ],
+                          icon: "🧠",
+                          gradient: "from-purple-500/20 to-cyan-500/20",
+                          delay: 0.2,
+                        },
+                        {
+                          phase: "CUSTOMIZATION",
+                          title: "Craft Interaction Layer",
+                          description:
+                            "Fine-tune voice characteristics, response patterns, and specialized capabilities. Integrate with tools and APIs to empower your avatar with real-world functionality.",
+                          features: [
+                            "Voice Synthesis",
+                            "MCP Integration",
+                            "API Endpoints",
+                            "Response Calibration",
+                          ],
+                          icon: "⚙️",
+                          gradient: "from-cyan-500/20 to-blue-500/20",
+                          delay: 0.4,
+                        },
+                        {
+                          phase: "ACTIVATION",
+                          title: "Deploy & Evolve",
+                          description:
+                            "Launch your AI avatar into the RAVX ecosystem. Watch as it learns from interactions, adapts to your needs, and grows more intelligent with every conversation.",
+                          features: [
+                            "Live Deployment",
+                            "Continuous Learning",
+                            "Memory Integration",
+                            "Performance Analytics",
+                          ],
+                          icon: "🚀",
+                          gradient: "from-blue-500/20 to-green-500/20",
+                          delay: 0.6,
+                        },
+                      ].map((step, index) => (
+                        <motion.div
+                          key={index}
+                          className={`relative bg-gray-900/40 backdrop-blur-md border border-cyan-400/20 rounded-2xl p-8 lg:p-8 hover:border-cyan-400/40 transition-all duration-500 group ${
+                            index === 1 ? "lg:transform lg:translate-y-8" : ""
+                          }`}
+                          initial={{ opacity: 0, y: 30 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          whileHover={{
+                            y: -5,
+                            borderColor: "rgba(34, 211, 238, 0.4)",
+                            boxShadow: "0 20px 40px rgba(34, 211, 238, 0.1)",
+                          }}
+                          transition={{ duration: 0.6, delay: step.delay }}
+                          viewport={{ once: true }}
+                        >
+                          {/* Step Indicator */}
+                          <div className="flex items-center justify-between mb-6">
+                            <motion.div
+                              className={`inline-flex items-center gap-2 px-3 py-1 bg-linear-to-r ${step.gradient} border border-cyan-400/30 rounded-full`}
+                              whileHover={{ scale: 1.05 }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              <span className="text-cyan-400 text-xs font-mono font-semibold tracking-wider">
+                                {step.phase}
+                              </span>
+                            </motion.div>
+
+                            <motion.div
+                              className="w-10 h-10 bg-linear-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-lg group-hover:scale-110 transition-transform duration-300"
+                              whileHover={{ rotate: 360 }}
+                              transition={{ duration: 0.6 }}
+                            >
+                              {step.icon}
+                            </motion.div>
+                          </div>
+
+                          {/* Content */}
+                          <h4 className="text-2xl font-bold text-white mb-4 group-hover:text-cyan-300 transition-colors duration-300">
+                            {step.title}
+                          </h4>
+
+                          <p className="text-gray-300 leading-relaxed mb-6">
+                            {step.description}
+                          </p>
+
+                          {/* Features List */}
+                          <div className="space-y-3">
+                            {step.features.map((feature, featureIndex) => (
+                              <motion.div
+                                key={featureIndex}
+                                className="flex items-center gap-3 text-sm"
+                                initial={{ opacity: 0, x: -10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{
+                                  duration: 0.4,
+                                  delay: step.delay + featureIndex * 0.1,
+                                }}
+                                viewport={{ once: true }}
+                              >
+                                <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full shrink-0" />
+                                <span className="text-cyan-100 font-medium">
+                                  {feature}
+                                </span>
+                              </motion.div>
+                            ))}
+                          </div>
+
+                          {/* Hover Glow Effect */}
+                          <div className="absolute inset-0 bg-linear-to-br from-cyan-500/5 to-blue-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTA Section */}
+                  <motion.div
+                    className="text-center mt-16 pt-8 border-t border-cyan-400/20"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.8 }}
+                    viewport={{ once: true }}
+                  >
+                    <p className="text-gray-300 mb-6 text-lg">
+                      Ready to bring your AI companion to life?
+                    </p>
+                    <Link href="/register">
+                      <motion.button
+                        className="group relative bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold py-4 px-8 rounded-2xl transition-all duration-300 overflow-hidden cursor-pointer"
+                        whileHover={{
+                          scale: 1.05,
+                          boxShadow: "0 10px 30px rgba(34, 211, 238, 0.3)",
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <span className="relative z-10">
+                          Start Creating Your Avatar
+                        </span>
+
+                        {/* Animated Background */}
+                        <motion.div
+                          className="absolute inset-0 bg-linear-to-r from-cyan-400 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          initial={false}
+                          whileHover={{ opacity: 1 }}
+                        />
+
+                        {/* Shimmer Effect */}
+                        <motion.div
+                          className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+                          whileHover={{ translateX: "100%" }}
+                        />
+                      </motion.button>
+                    </Link>
+
+                    <p className="text-cyan-400/60 text-sm mt-4 font-mono">
+                      No technical expertise required • Instant deployment •
+                      Continuous AI evolution
+                    </p>
+                  </motion.div>
                 </div>
               </motion.div>
 
@@ -497,7 +647,7 @@ const RAVXOSLanding = () => {
               >
                 <Link href="/register">
                   <motion.button
-                    className="bg-linear-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-400/40 text-lg cursor-pointer"
+                    className="bg-linear-to-tr from-cyan-400 via-cyan-800 to-cyan-200 hover:to-cyan-400 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-400/40 text-lg cursor-pointer"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -518,7 +668,7 @@ const RAVXOSLanding = () => {
           {/* CTA Section */}
           <motion.div variants={itemVariants} className="text-center mb-20">
             <motion.div
-              className="bg-linear-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 rounded-2xl p-12 backdrop-blur-sm"
+              className="bg-linear-to-r from-cyan-500/10 to-sky-300/10 border border-cyan-400/30 rounded-2xl p-12 backdrop-blur-sm"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.5 }}
             >
