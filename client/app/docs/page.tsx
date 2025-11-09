@@ -310,7 +310,7 @@ Nova: "I'd be happy to help you plan your week! Let's start by reviewing your cu
                   key={index}
                   className="flex items-center space-x-4 text-gray-300"
                 >
-                  <div className="w-3 h-3 bg-purple-400 rounded-full shrink-0"></div>
+                  <div className="w-3 h-3 bg-green-400 rounded-full shrink-0"></div>
                   <span>{flow}</span>
                 </div>
               ))}
@@ -453,7 +453,7 @@ Nova: "I'd be happy to help you plan your week! Let's start by reviewing your cu
                       >
                         {param.required ? "required" : "optional"}
                       </span>
-                      <code className="text-purple-400">{param.type}</code>
+                      <code className="text-cyan-400">{param.type}</code>
                       <span className="text-gray-400 flex-1">
                         {param.description}
                       </span>
@@ -722,7 +722,7 @@ Nova: "I'd be happy to help you plan your week! Let's start by reviewing your cu
         />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-8">
+      <div className="relative z-10 container mx-auto px-4 py-8 mt-4">
         {/* Header */}
         <motion.header
           initial={{ opacity: 0, y: -20 }}
@@ -738,7 +738,7 @@ Nova: "I'd be happy to help you plan your week! Let's start by reviewing your cu
           </button>
 
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
+            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-radial from-cyan-700 via-cyan-200 to-cyan-700">
               Documentation
             </h1>
             <p className="text-gray-400 mt-2">
