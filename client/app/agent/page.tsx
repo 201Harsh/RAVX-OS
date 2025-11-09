@@ -390,7 +390,7 @@ const HubPage: React.FC = () => {
                     disabled={isLoading}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-gray-600 disabled:to-gray-600 text-white font-medium py-2.5 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 text-sm font-mono"
+                    className="w-full bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-gray-600 disabled:to-gray-600 text-white font-medium py-2.5 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 text-sm font-mono cursor-pointer"
                   >
                     {isLoading ? (
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
