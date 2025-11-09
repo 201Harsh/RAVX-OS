@@ -70,7 +70,7 @@ export default function Dashboard({
   return (
     <div className="w-full">
       {/* Header */}
-      <div className="mb-6">
+      <div className="mb-6 flex flex-col items-center justify-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -79,7 +79,7 @@ export default function Dashboard({
         >
           AI AGENT MANAGEMENT
         </motion.div>
-        <h2 className="text-2xl md:text-3xl font-bold mb-2 bg-linear-to-r from-cyan-400 to-green-500 bg-clip-text text-transparent font-mono">
+        <h2 className="text-2xl md:text-3xl font-bold mb-2 bg-radial from-cyan-100 via-cyan-500 to-cyan-100 bg-clip-text text-transparent font-mono">
           AGENT DASHBOARD
         </h2>
         <p className="text-gray-400 text-sm font-mono">
@@ -318,7 +318,7 @@ export default function Dashboard({
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => onRunAgent(agent._id)}
-                    className="flex-1 bg-linear-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white py-2 px-3 rounded-lg transition-all duration-300 font-medium flex items-center justify-center space-x-2 text-xs font-mono"
+                    className="flex-1 bg-linear-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white py-2 px-3 rounded-lg transition-all duration-300 font-medium flex items-center justify-center space-x-2 text-xs font-mono"
                   >
                     <FaPlay className="text-xs" />
                     <span>USE</span>
@@ -331,7 +331,7 @@ export default function Dashboard({
                     }}
                     className={`flex-1 flex items-center justify-center gap-2 ${
                       isCopied
-                        ? "bg-green-600 hover:bg-green-500 text-white"
+                        ? "bg-cyan-600 hover:bg-cyan-500 text-white"
                         : "bg-gray-700 hover:bg-gray-600 text-cyan-300"
                     } py-2 px-3 rounded-lg transition-colors duration-300 font-medium text-xs font-mono border border-cyan-400/20`}
                   >

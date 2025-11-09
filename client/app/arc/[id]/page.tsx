@@ -703,7 +703,7 @@ export default function RavxArcLab() {
                     >
                       RAVX AI OPERATING SYSTEM
                     </motion.div>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-linear-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent font-mono">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-radial from-cyan-100 via-cyan-600 to-cyan-100 bg-clip-text text-transparent font-mono">
                       CREATE AI AGENTS
                     </h2>
                     <p className="text-gray-300 max-w-2xl mx-auto leading-relaxed text-sm">
@@ -776,7 +776,7 @@ export default function RavxArcLab() {
                       boxShadow: "0 0 30px rgba(34, 211, 238, 0.3)",
                     }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full max-w-md mx-auto block bg-linear-to-r from-cyan-600 via-blue-600 to-purple-600 hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-cyan-500/25 transition-all duration-300 group relative overflow-hidden cursor-pointer font-mono"
+                    className="w-full max-w-md mx-auto block bg-linear-to-r from-cyan-600 via-blue-600 to-sky-600 hover:from-cyan-500 hover:via-blue-500 hover:to-cyan-500 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-cyan-500/25 transition-all duration-300 group relative overflow-hidden cursor-pointer font-mono"
                   >
                     <div className="absolute inset-0 bg-linear-to-r from-cyan-400/0 via-blue-400/10 to-purple-400/0 group-hover:from-cyan-400/10 group-hover:via-blue-400/20 group-hover:to-purple-400/10 transition-all duration-500" />
                     <div className="relative z-10 flex items-center justify-center space-x-3 uppercase">
