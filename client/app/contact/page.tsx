@@ -266,7 +266,7 @@ const ContactPage: React.FC = () => {
           className="flex items-center justify-center mb-12 mt-28"
         >
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl text-center font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
+            <h1 className="text-4xl md:text-5xl text-center font-bold bg-clip-text text-transparent bg-radial from-cyan-700 via-cyan-200 to-cyan-700">
               Get In Touch
             </h1>
             <p className="text-gray-400 mt-2">

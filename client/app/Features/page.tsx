@@ -450,17 +450,16 @@ const RAVXOSFeatures: React.FC = () => {
         <div className="relative z-10 container mx-auto px-4 py-8">
           {/* Header */}
           <LandingHeader itemVariants={itemVariants} />
-          <motion.header className="flex items-center justify-center mb-12 mt-24">
+          <motion.div className="flex items-center justify-center mb-12 mt-24">
             <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
+              <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-radial from-cyan-500 via-cyan-200 to-cyan-500">
                 RAVX OS Features
               </h1>
               <p className="text-gray-400 mt-2">
                 Discover the power behind your personal AI operating system
               </p>
             </div>
-            <div className="w-24"></div> {/* Spacer for balance */}
-          </motion.header>
+          </motion.div>
 
           {/* Category Filter */}
           <motion.div
