@@ -148,7 +148,7 @@ const AboutRAVXOS: React.FC = () => {
           }}
         />
         <motion.div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl"
           animate={{
             x: [0, -100, 0],
             y: [0, 50, 0],
@@ -381,7 +381,7 @@ const AboutRAVXOS: React.FC = () => {
               <p className="text-gray-300 text-lg leading-relaxed">
                 Not a chatbot. Not a template.
                 <br />
-                <span className="text-purple-400 font-semibold">
+                <span className="text-pink-400 font-semibold">
                   A living personal AI being — with memory, voice, identity, and
                   the power to execute real tasks.
                 </span>
@@ -390,7 +390,7 @@ const AboutRAVXOS: React.FC = () => {
 
             <motion.div
               variants={itemVariants}
-              className="bg-linear-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 rounded-2xl p-8"
+              className="bg-linear-to-r from-cyan-500/10 to-sky-500/10 border border-cyan-400/30 rounded-2xl p-8"
             >
               <h3 className="text-2xl font-bold mb-6 text-cyan-400">
                 Our Vision
@@ -474,7 +474,7 @@ const AboutRAVXOS: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          <div className="bg-linear-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 rounded-2xl p-12 backdrop-blur-sm max-w-4xl mx-auto">
+          <div className="bg-linear-to-r from-cyan-500/10 to-sky-500/10 border border-cyan-400/30 rounded-2xl p-12 backdrop-blur-sm max-w-4xl mx-auto">
             <motion.div
               animate={{
                 scale: [1, 1.02, 1],
