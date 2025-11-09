@@ -1,8 +1,8 @@
 # 🧬 RAVX OS — The Personal AI Avatar Operating System
 
-[![MIT License](https://img.shields.io/badge/License-MIT-pink.svg)](https://choosealicense.com/licenses/mit/)
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://choosealicense.com/licenses/mit/)
 
-![RAVX OS Banner](https://img.shields.io/badge/💫_RAVX_OS-Personal_AI_Avatar_Platform-EC4899?style=for-the-badge&logo=sparkles&logoColor=white)
+![RAVX OS Banner](https://img.shields.io/badge/💫_RAVX_OS-Personal_AI_Avatar_Platform-00BFFF?style=for-the-badge&logo=sparkles&logoColor=white)
 
 **RAVX OS** is a futuristic **AI Avatar Operating System** that empowers non-coders to **create, customize, and command intelligent AI agents** capable of generating content, executing real-world tasks, and evolving through memory — all without writing a single line of code.
 
