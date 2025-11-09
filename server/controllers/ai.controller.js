@@ -262,7 +262,6 @@ module.exports.AIAgent = async (req, res) => {
       audio: base64Audio,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: error.message,
     });
@@ -313,7 +312,6 @@ module.exports.GetAllAIAgent = async (req, res) => {
       AIAgent,
     });
   } catch (error) {
-    console.log(error)
     res.status(500).json({
       message: error.message,
     });
