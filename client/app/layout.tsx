@@ -23,8 +23,6 @@ export const metadata: Metadata = {
   creator: "Harsh Pandey",
   publisher: "RAVX OS",
   applicationName: "RAVX OS",
-  themeColor: "#000000",
-  viewport: "width=device-width, initial-scale=1",
   metadataBase: new URL("https://ravx-os.vercel.app"),
   openGraph: {
     title: "RAVX OS — Create Your Own AI Avatar",
