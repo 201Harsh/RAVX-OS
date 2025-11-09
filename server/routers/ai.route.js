@@ -35,6 +35,8 @@ router.get("/get/:id", AuthMiddleware.authUser, AIAgentController.GetAIAgent);
 
 router.get("/get/agent/:id", AIAgentController.GetAIAgentBYId);
 
+router.get('/get/all/agents', AIAgentController.GetAllAIAgent)
+
 router.delete(
   "/del/:id",
   AuthMiddleware.authUser,

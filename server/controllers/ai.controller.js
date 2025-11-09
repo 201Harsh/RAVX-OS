@@ -303,3 +303,19 @@ module.exports.GetAIAgentBYId = async (req, res) => {
     });
   }
 };
+
+module.exports.GetAllAIAgent = async (req, res) => {
+  try {
+    const AIAgent = await AIAgentModel.find();
+
+    res.status(200).json({
+      message: "AI-Agent Fetched Successfully!.",
+      AIAgent,
+    });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
