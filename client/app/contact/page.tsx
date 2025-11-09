@@ -260,22 +260,20 @@ const ContactPage: React.FC = () => {
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
         <LandingHeader itemVariants={itemVariants} />
-        <motion.header
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between mb-12"
+          className="flex items-center justify-center mb-12 mt-28"
         >
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
+            <h1 className="text-4xl md:text-5xl text-center font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-400">
               Get In Touch
             </h1>
             <p className="text-gray-400 mt-2">
               We're here to help you build amazing AI experiences
             </p>
           </div>
-
-          <div className="w-24"></div>
-        </motion.header>
+        </motion.div>
 
         <div className="max-w-7xl mx-auto">
           {/* Support Options Grid */}
