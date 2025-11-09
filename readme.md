@@ -214,7 +214,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
 
 - GitHub: [https://github.com/201Harsh](https://github.com/201Harsh)
 - Instagram: [https://www.instagram.com/201harshs/](https://www.instagram.com/201harshs/)
-- Email: support@ravxai.tech
+- Email: gamerpandeyharsh@gmail.com
 
 ---
 
