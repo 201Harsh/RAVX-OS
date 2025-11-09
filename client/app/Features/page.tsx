@@ -16,7 +16,6 @@ import {
   FiGlobe,
   FiActivity,
 } from "react-icons/fi";
-import { useRouter } from "next/navigation";
 import { FaBrain } from "react-icons/fa";
 import LandingHeader from "../components/Welcome Page/LandingHeader";
 import Link from "next/link";
@@ -41,7 +40,6 @@ interface Feature {
 }
 
 const RAVXOSFeatures: React.FC = () => {
-  const navigate = useRouter();
   const [ActiveCategory, setActiveCategory] = useState<string>("all");
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
 

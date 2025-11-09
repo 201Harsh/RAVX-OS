@@ -2,7 +2,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import {
-  FiUser,
   FiCode,
   FiCpu,
   FiZap,
@@ -175,7 +174,7 @@ const AboutRAVXOS: React.FC = () => {
               About RAVX OS
             </h1>
             <p className="text-gray-400 mt-2">
-              The Story Behind the World's First Personal AI Operating System
+              The Story Behind the World&apos;s First Personal AI Operating System
             </p>
           </div>
           <div className="w-24"></div>
@@ -372,9 +371,9 @@ const AboutRAVXOS: React.FC = () => {
                 We asked a bold question:
                 <br />
                 <span className="text-cyan-400 text-xl font-semibold">
-                  "What if anyone — even without a single line of code — could
+                  &quot;"What if anyone — even without a single line of code — could
                   create their own intelligent AI agent, as easily as creating a
-                  playlist?"
+                  playlist?"&quot;
                 </span>
               </p>
 
@@ -528,7 +527,7 @@ const AboutRAVXOS: React.FC = () => {
             {new Date().getFullYear()}
           </p>
           <p className="text-gray-400 text-sm mt-2">
-            The future of personal AI is here, and it's for everyone.
+            The future of personal AI is here, and it&apos;s for everyone.
           </p>
         </motion.footer>
       </div>
