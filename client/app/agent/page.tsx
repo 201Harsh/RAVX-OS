@@ -107,10 +107,12 @@ const HubPage: React.FC = () => {
 
   const getColorClass = (category: string) => {
     const colors: { [key: string]: string } = {
-      assistant: "from-cyan-500 to-cyan-600",
-      creative: "from-purple-500 to-purple-600",
-      professional: "from-blue-500 to-blue-600",
-      companion: "from-green-500 to-green-600",
+      ultimateAio: "from-cyan-500 to-cyan-600",
+      techAssistant: "from-purple-500 to-purple-600",
+      emotionalCompanion: "from-pink-500 to-pink-600",
+      friendlyHelper: "from-yellow-500 to-yellow-600",
+      professionalMentor: "from-green-500 to-green-600",
+      researchAnalyst: "from-red-500 to-red-600",
       default: "from-cyan-500 to-cyan-600",
     };
     return colors[category] || colors.default;
@@ -118,10 +120,8 @@ const HubPage: React.FC = () => {
 
   const getComplexityColor = (complexity: any) => {
     const colors: { [key: string]: string } = {
-      simple: "bg-green-500/20 text-green-400 border-green-500/30",
-      moderate: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-      advanced: "bg-red-500/20 text-red-400 border-red-500/30",
-      default: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
+      male: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
+      female: "bg-pink-500/20 text-pink-400 border-pink-500/30",
     };
     return colors[complexity] || colors.default;
   };
@@ -342,17 +342,17 @@ const HubPage: React.FC = () => {
                         <h3 className="text-lg font-semibold text-white group-hover:text-cyan-300 transition-colors font-mono">
                           {avatar.name || "Unnamed Agent"}
                         </h3>
-                        <p className="text-gray-400 text-xs font-mono">
+                        <p className="text-gray-400 text-xs font-mono  capitalize">
                           {avatar.personality || "AI Assistant"}
                         </p>
                       </div>
                     </div>
                     <span
-                      className={`px-2 py-1 rounded text-xs border font-mono ${getComplexityColor(
+                      className={`px-2 py-1 rounded text-xs border font-mono uppercase ${getComplexityColor(
                         avatar.gender || "male"
                       )}`}
                     >
-                      {avatar.additionalSkills || "moderate"}
+                      {avatar.gender || "male"}
                     </span>
                   </div>
 
@@ -369,7 +369,7 @@ const HubPage: React.FC = () => {
                           key={index}
                           className="px-2 py-1 bg-cyan-500/10 rounded text-xs text-cyan-300 border border-cyan-400/20 font-mono"
                         >
-                          {capability.slice(0,100)}...
+                          {capability.slice(0, 100)}...
                         </span>
                       ))}
                     {avatar.skills && avatar.skills.length > 2 && (

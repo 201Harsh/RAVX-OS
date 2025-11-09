@@ -32,7 +32,7 @@ interface CreateAIAgentModalProps {
 
 const personalityOptions = [
   {
-    id: "ultimate-aio",
+    id: "ultimateAio",
     label: "🧠 AIO Intelligence",
     description:
       "A fully balanced agent that can assist in creativity, logic, productivity, learning, and emotional support.",
@@ -41,14 +41,14 @@ const personalityOptions = [
     badge: "🔥 MOST POPULAR",
   },
   {
-    id: "research-analyst",
+    id: "researchAnalyst",
     label: "🔍 Research Analyst",
     description:
       "Finds, summarizes, compares, and analyzes information for you.",
     icon: <FaSearch className="text-blue-300" />,
   },
   {
-    id: "tech-assistant",
+    id: "techAssistant",
     label: "💻 Tech Assistant",
     description:
       "Good at coding help, debugging, and breaking down technical concepts.",
@@ -57,7 +57,7 @@ const personalityOptions = [
     badge: "📌 Code-Focused",
   },
   {
-    id: "emotional-companion",
+    id: "emotionalCompanion",
     label: "💖 Emotional Companion",
     description:
       "Listens, supports emotionally, responds with empathy and care.",
@@ -66,14 +66,14 @@ const personalityOptions = [
     badge: "💘 Love-Centric",
   },
   {
-    id: "friendly-helper",
+    id: "friendlyHelper",
     label: "🤝 Friendly Helper",
     description:
       "Warm, approachable, and supportive — feels like a helpful friend.",
     icon: <FaSmile className="text-yellow-400" />,
   },
   {
-    id: "professional-mentor",
+    id: "professionalMentor",
     label: "🎓 Professional Mentor",
     description:
       "Guides users with wisdom, structured advice, and long-term growth focus.",
