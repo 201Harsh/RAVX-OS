@@ -72,8 +72,6 @@ export default function SystemSettings() {
   };
 
   const saveSettings = () => {
-    // Save settings logic here
-    console.log("Settings saved:", settings);
   };
 
   const resetSettings = () => {

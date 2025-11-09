@@ -114,7 +114,6 @@ const RavxArc = () => {
         });
       }
     } catch (error: any) {
-      console.log(error);
       toast.error(error.response?.data?.message, {
         position: "top-right",
         autoClose: 5000,
@@ -202,7 +201,6 @@ const RavxArc = () => {
         setUserData(res.data.User);
       }
     } catch (error: any) {
-      console.log(error);
       toast.error(error.response?.data?.message, {
         position: "top-right",
         autoClose: 5000,

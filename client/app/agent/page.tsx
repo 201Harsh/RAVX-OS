@@ -24,7 +24,6 @@ const HubPage: React.FC = () => {
 
       if (res.status === 200) {
         const AIAgents = res.data.AIAgent;
-        console.log("Fetched AI Agents:", AIAgents); // Debug log
         setaiAvatars(AIAgents);
 
         // Update terminal with actual agent count

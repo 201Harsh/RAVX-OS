@@ -182,7 +182,6 @@ export default function RavxArcLab() {
         handleGetAIAgents();
       }
     } catch (error: any) {
-      console.log(error);
       toast.error(error.response?.data?.message, {
         position: "top-right",
         autoClose: 5000,
@@ -239,7 +238,6 @@ export default function RavxArcLab() {
         setUserData(res.data.User);
       }
     } catch (error: any) {
-      console.log(error);
       toast.error(error.response?.data?.message, {
         position: "top-right",
         autoClose: 5000,

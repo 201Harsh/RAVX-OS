@@ -325,7 +325,6 @@ const RegisterPage: React.FC = () => {
       const res = await AxiosInstance.post("/users/register", formData);
 
       if (res.status === 201) {
-        console.log(res.data);
         setShowOTP(true);
         setErrors({});
       } else if (res.status === 202) {
@@ -423,7 +422,6 @@ const RegisterPage: React.FC = () => {
       });
 
       if (res.status === 200) {
-        console.log(res);
         toast.success(res.data.message, {
           position: "top-right",
           autoClose: 4000,
@@ -440,7 +438,6 @@ const RegisterPage: React.FC = () => {
         router.push("/arc");
       }
     } catch (error: any) {
-      console.log(error);
       const apiErrors = error.response?.data?.errors;
       const main_errors = error.response.data.error;
 
