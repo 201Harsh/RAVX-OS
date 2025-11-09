@@ -227,3 +227,11 @@ Create AI companions that **think, remember, and evolve** —
 and shape your own **digital future** inside the **RAVX ARC Lab**.
 
 > 💫 _Welcome to RAVX — where AI sparks to life._
+
+---
+
+## 💖 Creator’s Signature
+
+**Made with ❤️, imagination, and pure code energy — by [Harsh Pandey](https://github.com/201Harsh)**
+
+> _Every line of RAVX OS is a spark of innovation — where AI meets emotion._
