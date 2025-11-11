@@ -147,31 +147,31 @@ const skillOptions = [
 
 const maleVoices = [
   {
-    id: "Charon",
+    id: "charon",
     label: "🎙️ Titan Voice",
     description:
       "Deep, commanding, and powerful — perfect for confident narration or leadership tones.",
   },
   {
-    id: "Umbriel",
+    id: "umbriel",
     label: "👨‍🏫 Gentle Guide",
     description:
       "Warm, wise, and encouraging — ideal for mentorship, storytelling, or tutorials.",
   },
   {
-    id: "Alnilom",
+    id: "alnilam",
     label: "💻 Logic Core",
     description:
       "Analytical and composed — suited for tech explainers, data insights, or calm delivery.",
   },
   {
-    id: "Sadachbia",
+    id: "sadachbia",
     label: "⚡ Energetic Pulse",
     description:
       "Fast-paced and lively — brings enthusiasm and clarity to interactive conversations.",
   },
   {
-    id: "Schedar",
+    id: "schedar",
     label: "🧠 Balanced Thinker",
     description:
       "Smooth and steady — maintains a professional yet natural tone for general contexts.",
@@ -180,31 +180,31 @@ const maleVoices = [
 
 const femaleVoices = [
   {
-    id: "Zephyr",
+    id: "zephyr",
     label: "💎 Crystal Aura",
     description:
       "Elegant, calm, and articulate — ideal for narrations, assistants, or guided meditations.",
   },
   {
-    id: "Aoede",
+    id: "aoede",
     label: "🤖 Digital Muse",
     description:
       "Crisp, efficient, and modern — perfect for AI assistants and productivity voices.",
   },
   {
-    id: "Gacrux",
+    id: "gacrux",
     label: "🌟 Creative Spark",
     description:
       "Vibrant and expressive — great for storytelling, creative intros, or dynamic content.",
   },
   {
-    id: "Sulafat",
+    id: "sulafat",
     label: "🔥 Bold Performer",
     description:
       "Confident and energetic — adds charisma and flair to entertainment or promo content.",
   },
   {
-    id: "Leda",
+    id: "leda",
     label: "🌸 Soft Vision",
     description:
       "Gentle, kind, and soothing — perfect for emotional tone, empathy, or calm narration.",
