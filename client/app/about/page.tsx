@@ -197,12 +197,12 @@ const AboutRAVXOS: React.FC = () => {
                   <div className="relative">
                     <div className="w-52 h-52 rounded-full flex items-center justify-center overflow-hidden">
                       <Image
+                        priority
                         className="h-full w-full object-cover rounded-full"
-                        src="/img/dev2.jpg"
+                        src="/img/Dev2.jpg"
                         alt="Harsh Pandey Developer"
                         width={100}
                         height={100}
-                        layout="responsive"
                       />
                     </div>
                     <motion.div

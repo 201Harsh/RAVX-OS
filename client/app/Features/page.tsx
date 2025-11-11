@@ -575,7 +575,7 @@ const RAVXOSFeatures: React.FC = () => {
                     whileTap={{ scale: 0.95 }}
                     className="border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 font-semibold px-8 py-4 rounded-lg transition-all duration-300 cursor-pointer"
                   >
-                    Schedule Demo
+                    Schedule Demos
                   </motion.button>
                 </Link>
               </div>
