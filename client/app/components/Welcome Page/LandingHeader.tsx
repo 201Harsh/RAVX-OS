@@ -15,7 +15,7 @@ const LandingHeader = ({ itemVariants }: LandingHeaderProps) => {
   const NavLinks = [
     {
       name: "Features",
-      link: "/features",
+      link: "/Features",
     },
     {
       name: "AI Hub",
