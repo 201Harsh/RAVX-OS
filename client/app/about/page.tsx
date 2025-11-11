@@ -201,8 +201,6 @@ const AboutRAVXOS: React.FC = () => {
                         className="h-full w-full object-cover rounded-full"
                         width={100}
                         height={100}
-                        priority
-                        quality={100}
                         layout="responsive"
                       />
                     </div>

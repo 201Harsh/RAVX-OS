@@ -272,144 +272,146 @@ const RAVXOSFeatures: React.FC = () => {
 
   if (selectedFeature) {
     return (
-      <div className="min-h-screen bg-black text-white relative overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
-        </div>
+      <>
+        <div className="min-h-screen bg-black text-white relative overflow-hidden">
+          {/* Background */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+          </div>
 
-        <div className="relative z-10 container mx-auto px-4 py-8">
-          <motion.button
-            onClick={() => setSelectedFeature(null)}
-            className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 mb-8 transition-colors"
-          >
-            <FiArrowLeft className="text-lg" />
-            <span>Back to Features</span>
-          </motion.button>
+          <div className="relative z-10 container mx-auto px-4 py-8">
+            <motion.button
+              onClick={() => setSelectedFeature(null)}
+              className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 mb-8 transition-colors"
+            >
+              <FiArrowLeft className="text-lg" />
+              <span>Back to Features</span>
+            </motion.button>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8">
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center space-x-4">
-                  <div
-                    className={`p-3 rounded-xl bg-linear-to-r ${getColorClass(
-                      selectedFeature.color
-                    )}`}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="max-w-4xl mx-auto"
+            >
+              <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8">
+                <div className="flex items-start justify-between mb-6">
+                  <div className="flex items-center space-x-4">
+                    <div
+                      className={`p-3 rounded-xl bg-linear-to-r ${getColorClass(
+                        selectedFeature.color
+                      )}`}
+                    >
+                      {selectedFeature.icon}
+                    </div>
+                    <div>
+                      <h1 className="text-3xl font-bold text-white">
+                        {selectedFeature.title}
+                      </h1>
+                      <p className="text-cyan-400 mt-1">
+                        {selectedFeature.description}
+                      </p>
+                    </div>
+                  </div>
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm border ${
+                      selectedFeature.status === "Active"
+                        ? "bg-green-500/20 text-green-400 border-green-500/30"
+                        : "bg-red-500/20 text-red-400 border-red-500/30"
+                    }`}
                   >
-                    {selectedFeature.icon}
-                  </div>
-                  <div>
-                    <h1 className="text-3xl font-bold text-white">
-                      {selectedFeature.title}
-                    </h1>
-                    <p className="text-cyan-400 mt-1">
-                      {selectedFeature.description}
-                    </p>
-                  </div>
+                    {selectedFeature.status}
+                  </span>
                 </div>
-                <span
-                  className={`px-3 py-1 rounded-full text-sm border ${
-                    selectedFeature.status === "Active"
-                      ? "bg-green-500/20 text-green-400 border-green-500/30"
-                      : "bg-red-500/20 text-red-400 border-red-500/30"
-                  }`}
-                >
-                  {selectedFeature.status}
-                </span>
-              </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2">
-                  <h3 className="text-xl font-semibold mb-4 text-cyan-400">
-                    Overview
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed">
-                    {selectedFeature.longDescription}
-                  </p>
-
-                  <div className="mt-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="lg:col-span-2">
                     <h3 className="text-xl font-semibold mb-4 text-cyan-400">
-                      Key Highlights
+                      Overview
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {selectedFeature.highlights.map((highlight, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          className="flex items-center space-x-3 text-gray-300"
-                        >
-                          <div className="w-2 h-2 bg-cyan-400 rounded-full" />
-                          <span>{highlight}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                    <p className="text-gray-300 leading-relaxed">
+                      {selectedFeature.longDescription}
+                    </p>
 
-                <div className="space-y-6">
-                  <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-                    <h4 className="font-semibold mb-4 text-cyan-400">
-                      Technical Specs
-                    </h4>
-                    <div className="space-y-3 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Category:</span>
-                        <span className="text-white capitalize">
-                          {selectedFeature.category}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Status:</span>
-                        <span
-                          className={
-                            selectedFeature.status === "Active"
-                              ? "text-green-400"
-                              : "text-red-400"
-                          }
-                        >
-                          {selectedFeature.status}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Version:</span>
-                        <span className="text-white">v2.1.4</span>
+                    <div className="mt-8">
+                      <h3 className="text-xl font-semibold mb-4 text-cyan-400">
+                        Key Highlights
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {selectedFeature.highlights.map((highlight, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="flex items-center space-x-3 text-gray-300"
+                          >
+                            <div className="w-2 h-2 bg-cyan-400 rounded-full" />
+                            <span>{highlight}</span>
+                          </motion.div>
+                        ))}
                       </div>
                     </div>
                   </div>
 
-                  <Link href={"/register"}>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full bg-linear-to-r from-cyan-500 to-cyan-600 text-black font-semibold py-3 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300"
-                    >
-                      <FiPlay className="text-lg" />
-                      <span>Try This Feature</span>
-                    </motion.button>
-                  </Link>
+                  <div className="space-y-6">
+                    <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                      <h4 className="font-semibold mb-4 text-cyan-400">
+                        Technical Specs
+                      </h4>
+                      <div className="space-y-3 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Category -</span>
+                          <span className="text-white capitalize">
+                            {selectedFeature.category}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Status -</span>
+                          <span
+                            className={
+                              selectedFeature.status === "Active"
+                                ? "text-green-400"
+                                : "text-red-400"
+                            }
+                          >
+                            {selectedFeature.status}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Version -</span>
+                          <span className="text-white">v2.1.4</span>
+                        </div>
+                      </div>
+                    </div>
 
-                  <Link href={"/docs"}>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full border border-cyan-400/50 text-cyan-400 font-semibold py-3 rounded-lg flex items-center justify-center mt-3 space-x-2 transition-all duration-300 backdrop-blur-sm"
-                    >
-                      <span>View Documentation</span>
-                      <FiChevronRight className="text-lg" />
-                    </motion.button>
-                  </Link>
+                    <Link href={"/register"}>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full bg-linear-to-r from-cyan-500 to-cyan-600 text-black font-semibold py-3 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300"
+                      >
+                        <FiPlay className="text-lg" />
+                        <span>Try This Feature</span>
+                      </motion.button>
+                    </Link>
+
+                    <Link href={"/docs"}>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full border border-cyan-400/50 text-cyan-400 font-semibold py-3 rounded-lg flex items-center justify-center mt-3 space-x-2 transition-all duration-300 backdrop-blur-sm"
+                      >
+                        <span>View Documentation</span>
+                        <FiChevronRight className="text-lg" />
+                      </motion.button>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
