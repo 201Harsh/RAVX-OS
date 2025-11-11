@@ -203,6 +203,7 @@ const AboutRAVXOS: React.FC = () => {
                         alt="Harsh Pandey Developer"
                         width={100}
                         height={100}
+                        unoptimized
                       />
                     </div>
                     <motion.div
