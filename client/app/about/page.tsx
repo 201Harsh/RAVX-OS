@@ -174,7 +174,8 @@ const AboutRAVXOS: React.FC = () => {
               About RAVX OS
             </h1>
             <p className="text-gray-400 mt-2">
-              The Story Behind the World&apos;s First Personal AI Operating System
+              The Story Behind the World&apos;s First Personal AI Operating
+              System
             </p>
           </div>
           <div className="w-24"></div>
@@ -196,9 +197,9 @@ const AboutRAVXOS: React.FC = () => {
                   <div className="relative">
                     <div className="w-52 h-52 rounded-full flex items-center justify-center overflow-hidden">
                       <Image
-                        src="/img/dev2.jpg"
-                        alt="Harsh Pandey"
                         className="h-full w-full object-cover rounded-full"
+                        src="/img/dev2.jpg"
+                        alt="Harsh Pandey Developer"
                         width={100}
                         height={100}
                         layout="responsive"
@@ -369,9 +370,9 @@ const AboutRAVXOS: React.FC = () => {
                 We asked a bold question:
                 <br />
                 <span className="text-cyan-400 text-xl font-semibold">
-                  &quot;What if anyone — even without a single line of code — could
-                  create their own intelligent AI agent, as easily as creating a
-                  playlist?&quot;
+                  &quot;What if anyone — even without a single line of code —
+                  could create their own intelligent AI agent, as easily as
+                  creating a playlist?&quot;
                 </span>
               </p>
 
