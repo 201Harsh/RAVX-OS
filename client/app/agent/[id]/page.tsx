@@ -32,12 +32,10 @@ interface FileItem {
 const StickyCodeHeader = ({
   language,
   code,
-  blockId,
   isSticky,
 }: {
   language: string;
   code: string;
-  blockId: string;
   isSticky: boolean;
 }) => {
   const [copied, setCopied] = useState(false);
@@ -52,8 +50,8 @@ const StickyCodeHeader = ({
       });
 
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      toast.error("Failed to copy code", {
+    } catch (err: any) {
+      toast.error(err, {
         position: "top-right",
         autoClose: 2000,
       });
@@ -185,7 +183,6 @@ const FormattedMessage = ({ content }: { content: string }) => {
             <StickyCodeHeader
               language={language}
               code={cleanCode}
-              blockId={blockId}
               isSticky={isSticky}
             />
           </div>

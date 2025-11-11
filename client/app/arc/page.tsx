@@ -6,7 +6,6 @@ import ArcLab from "../components/RavxOS/ArcLab";
 import Createlab from "../components/RavxOS/Createlab";
 import AxiosInstance from "@/config/Axios";
 import { useRouter } from "next/navigation";
-import AxiosProxyInstance from "@/config/AxiosProxy";
 
 interface UserDataType {
   id: string;

@@ -199,13 +199,13 @@ export default function RavxArcLab() {
   const handleRunAgent = async (agentId: string) => {
     try {
       window.open(`/agent/${agentId}`, "_blank");
-      toast.success("Agent is running");
+      toast.success(`Agent is running`);
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to run agent");
     }
   };
 
-  const handleEditAgent = (agentId: string, updatedData: Partial<AIAgent>) => {
+  const handleEditAgent = () => {
     toast.info("Edit agent feature coming soon!");
   };
 

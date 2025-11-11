@@ -73,7 +73,7 @@ const ChatContainer = ({
     audioRef.current
       .play()
       .then(() => setCurrentlyPlaying(messageId))
-      .catch((err) => {
+      .catch(() => {
         setCurrentlyPlaying(null);
       });
   };
