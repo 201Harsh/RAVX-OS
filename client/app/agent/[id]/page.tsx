@@ -287,14 +287,7 @@ const TextContent = ({ content }: { content: string }) => {
 export default function AIChatBotPage() {
   const [AIAgentData, setAIAgentData] = useState<AIAgent[]>([]);
   const [activeTab, setActiveTab] = useState<"chat" | "mcp">("chat");
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      content: "Your AI Agent is Ready Made by RAVX-OS.",
-      sender: "ai",
-      timestamp: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState<FileItem[]>([
@@ -317,6 +310,7 @@ export default function AIChatBotPage() {
   const [newFileName, setNewFileName] = useState("");
   const [isCreatingFile, setIsCreatingFile] = useState(false);
   const [audioList, setAudioList] = useState<{ id: string; url: string }[]>([]);
+  const [SessionID, setSessionID] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileContentRef = useRef<HTMLTextAreaElement>(null);
@@ -358,6 +352,9 @@ export default function AIChatBotPage() {
 
   useEffect(() => {
     GetAIAgentById();
+    const RandomSessionID =
+      Math.floor(1000 + Math.random() * 9000).toString() + "-RAVXOS_SESSION_ID";
+    setSessionID(RandomSessionID);
   }, []);
 
   const handleSendMessage = async () => {
@@ -377,6 +374,8 @@ export default function AIChatBotPage() {
     try {
       const res = await AxiosInstance.post(`/ai/agent/${id}`, {
         prompt: inputMessage,
+        ChatHistory: messages,
+        SessionID,
       });
 
       if (res.status === 200) {
@@ -397,22 +396,24 @@ export default function AIChatBotPage() {
           const blob = new Blob([byteArray], { type: "audio/wav" });
           const audioUrl = URL.createObjectURL(blob);
           setAudioList((prev) => [...prev, { id: aiId, url: audioUrl }]);
-        } catch (err) {}
+        } catch (err: any) {
+          toast.error(err);
+        }
 
         setMessages((prev) => [...prev, aiMessage]);
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Flip,
-      });
+      console.log(error);
+      const ErrorMessage: Message = {
+        id: Date.now().toString(),
+        content:
+          error.response?.data?.message ||
+          "RAVX OS System Failed AI Error-00911",
+        sender: "ai",
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, ErrorMessage]);
     } finally {
       setIsLoading(false);
     }

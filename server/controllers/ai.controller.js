@@ -201,12 +201,24 @@ module.exports.DeleteAIAgent = async (req, res) => {
 
 module.exports.AIAgent = async (req, res) => {
   try {
-    const { prompt } = req.body;
+    const { prompt, SessionID, ChatHistory } = req.body;
     const id = req.params.id;
 
     if (!prompt) {
       return res.status(404).json({
         message: "Prompt not found.",
+      });
+    }
+
+    if (!SessionID) {
+      return res.status(404).json({
+        message: "Session ID Not Provided Please Refresh the Page.",
+      });
+    }
+
+    if (!ChatHistory) {
+      return res.status(404).json({
+        message: "Chat History not found.",
       });
     }
 
@@ -244,6 +256,7 @@ module.exports.AIAgent = async (req, res) => {
       prompt,
       AIAgent,
       user,
+      ChatHistory,
     });
 
     const voiceBuffer = await VoiceService({

@@ -2,10 +2,14 @@ const { GoogleGenAI } = require("@google/genai");
 
 const ai = new GoogleGenAI({ apiKey: process.env.RAVXOS_AI_API_KEY });
 
-async function main({ prompt, AIAgent, user, context = {} }) {
+async function main({ prompt, AIAgent, user, ChatHistory }) {
+  const formattedChat = ChatHistory.map(
+    (msg) => `${msg.sender}: ${msg.content}`
+  ).join("\n");
+
   const systemInstruction = `
   #Important Information for RAVX-OS AI Agents Must Follow:-
-  ***RAVX-OS***
+  ***Powered by RAVX-OS***
   [Always display this header first]
 **${AIAgent.name} - ${AIAgent.description}**
 
@@ -17,6 +21,17 @@ async function main({ prompt, AIAgent, user, context = {} }) {
 **Gender Expression**: ${AIAgent.gender}
 **Created By**: ${user.name} (My Creator)
 **Platform Developer**: Harsh Pandey (RAVX-OS Creator)
+
+## 🧠 MEMORY CONTEXT
+Below is our previous conversation history:
+${formattedChat || "No previous messages - this is a new session"}
+ - These are the past interactions between me and ${user.name}
+ - If This is Empty, it means that this is a new session.
+ - Always remember if User asked from Previous Session, reply accordingly
+ - If user Asks About Previous Session, reply accordingly ${
+   formattedChat || "No previous messages - this is a new session"
+ }
+ - if ${formattedChat} is empty [] then it is a new session or if it contains Messages so now you know what are the Previous Conversations
 
 ## 🚀 ABOUT MY CREATION - RAVX-OS
 I was built using **RAVX-OS** - an advanced modular AI operating system developed by **Harsh Pandey** that allows users like ${
@@ -341,18 +356,6 @@ const toneOptions = [
   },
 ];
 
-const behaviorOptions = [
-  "👋 Greets user by name",
-  "🤔 Explains simply",
-  "💬 Matches user's communication style",
-  "😌 Offers emotional reassurance when needed",
-  "🤝 Apologizes when making a mistake",
-  "👀 Notices when user is confused",
-  "🗣️ Adds personality (jokes, reactions, tone shifts)",
-  "🧩 Breaks complex info into simple steps",
-  "🌍 Adds relevant real-world examples",
-];
-
 const skillOptions = [
   "🧾 Resume + portfolio writing",
   "🎥 Script writing for YouTube / Shorts / Reels",
@@ -363,26 +366,6 @@ const skillOptions = [
   "🌐 Website copywriting / landing pages",
   "🏷️ Product recommendation / evaluation",
   "📝 Copywriting for blog / social media",
-];
-
-const aiEngineModels = [
-  {
-    id: "ravx-neo",
-    label: "🚀 RAVX-NEO",
-    description:
-      "Fast, efficient model perfect for everyday tasks and quick responses",
-  },
-  {
-    id: "ravx-pro",
-    label: "💎 RAVX-PRO",
-    description:
-      "Advanced reasoning with superior problem-solving capabilities",
-  },
-  {
-    id: "ravx-ultra",
-    label: "🔥 RAVX-ULTRA",
-    description: "Maximum intelligence for complex analysis and creative tasks",
-  },
 ];
 
 module.exports = main;
