@@ -1,8 +1,9 @@
 import express from 'express';
-import { RunMCPServer } from "../controllers/mcp.controller.js";
+import { GetMCPTOols, RunMCPServer } from "../controllers/mcp.controller.js";
 
-const MCPROuter = express.Router();
+const MCPRouter = express.Router();
 
-MCPROuter.post("/mcp", RunMCPServer )
+MCPRouter.post("/run", RunMCPServer )
+MCPRouter.get('/tools', GetMCPTOols);
 
-export default MCPROuter;
+export default MCPRouter;

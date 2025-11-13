@@ -1,7 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import express from "express";
-import { z } from "zod";
 import cors from "cors";
 import MCPROuter from "./routes/mcp.route.js";
 import { echoTool } from "./tools/tools.js";
@@ -9,7 +7,7 @@ import { echoTool } from "./tools/tools.js";
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use("/agent", MCPROuter);
+app.use("/mcp", MCPROuter);
 
 // Create the MCP server once (can be reused across requests)
 export const server = new McpServer({
@@ -24,5 +22,28 @@ server.registerTool({
   outputSchema: echoTool.outputSchema,
   execute: echoTool.implementation,
 });
+
+server._registeredTools = [];
+
+server.registerTool = function ({
+  name,
+  description,
+  inputSchema,
+  outputSchema,
+  execute,
+}) {
+  this._registeredTools.push({ name, description, inputSchema, outputSchema });
+  McpServer.prototype.registerTool.call(
+    this,
+    name,
+    { description, inputSchema, outputSchema },
+    execute
+  );
+};
+
+// Add a helper to get all registered tools
+server.getRegisteredTools = function () {
+  return this._registeredTools;
+};
 
 export default app;
