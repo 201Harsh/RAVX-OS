@@ -3,13 +3,15 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import express from "express";
 import { z } from "zod";
 import cors from "cors";
+import MCPROuter from "./routes/mcp.route.js";
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use("/agent", MCPROuter);
 
 // Create the MCP server once (can be reused across requests)
-const server = new McpServer({
+export const server = new McpServer({
   name: "example-server",
   version: "1.0.0",
 });
@@ -31,40 +33,5 @@ server.registerTool(
     };
   }
 );
-
-app.post("/mcp", async (req, res) => {
-  // In stateless mode, create a new transport for each request to prevent
-  // request ID collisions. Different clients may use the same JSON-RPC request IDs,
-  // which would cause responses to be routed to the wrong HTTP connections if
-  // the transport state is shared.
-
-  try {
-    const transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: undefined,
-      enableJsonResponse: true,
-    });
-
-    res.on("close", () => {
-      transport.close();
-    });
-
-    await server.connect(transport);
-    await transport.handleRequest(req, res, req.body);
-  } catch (error) {
-    console.error("Error handling MCP request:", error);
-    if (!res.headersSent) {
-      res.status(500).json({
-        jsonrpc: "2.0",
-        error: {
-          code: -32603,
-          message: "Internal server error",
-        },
-        id: null,
-      });
-    }
-  }
-});
-
-
 
 export default app;
