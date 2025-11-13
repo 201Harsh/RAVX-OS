@@ -4,6 +4,7 @@ import express from "express";
 import { z } from "zod";
 import cors from "cors";
 import MCPROuter from "./routes/mcp.route.js";
+import { echoTool } from "./tools/tools.js";
 
 const app = express();
 app.use(express.json());
@@ -16,22 +17,12 @@ export const server = new McpServer({
   version: "1.0.0",
 });
 
-// Set up your tools, resources, and prompts
-server.registerTool(
-  "echo",
-  {
-    title: "Echo Tool",
-    description: "Echoes back the provided message",
-    inputSchema: { message: z.string() },
-    outputSchema: { echo: z.string() },
-  },
-  async ({ message }) => {
-    const output = { echo: `Tool echo: ${message}` };
-    return {
-      content: [{ type: "text", text: JSON.stringify(output) }],
-      structuredContent: output,
-    };
-  }
-);
+server.registerTool({
+  name: echoTool.name,
+  description: echoTool.description,
+  inputSchema: echoTool.inputSchema,
+  outputSchema: echoTool.outputSchema,
+  execute: echoTool.implementation,
+});
 
 export default app;
