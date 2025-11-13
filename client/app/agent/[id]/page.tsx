@@ -6,7 +6,6 @@ import { Flip, toast } from "react-toastify";
 import AxiosInstance from "@/config/Axios";
 import { useParams, useRouter } from "next/navigation";
 import ChatContainer from "@/app/components/Agent/ChatContainer";
-import MCPAgent from "@/app/components/Agent/MCPAgent";
 import { AIAgent } from "@/app/types/Type";
 
 // React Syntax Highlighter imports
@@ -143,7 +142,7 @@ const FormattedMessage = ({ content }: { content: string }) => {
     if (!text || typeof text !== "string") {
       return (
         <div className="text-red-500 italic font-bold">
-          Error formatting content. Please try again.
+          Sorry! Unfortunately, the RAVX-OS AI System Failed. Please try again.
         </div>
       );
     }
@@ -290,7 +289,6 @@ const TextContent = ({ content }: { content: string }) => {
 
 export default function AIChatBotPage() {
   const [AIAgentData, setAIAgentData] = useState<AIAgent[]>([]);
-  const [activeTab, setActiveTab] = useState<"chat" | "mcp">("chat");
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -495,71 +493,23 @@ export default function AIChatBotPage() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-900 to-black text-white">
-      {/* Top Navigation */}
-      <nav className="w-full backdrop-blur-lg p-4 shadow-2xl z-50 border-b border-gray-700/50 fixed">
-        <div className="flex space-x-2 w-full justify-between max-w-4xl mx-auto">
-          <button
-            onClick={() => setActiveTab("chat")}
-            className={`w-1/2 cursor-pointer flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 ${
-              activeTab === "chat"
-                ? "bg-cyan-600 text-white shadow-lg shadow-cyan-600/25"
-                : "text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700/50"
-            }`}
-          >
-            <FaRobot className="text-lg" />
-            <span className="font-medium">AI Chat</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("mcp")}
-            className={`w-1/2 cursor-pointer flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 ${
-              activeTab === "mcp"
-                ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25"
-                : "text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700/50"
-            }`}
-          >
-            <FaCode className="text-lg" />
-            <span className="font-medium">MCP Agent</span>
-          </button>
-        </div>
-      </nav>
-
+    <div className="min-h-screen bg-linear-to-br from-black via-black/40 to-cyan-400/10 text-white">
       {/* Main Content */}
-      <main className="w-full min-h-screen pt-24 px-2 sm:px-4">
+      <main className="w-full min-h-screen">
         <AnimatePresence mode="wait">
-          {activeTab === "chat" && (
-            <ChatContainer
-              messages={messages}
-              inputMessage={inputMessage}
-              setInputMessage={setInputMessage}
-              handleSendMessage={handleSendMessage}
-              handleKeyPress={handleKeyPress}
-              isLoading={isLoading}
-              messagesEndRef={messagesEndRef}
-              AIAgentData={AIAgentData}
-              formatTimestamp={formatTimestamp}
-              FormattedMessage={FormattedMessage}
-              audioList={audioList}
-            />
-          )}
-
-          {activeTab === "mcp" && (
-            <MCPAgent
-              isCreatingFile={isCreatingFile}
-              setIsCreatingFile={setIsCreatingFile}
-              newFileName={newFileName}
-              setNewFileName={setNewFileName}
-              createNewFile={createNewFile}
-              files={files}
-              selectedFile={selectedFile}
-              fileContent={fileContent}
-              setFileContent={setFileContent}
-              saveFile={saveFile}
-              deleteFile={deleteFile}
-              handleFileSelect={handleFileSelect}
-              fileContentRef={fileContentRef}
-            />
-          )}
+          <ChatContainer
+            messages={messages}
+            inputMessage={inputMessage}
+            setInputMessage={setInputMessage}
+            handleSendMessage={handleSendMessage}
+            handleKeyPress={handleKeyPress}
+            isLoading={isLoading}
+            messagesEndRef={messagesEndRef}
+            AIAgentData={AIAgentData}
+            formatTimestamp={formatTimestamp}
+            FormattedMessage={FormattedMessage}
+            audioList={audioList}
+          />
         </AnimatePresence>
       </main>
     </div>

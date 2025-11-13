@@ -1,6 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { FaPaperPlane, FaUser, FaStop, FaVolumeUp } from "react-icons/fa";
+import {
+  FaPaperPlane,
+  FaUser,
+  FaStop,
+  FaVolumeUp,
+  FaCopy,
+  FaRedo,
+  FaCheck,
+  FaRobot,
+} from "react-icons/fa";
+import { SiOpenai, SiGoogle, SiHuggingface } from "react-icons/si";
 
 const ChatContainer = ({
   messages,
@@ -18,6 +28,7 @@ const ChatContainer = ({
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentlyPlaying, setCurrentlyPlaying] = useState<string | null>(null);
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
 
   // Resize textarea automatically
   useEffect(() => {
@@ -86,10 +97,25 @@ const ChatContainer = ({
     }
   };
 
+  // Copy message to clipboard
+  const handleCopyMessage = async (content: string, messageId: string) => {
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopiedMessageId(messageId);
+      setTimeout(() => setCopiedMessageId(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
+
   // Stop audio when loading a new AI response
   useEffect(() => {
     if (isLoading) handleStopAudio();
   }, [isLoading]);
+
+  const getAIModelIcon = () => {
+    return <FaRobot className="text-cyan-400" />;
+  };
 
   return (
     <>
@@ -102,7 +128,7 @@ const ChatContainer = ({
         className="w-full max-w-full"
       >
         {/* Chat Container */}
-        <div className="bg-black backdrop-blur-sm border-2 border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 h-[calc(100vh-100px)] flex flex-col w-full">
+        <div className="backdrop-blur-xs shadow-2xl shadow-cyan-500/20 h-screen flex flex-col w-full">
           {messages.length === 0 ? (
             <div className="flex-1 flex flex-col justify-center items-center space-y-6 p-8">
               {/* Animated AI Avatar Container */}
@@ -237,7 +263,7 @@ const ChatContainer = ({
           ) : (
             <>
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 scrollbar-small">
+              <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 scrollbar-small">
                 {messages.map((message: any) => (
                   <motion.div
                     key={message.id}
@@ -250,97 +276,161 @@ const ChatContainer = ({
                     }`}
                   >
                     <div
-                      className={`max-w-[90%] sm:max-w-[80%] rounded-2xl p-3 sm:p-4 relative ${
+                      className={`max-w-full sm:max-w-full rounded-2xl p-4 sm:p-5 relative group ${
                         message.sender === "user"
                           ? "bg-cyan-600/20 border border-cyan-500/30 text-white"
-                          : "bg-gray-950/50 border border-gray-600/30 text-gray-100"
+                          : "bg-gray-800/50 border border-gray-600/30 text-white"
                       }`}
                     >
                       {/* Header (user or AI name) */}
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center space-x-2">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center space-x-3">
                           {message.sender === "user" ? (
                             <div className="flex items-center space-x-2">
-                              <FaUser className="text-xs text-white" />
-                              <span className="text-sm whitespace-nowrap">
+                              <div className="w-8 h-8 rounded-full bg-linear-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+                                <FaUser className="text-xs text-white" />
+                              </div>
+                              <span className="text-sm font-semibold whitespace-nowrap">
                                 You
                               </span>
                             </div>
                           ) : (
-                            <div className="flex items-center space-x-2">
-                              <div className="w-6 h-6 rounded-full bg-cyan-600 flex items-center justify-center">
-                                <span className="text-white text-xs font-semibold">
-                                  {AIAgentData.name?.charAt(0).toUpperCase()}
-                                </span>
+                            <div className="flex items-center space-x-3">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-8 h-8 rounded-full bg-linear-to-br from-cyan-600 to-blue-600 flex items-center justify-center">
+                                  {getAIModelIcon()}
+                                </div>
+                                <div>
+                                  <span className="text-sm font-bold text-cyan-400 whitespace-nowrap">
+                                    {AIAgentData.name}
+                                  </span>
+                                  <div className="flex items-center space-x-2 mt-1">
+                                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                    <span className="text-xs text-gray-400">
+                                      Online
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
-                              <span className="text-sm font-bold text-cyan-500 whitespace-nowrap">
-                                {AIAgentData.name}
-                              </span>
                             </div>
                           )}
                         </div>
 
-                        {/* Voice Button */}
-                        {message.sender !== "user" &&
-                          audioList?.some((a: any) => a.id === message.id) && (
+                        {/* Message Actions - Always visible for AI messages, hover for user */}
+                        <div className={`flex items-center space-x-1 ml-4`}>
+                          {/* Copy Button */}
+                          <motion.button
+                            onClick={() =>
+                              handleCopyMessage(message.content, message.id)
+                            }
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                              copiedMessageId === message.id
+                                ? "text-green-400 bg-green-400/10"
+                                : "text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/10"
+                            }`}
+                            title="Copy response"
+                          >
+                            {copiedMessageId === message.id ? (
+                              <FaCheck className="text-xs" />
+                            ) : (
+                              <FaCopy className="text-xs" />
+                            )}
+                          </motion.button>
+
+                          {/* Retry Button - Only for user messages */}
+                          {message.sender === "user" && (
                             <motion.button
                               onClick={() =>
-                                currentlyPlaying === message.id
-                                  ? handleStopAudio()
-                                  : handlePlayAudio(message.id)
+                                handleSendMessage && handleSendMessage(message)
                               }
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
-                              className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 ${
-                                currentlyPlaying === message.id
-                                  ? "bg-red-500 text-white"
-                                  : "bg-cyan-500 text-white hover:bg-cyan-400"
-                              }`}
-                              title={
-                                currentlyPlaying === message.id
-                                  ? "Stop audio"
-                                  : "Play audio"
-                              }
+                              className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-yellow-400 hover:bg-yellow-400/10 transition-all duration-200"
+                              title="Regenerate response"
                             >
-                              {currentlyPlaying === message.id ? (
-                                <FaStop className="text-xs" />
-                              ) : (
-                                <FaVolumeUp className="text-xs" />
-                              )}
+                              <FaRedo className="text-xs" />
                             </motion.button>
                           )}
+
+                          {/* Voice Button - Only for AI messages */}
+                          {message.sender !== "user" &&
+                            audioList?.some(
+                              (a: any) => a.id === message.id
+                            ) && (
+                              <motion.button
+                                onClick={() =>
+                                  currentlyPlaying === message.id
+                                    ? handleStopAudio()
+                                    : handlePlayAudio(message.id)
+                                }
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                                  currentlyPlaying === message.id
+                                    ? "text-red-400 bg-red-400/10"
+                                    : "text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/10"
+                                }`}
+                                title={
+                                  currentlyPlaying === message.id
+                                    ? "Stop audio"
+                                    : "Play audio"
+                                }
+                              >
+                                {currentlyPlaying === message.id ? (
+                                  <FaStop className="text-xs" />
+                                ) : (
+                                  <FaVolumeUp className="text-xs" />
+                                )}
+                              </motion.button>
+                            )}
+                        </div>
                       </div>
 
                       {/* Message Content */}
-                      <div className="text-sm leading-relaxed wrap-break-word mb-2">
+                      <div className="text-sm leading-relaxed wrap-break-word mb-3">
                         <FormattedMessage content={message.content} />
                       </div>
 
-                      {/* Timestamp + Audio Indicator */}
-                      <div className="flex items-center justify-between mt-2">
+                      {/* Timestamp + Status */}
+                      <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-600/30">
                         <span className="text-xs text-gray-400">
                           {formatTimestamp(message.timestamp)}
                         </span>
 
+                        {/* Audio Playing Indicator */}
                         {message.sender !== "user" &&
                           currentlyPlaying === message.id && (
-                            <div className="flex items-center space-x-1">
+                            <div className="flex items-center space-x-2">
                               <div className="flex space-x-1">
-                                <div className="w-1 h-1 bg-cyan-400 rounded-full animate-pulse"></div>
+                                <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse"></div>
                                 <div
-                                  className="w-1 h-1 bg-cyan-400 rounded-full animate-pulse"
+                                  className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse"
                                   style={{ animationDelay: "0.2s" }}
                                 ></div>
                                 <div
-                                  className="w-1 h-1 bg-cyan-400 rounded-full animate-pulse"
+                                  className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse"
                                   style={{ animationDelay: "0.4s" }}
                                 ></div>
                               </div>
-                              <span className="text-xs text-cyan-400">
+                              <span className="text-xs text-cyan-400 font-mono">
                                 Playing
                               </span>
                             </div>
                           )}
+
+                        {/* Copy Success Indicator */}
+                        {copiedMessageId === message.id && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="flex items-center space-x-1 text-green-400"
+                          >
+                            <FaCheck className="text-xs" />
+                            <span className="text-xs font-mono">Copied!</span>
+                          </motion.div>
+                        )}
                       </div>
                     </div>
                   </motion.div>
@@ -353,22 +443,28 @@ const ChatContainer = ({
                     animate={{ opacity: 1, y: 0 }}
                     className="flex justify-start"
                   >
-                    <div className="max-w-[90%] min-w-[70%] sm:max-w-[80%] bg-gray-700/50 border border-gray-600/30 rounded-2xl p-4">
+                    <div className="max-w-[90%] min-w-[70%] sm:max-w-[80%] bg-gray-800/50 border border-gray-600/30 rounded-2xl p-5">
                       <div className="flex items-center space-x-3 mb-4">
-                        <div className="w-6 h-6 rounded-full bg-cyan-600 flex items-center justify-center">
-                          <span className="text-white text-xs font-semibold">
-                            {AIAgentData.name?.charAt(0).toUpperCase()}
-                          </span>
+                        <div className="w-8 h-8 rounded-full bg-linear-to-br from-cyan-600 to-blue-600 flex items-center justify-center">
+                          <FaRobot className="text-white text-sm" />
                         </div>
-                        <span className="text-sm font-bold text-cyan-500">
-                          {AIAgentData.name}
-                        </span>
+                        <div>
+                          <span className="text-sm font-bold text-cyan-400">
+                            {AIAgentData.name}
+                          </span>
+                          <div className="flex items-center space-x-2 mt-1">
+                            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                            <span className="text-xs text-gray-400">
+                              Thinking...
+                            </span>
+                          </div>
+                        </div>
                       </div>
 
                       <div className="space-y-3">
-                        <div className="h-3 bg-gray-600 rounded-full animate-pulse"></div>
-                        <div className="h-3 bg-gray-600 rounded-full w-5/6 animate-pulse"></div>
-                        <div className="h-3 bg-gray-600 rounded-full w-4/6 animate-pulse"></div>
+                        <div className="h-3 bg-gray-700 rounded-full animate-pulse"></div>
+                        <div className="h-3 bg-gray-700 rounded-full w-5/6 animate-pulse"></div>
+                        <div className="h-3 bg-gray-700 rounded-full w-4/6 animate-pulse"></div>
                       </div>
 
                       <div className="flex items-center space-x-2 mt-4">
@@ -383,8 +479,8 @@ const ChatContainer = ({
                             style={{ animationDelay: "0.4s" }}
                           ></div>
                         </div>
-                        <p className="text-xs text-cyan-300 font-medium">
-                          {AIAgentData.name} is thinking...
+                        <p className="text-xs text-cyan-300 font-medium font-mono">
+                          Generating response...
                         </p>
                       </div>
                     </div>
@@ -396,21 +492,22 @@ const ChatContainer = ({
           )}
 
           {/* Input Area */}
-          <div className="p-3 sm:p-4">
+          <div className="p-4 sm:p-5 border-t border-gray-700/50">
             <div className="flex items-end space-x-3">
-              <div className="flex-1">
+              <div className="flex-1 relative">
                 <textarea
                   ref={textareaRef}
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Type your message here..."
-                  className="w-full bg-gray-700/50 border-2 border-cyan-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300 resize-none scrollbar-small"
-                  rows={2}
-                  disabled={isLoading}
+                  placeholder="Message RAVX OS..."
+                  className={`w-full bg-gray-800/50 border-2 border-cyan-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/20 min-h-[65px] transition-all duration-300 resize-none scrollbar-small pr-12 ${
+                    isLoading
+                      ? "cursor-not-allowed hidden"
+                      : "cursor-text block"
+                  }`}
                   style={{
-                    minHeight: "50px",
-                    maxHeight: "200px",
+                    maxHeight: "120px",
                   }}
                 />
               </div>
@@ -421,15 +518,27 @@ const ChatContainer = ({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 disabled={!inputMessage.trim() || isLoading}
-                className={`px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 h-18 min-h-18 ${
+                className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 min-w-16 min-h-[70px] ${
                   inputMessage.trim() && !isLoading
-                    ? "bg-cyan-600 text-white shadow-lg shadow-cyan-500/25 hover:bg-cyan-500 cursor-pointer"
-                    : "bg-gray-700 text-gray-400 cursor-not-allowed"
+                    ? "bg-linear-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-500/25 hover:from-cyan-500 hover:to-blue-500 cursor-pointer"
+                    : "hidden cursor-not-allowed"
                 }`}
-                style={{ height: "50px" }}
               >
-                <FaPaperPlane className="text-sm" />
-                <span className="hidden sm:inline">Send</span>
+                {isLoading ? (
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-current rounded-full animate-pulse"></div>
+                    <div
+                      className="w-2 h-2 bg-current rounded-full animate-pulse"
+                      style={{ animationDelay: "0.2s" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-current rounded-full animate-pulse"
+                      style={{ animationDelay: "0.4s" }}
+                    ></div>
+                  </div>
+                ) : (
+                  <FaPaperPlane className="text-sm" />
+                )}
               </motion.button>
             </div>
           </div>

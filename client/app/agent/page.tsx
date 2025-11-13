@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {  FiPlay, FiSearch, FiTerminal } from "react-icons/fi";
+import { FiPlay, FiSearch, FiTerminal } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { FaRobot, FaCode } from "react-icons/fa";
 import { AIAgent } from "../types/Type";
@@ -20,6 +20,7 @@ const HubPage: React.FC = () => {
 
   const getAIAgents = async () => {
     try {
+      setIsLoading(true);
       const res = await AxiosInstance.get("/ai/get/all/agents");
 
       if (res.status === 200) {
@@ -46,6 +47,8 @@ const HubPage: React.FC = () => {
           }`,
         ]);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -79,9 +82,8 @@ const HubPage: React.FC = () => {
         clearInterval(bootInterval);
         setTimeout(() => {
           setIsBooting(false);
-          // Fetch agents after boot sequence
           getAIAgents();
-        }, 1200);
+        }, 100);
       }
     }, 100);
 
