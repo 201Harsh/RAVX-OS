@@ -26,8 +26,6 @@ async function main({ prompt, AIAgent, user, ChatHistory }) {
     },
   }));
 
-  console.log(FinalTools);
-
   const systemInstruction = `
   #Important Information for RAVX-OS AI Agents Must Follow:-
   ***Powered by RAVX-OS***
@@ -257,26 +255,50 @@ I am not a generic AI - I am a unique digital entity with my own identity, here 
     const parts = response.candidates[0].content.parts;
     let toolCallPart = parts.find((p) => p.functionCall);
 
-    console.log(toolCallPart);
-
     if (toolCallPart) {
       const toolName = toolCallPart.functionCall.name;
       const toolArgs = toolCallPart.functionCall.args;
+
       const toolResponse = await callMCPTool(toolName, toolArgs);
-      console.log(toolResponse)
-      return toolResponse;
+
+      const followUp = await ai.models.generateContent({
+        model: "gemini-2.0-flash-lite",
+        contents: [
+          {
+            role: "user",
+            parts: [
+              {
+                text: `The AI tool "${toolName}" executed successfully with this result:\n${JSON.stringify(
+                  toolResponse,
+                  null,
+                  2
+                )}\n\nNow respond naturally as ${AIAgent.name}, using your ${
+                  AIAgent.tone
+                } tone and ${
+                  AIAgent.personality
+                } personality. Continue the conversation fluidly.`,
+              },
+            ],
+          },
+        ],
+        config: {
+          systemInstruction,
+        },
+      });
+
+      const finalReply = followUp.text;
+      console.log("💬 Final Gemini Reply:", finalReply);
+      return finalReply;
     }
 
     return responseText;
   } catch (error) {
-    console.log(error);
     return {
       response: `I apologize, but I'm having trouble responding right now. This is ${AIAgent.name} - please try again in a moment!`,
     };
   }
 }
 
-// Helper functions for dynamic configuration
 function getTemperatureByTone(tone) {
   const toneTemperatures = {
     "genz-chaotic": 0.8,
