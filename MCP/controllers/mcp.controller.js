@@ -31,12 +31,13 @@ export const RunMCPServer = async (req, res) => {
 
 export const GetMCPTOols = async (req, res) => {
   try {
-    const tools = server.getResiteredTools();
+    const tools = server.getRegisteredTools();
     res.status(200).json({
       tools,
       message: "Tools Fetched Successfully!",
     });
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       error: error.message,
     });

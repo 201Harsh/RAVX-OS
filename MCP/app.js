@@ -7,43 +7,33 @@ import { echoTool } from "./tools/tools.js";
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use("/mcp", MCPROuter);
 
-// Create the MCP server once (can be reused across requests)
+// Create the MCP server
 export const server = new McpServer({
-  name: "example-server",
+  name: "ravx-mcp-server",
   version: "1.0.0",
 });
 
-server.registerTool({
-  name: echoTool.name,
-  description: echoTool.description,
-  inputSchema: echoTool.inputSchema,
-  outputSchema: echoTool.outputSchema,
-  execute: echoTool.implementation,
-});
-
+// ✅ First define tracking + override BEFORE registering any tool
 server._registeredTools = [];
 
-server.registerTool = function ({
-  name,
-  description,
-  inputSchema,
-  outputSchema,
-  execute,
-}) {
-  this._registeredTools.push({ name, description, inputSchema, outputSchema });
-  McpServer.prototype.registerTool.call(
-    this,
-    name,
-    { description, inputSchema, outputSchema },
-    execute
-  );
+const originalRegisterTool = server.registerTool.bind(server);
+
+server.registerTool = function (name, config, execute) {
+  this._registeredTools.push({ name, ...config });
+  return originalRegisterTool(name, config, execute);
 };
 
-// Add a helper to get all registered tools
 server.getRegisteredTools = function () {
   return this._registeredTools;
 };
+
+// ✅ Now register tools (AFTER override)
+server.registerTool(echoTool.name, echoTool.config, echoTool.execute);
+
+app.use("/mcp", MCPROuter);
+
+// Debug output
+console.log("Registered tools:", server.getRegisteredTools());
 
 export default app;
