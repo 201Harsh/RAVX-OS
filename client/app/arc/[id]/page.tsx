@@ -121,7 +121,7 @@ export default function RavxArcLab() {
         setIsModalOpen(false);
         toast.success(res.data.message, {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1200,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -170,7 +170,7 @@ export default function RavxArcLab() {
       if (res.status === 200) {
         toast.success(res.data.message, {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -184,7 +184,7 @@ export default function RavxArcLab() {
     } catch (error: any) {
       toast.error(error.response?.data?.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -199,7 +199,17 @@ export default function RavxArcLab() {
   const handleRunAgent = async (agentId: string) => {
     try {
       window.open(`/agent/${agentId}`, "_blank");
-      toast.success(`Agent is running`);
+      toast.success(`Agent is running`, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to run agent");
     }
@@ -219,7 +229,7 @@ export default function RavxArcLab() {
     } catch (error: any) {
       toast.error(error.response?.data?.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -317,7 +327,7 @@ export default function RavxArcLab() {
         router.push("/");
         toast.success("Logged out successfully!", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1200,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -372,7 +382,7 @@ export default function RavxArcLab() {
     `);
       toast.success("Copied to clipboard", {
         position: "top-right",
-        autoClose: 2000,
+        autoClose: 1100,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

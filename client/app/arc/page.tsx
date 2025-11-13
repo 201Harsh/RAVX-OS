@@ -49,7 +49,7 @@ const RavxArc = () => {
         setIsCreating(false);
         toast.success(res.data.message, {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1300,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -102,7 +102,7 @@ const RavxArc = () => {
         setArcLabs((prev) => prev.filter((lab) => lab.id !== labId));
         toast.success(res.data.message, {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1200,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -134,7 +134,7 @@ const RavxArc = () => {
         router.push(`/arc/${labId}`);
         toast.success("Entering ArcLab...", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1100,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -181,7 +181,7 @@ const RavxArc = () => {
     } catch (error: any) {
       toast.error(error.response.data.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -203,7 +203,7 @@ const RavxArc = () => {
       router.push('/')
       toast.error(error.response?.data?.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -227,7 +227,7 @@ const RavxArc = () => {
         router.push("/");
         toast.success("Logged out successfully!", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1200,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -240,7 +240,7 @@ const RavxArc = () => {
     } catch (error: any) {
       toast.error(error.response?.data?.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1200,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
