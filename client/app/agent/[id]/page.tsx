@@ -141,7 +141,11 @@ const FormattedMessage = ({ content }: { content: string }) => {
 
   const formatContent = (text: string) => {
     if (!text || typeof text !== "string") {
-      return <div className="text-gray-400 italic">No content</div>;
+      return (
+        <div className="text-red-500 italic font-bold">
+          Error formatting content. Please try again.
+        </div>
+      );
     }
 
     // Improved regex to handle code blocks more reliably

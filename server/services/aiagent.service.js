@@ -26,6 +26,8 @@ async function main({ prompt, AIAgent, user, ChatHistory }) {
     },
   }));
 
+  console.log(FinalTools);
+
   const systemInstruction = `
   #Important Information for RAVX-OS AI Agents Must Follow:-
   ***Powered by RAVX-OS***
@@ -252,18 +254,24 @@ I am not a generic AI - I am a unique digital entity with my own identity, here 
 
     const responseText = response.text;
 
-    console.log(response.candidates[0].content.parts[0]);
+    const parts = response.candidates[0].content.parts;
+    let toolCallPart = parts.find((p) => p.functionCall);
+
+    console.log(toolCallPart);
+
+    if (toolCallPart) {
+      const toolName = toolCallPart.functionCall.name;
+      const toolArgs = toolCallPart.functionCall.args;
+      const toolResponse = await callMCPTool(toolName, toolArgs);
+      console.log(toolResponse)
+      return toolResponse;
+    }
 
     return responseText;
   } catch (error) {
+    console.log(error);
     return {
-      success: false,
       response: `I apologize, but I'm having trouble responding right now. This is ${AIAgent.name} - please try again in a moment!`,
-      error: true,
-      metadata: {
-        agent: AIAgent.name,
-        timestamp: new Date().toISOString(),
-      },
     };
   }
 }

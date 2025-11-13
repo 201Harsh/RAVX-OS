@@ -8,7 +8,7 @@ module.exports.callMCPTool = async function callMCPTool(toolName, args = {}) {
     const requestBody = {
       jsonrpc: "2.0",
       id: Date.now(),
-      method: "call_tool",
+      method: "tools/call",
       params: {
         name: toolName,
         arguments: args,
@@ -27,7 +27,7 @@ module.exports.callMCPTool = async function callMCPTool(toolName, args = {}) {
       data.result?.structuredContent || data.result || { error: "No result" }
     );
   } catch (error) {
-    console.error("Error calling MCP tool:", error.message);
+    console.error(error);
     return { error: error.message };
   }
 };
