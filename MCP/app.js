@@ -6,7 +6,11 @@ import { echoTool } from "./tools/tools.js";
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 // Create the MCP server
 export const server = new McpServer({

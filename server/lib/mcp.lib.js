@@ -1,9 +1,9 @@
-import axios from "axios";
+const axios = require("axios");
 
 const MCP_SERVER_URL = process.env.MCP_SERVER_URL;
 
 // Send a raw JSON-RPC request to the MCP server
-export async function callMCPTool(toolName, args = {}) {
+module.exports.callMCPTool = async function callMCPTool(toolName, args = {}) {
   try {
     const requestBody = {
       jsonrpc: "2.0",
@@ -15,9 +15,13 @@ export async function callMCPTool(toolName, args = {}) {
       },
     };
 
-    const { data } = await axios.post(`${MCP_SERVER_URL}/run`, requestBody, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const { data } = await axios.post(
+      `${MCP_SERVER_URL}/mcp/run`,
+      requestBody,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
     return (
       data.result?.structuredContent || data.result || { error: "No result" }
@@ -26,14 +30,14 @@ export async function callMCPTool(toolName, args = {}) {
     console.error("Error calling MCP tool:", error.message);
     return { error: error.message };
   }
-}
+};
 
-export async function getMCPTools() {
+module.exports.getMCPTools = async function getMCPTools() {
   try {
-    const { data } = await axios.get(`${MCP_SERVER_URL}/tools`);
+    const { data } = await axios.get(`${MCP_SERVER_URL}/mcp/tools`);
     return data.tools || [];
   } catch (error) {
-    console.error("Error fetching MCP tools:", error.message);
+    console.log(error);
     return [];
   }
-}
+};

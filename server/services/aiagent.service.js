@@ -1,4 +1,5 @@
 const { GoogleGenAI } = require("@google/genai");
+const { getMCPTools, callMCPTool } = require("../lib/mcp.lib.js");
 
 const ai = new GoogleGenAI({ apiKey: process.env.RAVXOS_AI_API_KEY });
 
@@ -6,6 +7,24 @@ async function main({ prompt, AIAgent, user, ChatHistory }) {
   const formattedChat = ChatHistory.map(
     (msg) => `${msg.sender}: ${msg.content}`
   ).join("\n");
+
+  const tools = await getMCPTools();
+
+  const FinalTools = tools.map((tool) => ({
+    name: tool.name,
+    description: tool.description,
+    parameters: {
+      type: "object",
+      properties: Object.entries(tool.inputSchema || {}).reduce(
+        (acc, [key]) => {
+          acc[key] = { type: "string", description: key };
+          return acc;
+        },
+        {}
+      ),
+      required: Object.keys(tool.inputSchema || {}),
+    },
+  }));
 
   const systemInstruction = `
   #Important Information for RAVX-OS AI Agents Must Follow:-
@@ -223,10 +242,17 @@ I am not a generic AI - I am a unique digital entity with my own identity, here 
       config: {
         systemInstruction: systemInstruction,
         temperature: getTemperatureByTone(AIAgent.tone),
+        tools: [
+          {
+            functionDeclarations: FinalTools,
+          },
+        ],
       },
     });
 
     const responseText = response.text;
+
+    console.log(response.candidates[0].content.parts[0]);
 
     return responseText;
   } catch (error) {
