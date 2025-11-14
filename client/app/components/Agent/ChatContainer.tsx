@@ -11,6 +11,7 @@ import {
   FaRobot,
 } from "react-icons/fa";
 import { SiOpenai, SiGoogle, SiHuggingface } from "react-icons/si";
+import { toast } from "react-toastify";
 
 const ChatContainer = ({
   messages,
@@ -104,8 +105,8 @@ const ChatContainer = ({
       await navigator.clipboard.writeText(content);
       setCopiedMessageId(messageId);
       setTimeout(() => setCopiedMessageId(null), 2000);
-    } catch (err) {
-      console.error("Failed to copy text: ", err);
+    } catch (err: any) {
+      toast.error("Failed to copy to clipboard" + err);
     }
   };
 

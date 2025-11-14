@@ -27,7 +27,6 @@ module.exports.callMCPTool = async function callMCPTool(toolName, args = {}) {
       data.result?.structuredContent || data.result || { error: "No result" }
     );
   } catch (error) {
-    console.error(error);
     return { error: error.message };
   }
 };
@@ -37,7 +36,6 @@ module.exports.getMCPTools = async function getMCPTools() {
     const { data } = await axios.get(`${MCP_SERVER_URL}/mcp/tools`);
     return data.tools || [];
   } catch (error) {
-    console.log(error);
     return [];
   }
 };

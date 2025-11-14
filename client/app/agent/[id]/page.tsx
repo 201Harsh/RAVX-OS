@@ -474,7 +474,6 @@ export default function AIChatBotPage() {
         setMessages((prev) => [...prev, aiMessage]);
       }
     } catch (error: any) {
-      console.log(error);
       const ErrorMessage: Message = {
         id: Date.now().toString(),
         content:
@@ -511,7 +510,6 @@ export default function AIChatBotPage() {
       });
 
       if (res.status === 200) {
-        console.log(res.data);
         const aiId = (Date.now() + 1).toString();
         const aiMessage: Message = {
           id: aiId,
@@ -537,7 +535,6 @@ export default function AIChatBotPage() {
         setMessages((prev) => [...prev, aiMessage]);
       }
     } catch (error: any) {
-      console.log(error);
       const ErrorMessage: Message = {
         id: Date.now().toString(),
         content:
