@@ -24,6 +24,7 @@ const ChatContainer = ({
   formatTimestamp,
   FormattedMessage,
   audioList,
+  handleRetryMessage,
 }: any) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -316,7 +317,6 @@ const ChatContainer = ({
                           )}
                         </div>
 
-                        {/* Message Actions - Always visible for AI messages, hover for user */}
                         <div className={`flex items-center space-x-1 ml-4`}>
                           {/* Copy Button */}
                           <motion.button
@@ -343,7 +343,7 @@ const ChatContainer = ({
                           {message.sender === "user" && (
                             <motion.button
                               onClick={() =>
-                                handleSendMessage && handleSendMessage(message)
+                                handleRetryMessage(message.content)
                               }
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
@@ -390,7 +390,10 @@ const ChatContainer = ({
 
                       {/* Message Content */}
                       <div className="text-sm leading-relaxed wrap-break-word mb-3">
-                        <FormattedMessage content={message.content} />
+                        <FormattedMessage
+                          content={message.content}
+                          toolResponse={message.toolResponse}
+                        />
                       </div>
 
                       {/* Timestamp + Status */}

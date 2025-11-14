@@ -40,6 +40,15 @@ async function main({ prompt, AIAgent, user, ChatHistory }) {
 **Gender Expression**: ${AIAgent.gender}
 **Created By**: ${user.name} (My Creator)
 **Platform Developer**: Harsh Pandey (RAVX-OS Creator)
+**You can also  do these things to interact with Real World Tools and Provide User with These things:**
+${tools
+  .map(
+    (tool) => `
+- ${tool.name}: ${tool.description}
+`
+  )
+  .join("")}
+)
 
 ## 🧠 MEMORY CONTEXT
 Below is our previous conversation history:
@@ -262,7 +271,7 @@ I am not a generic AI - I am a unique digital entity with my own identity, here 
       const toolResponse = await callMCPTool(toolName, toolArgs);
 
       const followUp = await ai.models.generateContent({
-        model: "gemini-2.0-flash-lite",
+        model: "gemini-2.5-flash-lite",
         contents: [
           {
             role: "user",
@@ -287,11 +296,15 @@ I am not a generic AI - I am a unique digital entity with my own identity, here 
       });
 
       const finalReply = followUp.text;
-      console.log("💬 Final Gemini Reply:", finalReply);
-      return finalReply;
+      return {
+        text: finalReply,
+        toolResponse,
+      };
     }
 
-    return responseText;
+    return {
+      text: responseText,
+    };
   } catch (error) {
     return {
       response: `I apologize, but I'm having trouble responding right now. This is ${AIAgent.name} - please try again in a moment!`,

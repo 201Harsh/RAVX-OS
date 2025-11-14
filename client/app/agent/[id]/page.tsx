@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
-import { FaRobot, FaCode, FaCopy, FaDownload } from "react-icons/fa";
+import { FaCopy, FaDownload } from "react-icons/fa";
 import { Flip, toast } from "react-toastify";
 import AxiosInstance from "@/config/Axios";
 import { useParams, useRouter } from "next/navigation";
@@ -17,6 +17,7 @@ interface Message {
   content: string;
   sender: "user" | "ai";
   timestamp: Date;
+  toolResponse?: any;
 }
 
 interface FileItem {
@@ -110,8 +111,81 @@ const StickyCodeHeader = ({
   );
 };
 
+// Component to render tool response data
+const ToolResponseData = ({ toolResponse }: { toolResponse: any }) => {
+  if (
+    !toolResponse ||
+    !toolResponse.results ||
+    !Array.isArray(toolResponse.results)
+  ) {
+    return null;
+  }
+
+  return (
+    <div className="mt-4 p-4 bg-gray-900/50 border border-gray-600/30 rounded-lg">
+      <div className="flex items-center space-x-2 mb-3">
+        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+        <span className="text-sm font-semibold text-cyan-400">
+          RAVX-OS AI Result:
+        </span>
+      </div>
+
+      <div className="space-y-4">
+        {toolResponse.results.slice(0, 8).map((result: any, index: number) => (
+          <div
+            key={index}
+            className="p-3 bg-gray-800/30 rounded-lg border border-gray-600/20 hover:border-cyan-500/30 transition-colors duration-200"
+          >
+            {result.title && (
+              <h4 className="text-sm font-semibold text-white mb-2 line-clamp-2">
+                {result.title}
+              </h4>
+            )}
+
+            {result.snippet && (
+              <p className="text-xs text-gray-300 mb-3 line-clamp-3 leading-relaxed">
+                {result.snippet}
+              </p>
+            )}
+
+            {result.url && (
+              <a
+                href={result.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors duration-200"
+              >
+                <span>Source</span>
+                <svg
+                  className="w-3 h-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 // Component to render formatted message content with SyntaxHighlighter
-const FormattedMessage = ({ content }: { content: string }) => {
+const FormattedMessage = ({
+  content,
+  toolResponse,
+}: {
+  content: string;
+  toolResponse?: any;
+}) => {
   const codeBlockRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [stickyBlocks, setStickyBlocks] = useState<Set<string>>(new Set());
 
@@ -235,12 +309,25 @@ const FormattedMessage = ({ content }: { content: string }) => {
     return <>{parts}</>;
   };
 
-  return <div className="message-content">{formatContent(content)}</div>;
+  return (
+    <div className="message-content">
+      {formatContent(content)}
+      {toolResponse && <ToolResponseData toolResponse={toolResponse} />}
+    </div>
+  );
 };
 
 // Separate component for text content
 const TextContent = ({ content }: { content: string }) => {
+  // URL detection regex
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
   const formattedText = content
+    // Convert URLs to links
+    .replace(
+      urlRegex,
+      '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 underline transition-colors duration-200">$1</a>'
+    )
     // Bold text with ** **
     .replace(
       /\*\*(.*?)\*\*/g,
@@ -292,30 +379,11 @@ export default function AIChatBotPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [files, setFiles] = useState<FileItem[]>([
-    {
-      id: "1",
-      name: "Welcome.md",
-      type: "file",
-      content: "# Welcome to RAVX OS\n\nThis is your first file.",
-      lastModified: new Date(),
-    },
-    {
-      id: "2",
-      name: "Projects",
-      type: "folder",
-      lastModified: new Date(),
-    },
-  ]);
-  const [selectedFile, setSelectedFile] = useState<FileItem | null>(null);
-  const [fileContent, setFileContent] = useState("");
-  const [newFileName, setNewFileName] = useState("");
-  const [isCreatingFile, setIsCreatingFile] = useState(false);
+
   const [audioList, setAudioList] = useState<{ id: string; url: string }[]>([]);
   const [SessionID, setSessionID] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const fileContentRef = useRef<HTMLTextAreaElement>(null);
 
   const params = useParams();
   const id = params.id;
@@ -384,9 +452,73 @@ export default function AIChatBotPage() {
         const aiId = (Date.now() + 1).toString();
         const aiMessage: Message = {
           id: aiId,
-          content: res.data.response,
+          content: res.data.response.text,
           sender: "ai",
           timestamp: new Date(),
+          toolResponse: res.data.response.toolResponse,
+        };
+
+        // Convert base64 → binary → Blob → Object URL
+        try {
+          const audioData = res.data.audio;
+          const byteArray = Uint8Array.from(atob(audioData), (c) =>
+            c.charCodeAt(0)
+          );
+          const blob = new Blob([byteArray], { type: "audio/wav" });
+          const audioUrl = URL.createObjectURL(blob);
+          setAudioList((prev) => [...prev, { id: aiId, url: audioUrl }]);
+        } catch (err: any) {
+          toast.error(err);
+        }
+
+        setMessages((prev) => [...prev, aiMessage]);
+      }
+    } catch (error: any) {
+      console.log(error);
+      const ErrorMessage: Message = {
+        id: Date.now().toString(),
+        content:
+          error.response?.data?.message ||
+          "RAVX OS System Failed AI Error-00911",
+        sender: "ai",
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, ErrorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleRetryMessage = async (message: string) => {
+    setIsLoading(true);
+    if (!message.trim()) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      content: message,
+      sender: "user",
+      timestamp: new Date(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInputMessage("");
+
+    try {
+      const res = await AxiosInstance.post(`/ai/agent/${id}`, {
+        prompt: message,
+        ChatHistory: messages,
+        SessionID,
+      });
+
+      if (res.status === 200) {
+        console.log(res.data);
+        const aiId = (Date.now() + 1).toString();
+        const aiMessage: Message = {
+          id: aiId,
+          content: res.data.response.text,
+          sender: "ai",
+          timestamp: new Date(),
+          toolResponse: res.data.response.toolResponse,
         };
 
         // Convert base64 → binary → Blob → Object URL
@@ -428,62 +560,6 @@ export default function AIChatBotPage() {
     }
   };
 
-  // MCP File Operations
-  const createNewFile = () => {
-    if (!newFileName.trim()) {
-      toast.error("Please enter a file name");
-      return;
-    }
-
-    const newFile: FileItem = {
-      id: Date.now().toString(),
-      name: newFileName,
-      type: "file",
-      content: "# New File\n\nStart writing your content here...",
-      lastModified: new Date(),
-    };
-
-    setFiles((prev) => [...prev, newFile]);
-    setNewFileName("");
-    setIsCreatingFile(false);
-    setSelectedFile(newFile);
-    setFileContent(newFile.content || "");
-    toast.success("File created successfully!");
-  };
-
-  const saveFile = () => {
-    if (!selectedFile) return;
-
-    setFiles((prev) =>
-      prev.map((file) =>
-        file.id === selectedFile.id
-          ? { ...file, content: fileContent, lastModified: new Date() }
-          : file
-      )
-    );
-
-    toast.success("File saved successfully!");
-  };
-
-  const deleteFile = (fileId: string) => {
-    setFiles((prev) => prev.filter((file) => file.id !== fileId));
-    if (selectedFile?.id === fileId) {
-      setSelectedFile(null);
-      setFileContent("");
-    }
-    toast.success("File deleted successfully!");
-  };
-
-  const handleFileSelect = (file: FileItem) => {
-    if (file.type === "folder") {
-      toast.info("Folder operations coming soon!");
-      return;
-    }
-
-    setSelectedFile(file);
-    setFileContent(file.content || "");
-  };
-
   const formatTimestamp = (date: Date) => {
     return new Date(date).toLocaleTimeString("en-IN", {
       hour: "numeric",
@@ -509,6 +585,7 @@ export default function AIChatBotPage() {
             formatTimestamp={formatTimestamp}
             FormattedMessage={FormattedMessage}
             audioList={audioList}
+            handleRetryMessage={handleRetryMessage}
           />
         </AnimatePresence>
       </main>

@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import MCPRouter from "./routes/mcp.route.js";
-import { echoTool } from "./tools/tools.js";
+import { webSearchTool } from "./tools/tools.js";
 
 const app = express();
 app.use(express.json());
@@ -42,9 +42,12 @@ server.getExecutor = function (name) {
 };
 
 // ✅ Register your tools here
-server.registerTool(echoTool.name, echoTool.config, echoTool.execute);
+server.registerTool(
+  webSearchTool.name,
+  webSearchTool.config,
+  webSearchTool.execute
+);
 
 app.use("/mcp", MCPRouter);
 
-
-export default app; 
+export default app;

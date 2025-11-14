@@ -260,7 +260,7 @@ module.exports.AIAgent = async (req, res) => {
     });
 
     const voiceBuffer = await VoiceService({
-      text: response,
+      text: response.text,
       aiVoice: AIAgent.voice,
     });
 
