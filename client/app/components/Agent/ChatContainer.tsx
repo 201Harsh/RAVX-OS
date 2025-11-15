@@ -280,8 +280,8 @@ const ChatContainer = ({
                     <div
                       className={`max-w-full sm:max-w-full rounded-2xl p-4 sm:p-5 relative group ${
                         message.sender === "user"
-                          ? "bg-cyan-600/20 border border-cyan-500/30 text-white"
-                          : "bg-gray-800/50 border border-gray-600/30 text-white"
+                          ? "bg-cyan-600/10 border border-cyan-500/60 text-white"
+                          : " text-white"
                       }`}
                     >
                       {/* Header (user or AI name) */}
@@ -329,7 +329,7 @@ const ChatContainer = ({
                             className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-200 ${
                               copiedMessageId === message.id
                                 ? "text-green-400 bg-green-400/10"
-                                : "text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/10"
+                                : "text-gray-400 hover:text-emerald-300 hover:bg-cyan-400/10"
                             }`}
                             title="Copy response"
                           >

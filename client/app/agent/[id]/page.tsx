@@ -111,7 +111,6 @@ const StickyCodeHeader = ({
   );
 };
 
-// Component to render tool response data
 const ToolResponseData = ({ toolResponse }: { toolResponse: any }) => {
   if (
     !toolResponse ||
@@ -122,7 +121,7 @@ const ToolResponseData = ({ toolResponse }: { toolResponse: any }) => {
   }
 
   return (
-    <div className="mt-4 p-4 bg-gray-900/50 border border-gray-600/30 rounded-lg">
+    <div className="mt-4 p-4 bg-gray-950 border border-gray-600/30 rounded-lg">
       <div className="flex items-center space-x-2 mb-3">
         <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
         <span className="text-sm font-semibold text-cyan-400">
@@ -178,7 +177,6 @@ const ToolResponseData = ({ toolResponse }: { toolResponse: any }) => {
   );
 };
 
-// Component to render formatted message content with SyntaxHighlighter
 const FormattedMessage = ({
   content,
   toolResponse,
@@ -207,7 +205,7 @@ const FormattedMessage = ({
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [content]);
@@ -221,25 +219,21 @@ const FormattedMessage = ({
       );
     }
 
-    // Improved regex to handle code blocks more reliably
     const codeBlockRegex = /```(\w+)?\s*\n([\s\S]*?)```/g;
     const parts: any[] = [];
     let lastIndex = 0;
     let match;
 
-    // Process all code blocks first
     while ((match = codeBlockRegex.exec(text)) !== null) {
       const [fullMatch, language = "text", code] = match;
       const textBefore = text.slice(lastIndex, match.index);
 
-      // Add text before code block
       if (textBefore) {
         parts.push(
           <TextContent key={`text-${lastIndex}`} content={textBefore} />
         );
       }
 
-      // Add code block with SyntaxHighlighter
       const blockId = `code-${match.index}-${Date.now()}`;
       const cleanCode = code.trim();
       const isSticky = stickyBlocks.has(blockId);
@@ -264,7 +258,6 @@ const FormattedMessage = ({
             />
           </div>
 
-          {/* Using SyntaxHighlighter instead of Prism directly */}
           <SyntaxHighlighter
             language={language}
             style={vscDarkPlus}
@@ -293,7 +286,6 @@ const FormattedMessage = ({
       lastIndex = match.index + fullMatch.length;
     }
 
-    // Add remaining text after last code block
     const remainingText = text.slice(lastIndex);
     if (remainingText) {
       parts.push(
@@ -301,7 +293,6 @@ const FormattedMessage = ({
       );
     }
 
-    // If no code blocks were found, render the entire text
     if (parts.length === 0) {
       return <TextContent content={text} />;
     }
@@ -317,32 +308,63 @@ const FormattedMessage = ({
   );
 };
 
-// Separate component for text content
 const TextContent = ({ content }: { content: string }) => {
-  // URL detection regex
   const urlRegex = /(https?:\/\/[^\s]+)/g;
 
+  const formatUrl = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      let siteName = urlObj.hostname.replace("www.", "");
+
+      if (siteName.includes("youtube.com") || siteName.includes("youtu.be")) {
+        siteName = "YouTube";
+      } else if (siteName.includes("wikipedia.org")) {
+        siteName = "Wikipedia";
+      } else if (siteName.includes("github.com")) {
+        siteName = "GitHub";
+      } else if (siteName.includes("reddit.com")) {
+        siteName = "Reddit";
+      } else if (siteName.includes("spotify.com")) {
+        siteName = "Spotify";
+      } else if (siteName.includes("apple.com")) {
+        siteName = "Apple Music";
+      } else if (siteName.includes("open.spotify.com")) {
+        siteName = "Spotify";
+      } else if (siteName.includes("music.apple.com")) {
+        siteName = "Apple Music";
+      } else {
+        siteName = siteName.split(".")[0];
+        siteName = siteName.charAt(0).toUpperCase() + siteName.slice(1);
+      }
+
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300 px-2 py-1 rounded-md border border-cyan-500/30 transition-all duration-200 text-sm font-medium">
+        <span>${siteName}</span>
+        <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </a>`;
+    } catch (error) {
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300 px-2 py-1 rounded-md border border-cyan-500/30 transition-all duration-200 text-sm font-medium">
+        <span>Link</span>
+        <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </a>`;
+    }
+  };
+
   const formattedText = content
-    // Convert URLs to links
-    .replace(
-      urlRegex,
-      '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 underline transition-colors duration-200">$1</a>'
-    )
-    // Bold text with ** **
+    .replace(urlRegex, (url) => formatUrl(url))
     .replace(
       /\*\*(.*?)\*\*/g,
       '<strong class="font-bold text-cyan-400">$1</strong>'
     )
-    // Italic text with * *
     .replace(/\*(.*?)\*/g, '<em class="italic text-pink-300">$1</em>')
-    // Bold text with __ __
     .replace(/__(.*?)__/g, '<strong class="font-bold text-white">$1</strong>')
-    // Inline code with ` `
     .replace(
       /`(.*?)`/g,
       '<code class="bg-gray-800 px-1.5 py-0.5 rounded text-sm font-mono text-cyan-300 border border-gray-700">$1</code>'
     )
-    // Headers (###, ##, #)
     .replace(
       /^### (.*$)/gim,
       '<h3 class="text-lg font-bold text-emerald-400 mt-4 mb-2">$1</h3>'
@@ -355,15 +377,12 @@ const TextContent = ({ content }: { content: string }) => {
       /^# (.*$)/gim,
       '<h1 class="text-2xl font-bold text-white mt-4 mb-3">$1</h1>'
     )
-    // Lists
     .replace(/^- (.*$)/gim, '<li class="ml-4 list-disc text-gray-300">$1</li>')
     .replace(/^\* (.*$)/gim, '<li class="ml-4 list-disc text-gray-300">$1</li>')
-    // Blockquotes
     .replace(
       /^> (.*$)/gim,
       '<blockquote class="border-l-4 border-cyan-500 pl-4 my-2 text-gray-300 italic">$1</blockquote>'
     )
-    // Line breaks
     .replace(/\n/g, "<br />");
 
   return (
