@@ -314,41 +314,74 @@ const TextContent = ({ content }: { content: string }) => {
   const formatUrl = (url: string) => {
     try {
       const urlObj = new URL(url);
-      let siteName = urlObj.hostname.replace("www.", "");
+      let hostname = urlObj.hostname.replace("www.", "");
+      let platform = hostname.split(".")[0];
 
-      if (siteName.includes("youtube.com") || siteName.includes("youtu.be")) {
-        siteName = "YouTube";
-      } else if (siteName.includes("wikipedia.org")) {
-        siteName = "Wikipedia";
-      } else if (siteName.includes("github.com")) {
-        siteName = "GitHub";
-      } else if (siteName.includes("reddit.com")) {
-        siteName = "Reddit";
-      } else if (siteName.includes("spotify.com")) {
-        siteName = "Spotify";
-      } else if (siteName.includes("apple.com")) {
-        siteName = "Apple Music";
-      } else if (siteName.includes("open.spotify.com")) {
-        siteName = "Spotify";
-      } else if (siteName.includes("music.apple.com")) {
-        siteName = "Apple Music";
+      // Known mappings
+      const platformMap: Record<string, string> = {
+        wikipedia: "Wikipedia",
+        reddit: "Reddit",
+        spotify: "Spotify",
+        apple: "Apple Music",
+      };
+
+      if (platformMap[platform]) {
+        platform = platformMap[platform];
       } else {
-        siteName = siteName.split(".")[0];
-        siteName = siteName.charAt(0).toUpperCase() + siteName.slice(1);
+        platform = platform.charAt(0).toUpperCase() + platform.slice(1);
       }
 
+      // Extract meaningful entity = last part of URL path
+      const pathParts = urlObj.pathname.split("/").filter(Boolean);
+      let entity = pathParts[pathParts.length - 1] || platform;
+
+      // Cleanup (remove queries, underscores, hyphens, numbers, etc.)
+      entity = decodeURIComponent(entity)
+        .replace(/[-_]/g, " ")
+        .replace(/\d+$/, "")
+        .trim();
+
+      // Capitalize properly
+      entity = entity
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
+      // Final label
+      const label = `${entity} ${platform} Page`;
+
       return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300 px-2 py-1 rounded-md border border-cyan-500/30 transition-all duration-200 text-sm font-medium">
-        <span>${siteName}</span>
-        <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-        </svg>
+        <span>${label}</span>
+        <svg
+                  className="w-3 h-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
       </a>`;
     } catch (error) {
       return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300 px-2 py-1 rounded-md border border-cyan-500/30 transition-all duration-200 text-sm font-medium">
-        <span>Link</span>
-        <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-        </svg>
+        <span>Error Formatting Link</span>
+        <svg
+                  className="w-3 h-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
       </a>`;
     }
   };
