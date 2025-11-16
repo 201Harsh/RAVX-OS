@@ -314,7 +314,7 @@ const TextContent = ({ content }: { content: string }) => {
   const formatUrl = (url: string) => {
     try {
       const urlObj = new URL(url);
-      let hostname = urlObj.hostname.replace("www.", "");
+      const hostname = urlObj.hostname.replace("www.", "");
       let platform = hostname.split(".")[0];
 
       // Known mappings

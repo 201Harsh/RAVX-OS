@@ -677,12 +677,6 @@ Nova: "I'd be happy to help you plan your week! Let's start by reviewing your cu
     { id: "advanced", name: "Advanced", icon: <FiSettings /> },
   ];
 
-  const filteredSections = documentationSections.filter(
-    (section) =>
-      section.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      section.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   const currentSection = documentationSections.find(
     (section) => section.id === activeSection
   );

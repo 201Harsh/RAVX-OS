@@ -10,7 +10,6 @@ import {
   FaCheck,
   FaRobot,
 } from "react-icons/fa";
-import { SiOpenai, SiGoogle, SiHuggingface } from "react-icons/si";
 import { toast } from "react-toastify";
 
 const ChatContainer = ({
