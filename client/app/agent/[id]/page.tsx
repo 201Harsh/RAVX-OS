@@ -20,15 +20,6 @@ interface Message {
   toolResponse?: any;
 }
 
-interface FileItem {
-  id: string;
-  name: string;
-  type: "file" | "folder";
-  content?: string;
-  lastModified: Date;
-}
-
-// Sticky Code Header Component
 const StickyCodeHeader = ({
   language,
   code,
@@ -458,7 +449,7 @@ export default function AIChatBotPage() {
       }
     } catch (error: any) {
       router.push("/arc");
-      toast.error(error.response?.data?.message, {
+      toast.error(error.response?.data?.message || error.response?.data, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -530,6 +521,7 @@ export default function AIChatBotPage() {
         id: Date.now().toString(),
         content:
           error.response?.data?.message ||
+          error.response?.data ||
           "RAVX OS System Failed AI Error-00911",
         sender: "ai",
         timestamp: new Date(),
@@ -590,7 +582,7 @@ export default function AIChatBotPage() {
       const ErrorMessage: Message = {
         id: Date.now().toString(),
         content:
-          error.response?.data?.message ||
+          error.response?.data?.message || error.response?.data ||
           "RAVX OS System Failed AI Error-00911",
         sender: "ai",
         timestamp: new Date(),

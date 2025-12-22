@@ -3,6 +3,10 @@ const AuthMiddleware = require("../middlewares/auth.middleware");
 const ValidateMiddleware = require("../middlewares/validatedata.middleware");
 const AIAgentController = require("../controllers/ai.controller");
 const { body } = require("express-validator");
+const {
+  GlobalLimit,
+  AILimit,
+} = require("../middlewares/rate-limit.middleware");
 
 router.post(
   "/create/:id",
@@ -31,20 +35,27 @@ router.post(
   AIAgentController.CreateAIAgent
 );
 
-router.get("/get/:id", AuthMiddleware.authUser, AIAgentController.GetAIAgent);
+router.get(
+  "/get/:id",
+  GlobalLimit,
+  AuthMiddleware.authUser,
+  AIAgentController.GetAIAgent
+);
 
-router.get("/get/agent/:id", AIAgentController.GetAIAgentBYId);
+router.get("/get/agent/:id", GlobalLimit, AIAgentController.GetAIAgentBYId);
 
-router.get('/get/all/agents', AIAgentController.GetAllAIAgent)
+router.get("/get/all/agents", GlobalLimit, AIAgentController.GetAllAIAgent);
 
 router.delete(
   "/del/:id",
+  GlobalLimit,
   AuthMiddleware.authUser,
   AIAgentController.DeleteAIAgent
 );
 
 router.post(
   "/agent/:id",
+  AILimit,
   [body("prompt").isString().notEmpty().withMessage("Prompt is required")],
   ValidateMiddleware.ValidateData,
   AIAgentController.AIAgent
