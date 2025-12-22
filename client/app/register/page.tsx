@@ -345,7 +345,7 @@ const RegisterPage: React.FC = () => {
         }, 4300);
       }
     } catch (error: any) {
-      const apiErrors = error.response?.data?.errors;
+      const apiErrors = error.response?.data?.errors || error.response?.data;
       const main_errors = error.response.data.message;
 
       if (error.response.status === 400) {

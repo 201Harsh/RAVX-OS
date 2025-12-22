@@ -66,6 +66,7 @@ const RavxArc = () => {
 
       toast.error(
         error.response?.data?.message ||
+          error.response?.data ||
           error.response.data.errors.forEach((e: { msg: string }) => {
             toast.error(e.msg, {
               position: "top-right",
@@ -113,7 +114,7 @@ const RavxArc = () => {
         });
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message, {
+      toast.error(error.response?.data?.message || error.response?.data, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -145,7 +146,7 @@ const RavxArc = () => {
         });
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message, {
+      toast.error(error.response?.data?.message || error.response?.data, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -179,7 +180,7 @@ const RavxArc = () => {
         setArcLabs(ArcLabs);
       }
     } catch (error: any) {
-      toast.error(error.response.data.message, {
+      toast.error(error.response.data.message || error.response.data, {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -200,8 +201,8 @@ const RavxArc = () => {
         setUserData(res.data.User);
       }
     } catch (error: any) {
-      router.push('/')
-      toast.error(error.response?.data?.message, {
+      router.push("/");
+      toast.error(error.response?.data?.message || error.response?.data, {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -238,7 +239,7 @@ const RavxArc = () => {
         });
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message, {
+      toast.error(error.response?.data?.message || error.response?.data, {
         position: "top-right",
         autoClose: 1200,
         hideProgressBar: false,

@@ -137,7 +137,7 @@ const HubPage: React.FC = () => {
     try {
       router.push(`/agent/${agentId}`);
     } catch (error: any) {
-      toast.error(error.response.data.message || "Failed to deploy agent");
+      toast.error(error.response.data.message || error.response?.data || "Failed to deploy agent");
     } finally {
       setIsLoading(false);
     }

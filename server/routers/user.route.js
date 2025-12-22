@@ -3,6 +3,14 @@ const UserController = require("../controllers/user.controller");
 const { body } = require("express-validator");
 const ValidateData = require("../middlewares/validatedata.middleware");
 const AuthMiddleware = require("../middlewares/auth.middleware");
+const {
+  registerLimit,
+  verifyOtpLimit,
+  GlobalLimit,
+  loginLimit,
+  forgotPasswordLimit,
+  logoutLimit,
+} = require("../middlewares/rate-limit.middleware");
 
 router.post(
   "/register",
@@ -24,19 +32,23 @@ router.post(
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters"),
   ],
+  registerLimit,
   ValidateData.ValidateData,
   UserController.RegisterUser
 );
 
 router.post(
   "/resend",
+
   [body("email").trim().isEmail().withMessage("Invalid Email")],
+  GlobalLimit,
   ValidateData.ValidateData,
   UserController.ResendOTP
 );
 
 router.post(
   "/verify",
+  verifyOtpLimit,
   [
     body("email").trim().isEmail().withMessage("Invalid Email"),
     body("otp")
@@ -53,6 +65,7 @@ router.post(
 
 router.post(
   "/login",
+  loginLimit,
   [
     body("email")
       .trim()
@@ -74,6 +87,7 @@ router.post(
 
 router.post(
   "/forgot",
+  forgotPasswordLimit,
   [body("email").trim().isEmail().withMessage("Invalid Email")],
   ValidateData.ValidateData,
   UserController.ForgotPassword
@@ -81,6 +95,7 @@ router.post(
 
 router.post(
   "/reset",
+  GlobalLimit,
   [
     body("email").trim().isEmail().withMessage("Invalid Email"),
     body("otp")
@@ -100,8 +115,18 @@ router.post(
   UserController.UpdateNewPassword
 );
 
-router.post("/logout", AuthMiddleware.authUser, UserController.Logoutuser);
+router.post(
+  "/logout",
+  logoutLimit,
+  AuthMiddleware.authUser,
+  UserController.Logoutuser
+);
 
-router.get('/profile', AuthMiddleware.authUser, UserController.GetUserProfile);
+router.get(
+  "/profile",
+  GlobalLimit,
+  AuthMiddleware.authUser,
+  UserController.GetUserProfile
+);
 
 module.exports = router;

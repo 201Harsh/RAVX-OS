@@ -61,7 +61,6 @@ export default function RavxArcLab() {
 
   const router = useRouter();
 
-  // Close user menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -78,7 +77,6 @@ export default function RavxArcLab() {
     };
   }, []);
 
-  // Simulate terminal boot sequence
   useEffect(() => {
     const bootSequence = [
       "> Booting RAVX Web-OS v4.2.1...",
@@ -136,6 +134,7 @@ export default function RavxArcLab() {
     } catch (error: any) {
       toast.error(
         error.response?.data?.message ||
+          error.response?.data ||
           error.response?.data?.errors.forEach((e: { msg: string }) => {
             toast.error(e.msg, {
               position: "top-right",
@@ -182,7 +181,7 @@ export default function RavxArcLab() {
         handleGetAIAgents();
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message, {
+      toast.error(error.response?.data?.message || error.response?.data, {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -227,7 +226,7 @@ export default function RavxArcLab() {
         setAIAgents(AIAgents);
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message, {
+      toast.error(error.response?.data?.message || error.response?.data, {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -248,7 +247,7 @@ export default function RavxArcLab() {
         setUserData(res.data.User);
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message, {
+      toast.error(error.response?.data?.message || error.response?.data, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -274,7 +273,7 @@ export default function RavxArcLab() {
       }
     } catch (error: any) {
       router.push("/arc");
-      toast.error(error.response?.data?.message, {
+      toast.error(error.response?.data?.message || error.response?.data, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -339,7 +338,7 @@ export default function RavxArcLab() {
         setIsUserMenuOpen(false);
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message, {
+      toast.error(error.response?.data?.message || error.response?.data, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
