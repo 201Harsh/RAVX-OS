@@ -11,6 +11,7 @@ import {
   FaRobot,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 const ChatContainer = ({
   messages,
@@ -495,7 +496,7 @@ const ChatContainer = ({
           )}
 
           {/* Input Area */}
-          <div className="p-4 sm:p-5 border-t border-gray-700/50">
+          <div className="p-4 sm:p-5 border-t border-gray-700/50 mb-6 md:mb-0">
             <div className="flex items-end space-x-3">
               <div className="flex-1 relative">
                 <textarea
@@ -544,6 +545,13 @@ const ChatContainer = ({
                 )}
               </motion.button>
             </div>
+            <p className="text-xs text-center mt-4 text-gray-400">
+              <span className="text-emerald-400">{AIAgentData.name}</span> AI
+              Avatars powered by{" "}
+              <Link href="/" className="font-semibold text-cyan-300">
+                RAVX-OS
+              </Link>
+            </p>
           </div>
         </div>
       </motion.div>
